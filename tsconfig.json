@@ -1,7 +1,7 @@
 {
   "include": ["src/shims-vue.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
-    "baseUrl": "",
+    "baseUrl": "./",
     "types": [ "vite/client", "element-plus/global" ],
     "isolatedModules": true,
     "paths": {
