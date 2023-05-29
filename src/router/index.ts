@@ -3,9 +3,10 @@ import NProgress from "nprogress";
 import "nprogress/nprogress.css";
 import { routerStore } from '@/stores/modules/route';
 import Login from '../views/login/index.vue';
+import Layout from '@/Layout/layout.vue';
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory(),
   routes: [
     {
       path: "/login",
@@ -17,8 +18,7 @@ const router = createRouter({
       path: '/',
       name: '/',
       redirect: '/about',
-      component: () => import('@/views/home/HomeView.vue'),
-      meta: { title: "/", isTagView: false },
+      component: Layout,
       children: [
         {
           path: '/about',
