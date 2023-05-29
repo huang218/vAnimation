@@ -10,6 +10,6 @@
 .header-box {
   width: 100%;
   height: 60px;
-  background-color: beige;
+  background-color: var(--el-color-primary);
 }
 </style>
