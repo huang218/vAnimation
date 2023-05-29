@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-const router = useRouter();
+import { useRouterJump } from '@/hooks/useRouterJump';
+const { replaceRouter } = useRouterJump();
+
 async function submit() {
   localStorage.setItem('token', '123455');
-  router.replace({ path: "/" });
+  replaceRouter("/");
 }
 </script>
 <template>

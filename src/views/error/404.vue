@@ -1,14 +1,15 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router';
-const router = useRouter();
+import { useRouterJump } from '@/hooks/useRouterJump';
+
+const { replaceRouter } = useRouterJump();
 const goBack = () => {
-  router.replace('/')
+  replaceRouter('/')
 }
 </script>
 <template>
   <div class="error">
     <h1>404</h1>
-    <el-link class="btn" type="success" @click="goBack">Go Back</el-link>
+    <ElLink class="btn" type="success" @click="goBack">Go Back</ElLink>
   </div>
 </template>
 <style lang="less" scoped>

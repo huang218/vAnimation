@@ -27,7 +27,7 @@ const router = createRouter({
           meta: { title: "首页", isTagView: false },
         },
         {
-          path: '/indexPage:id',
+          path: '/indexPage',
           name: '/indexPage',
           component: () => import('@/views/parms/indexPage.vue'),
           meta: { title: "indexPage", isTagView: false },
@@ -46,65 +46,48 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.configure({ showSpinner: false });
   NProgress.start();
-  console.log(to, from)
+
   const token = localStorage.getItem("token");
+  
+  if(to.matched.length === 0) {
+    NProgress.done();
+    next({ path: '/404' })
+  }
   if(to.path === '/login') {
     NProgress.done();
-    return next()
+    if(token) {
+      // 有token时不允许访问登录页面，返回首页
+      return next('/')
+    }else {
+      return next()
+    }
   }
   if (!token) {
     const params = JSON.stringify(to.query ? to.query : to.params);
     const url = `/login?redirect=${to.path}&params=${params}`;
     NProgress.done();
     return next(url);
+  }else {
+    if(Object.keys(from.query).length === 0) { // 判断路由来源是否有query
+      next();
+    }else {
+      const toRedirect = from.query.redirect //如果来源路由有query
+      //这行是解决next无限循环的问题并且判断redirect--目的路由是否有
+      if(to.path === toRedirect || !toRedirect ){
+        next()
+      }else{
+        //跳转到目的路由
+        next({
+          path: toRedirect as string,
+          query: JSON.parse(from.query.params as string)
+        })
+      }
+    }
   }
-  if(to.matched.length === 0) {
-    NProgress.done();
-    next({ path: '/404' })
-  }
-  NProgress.done();
-  next();
-  // if (!token) {
-  //   const params = JSON.stringify(to.query ? to.query : to.params);
-  //   const url = `/login?redirect=${to.path}&params=${params}`;
-  //   next(url);
-  // }else {}
-  //   next()
-  // }
-  // const { routerList } = routerStore();
-  // const token = localStorage.getItem("token");
-  // NProgress.configure({ showSpinner: false });
-  // NProgress.start();
-  // console.log(to, from ,'beforEach')
-  
-  // if (to.path === "/login") {
-  //   NProgress.done();
-  //   return next();
-  // }
-
-  
-  // next({ ...to, replace: true });
-  // if (routerList.length > 0) {
-  //   return next();
-  // }else {
-  //   next({ ...to, replace: true });
-  // }
-  // 接口获取动态路由
-  
-  // try {
-  //   console.log(to,'123')
-  //   // const newRouter = await getRouterList();
-  //   // newRouter.forEach((item) => router.addRoute(item));
-  //   next({ ...to, replace: true });
-  // } catch (err) {
-  //   console.log(err, "动态添加路由失败");
-  //   NProgress.done();
-  // }
 })
 
 // 路由加载后
 router.afterEach((to, from, failure) => {
-  console.log(router.currentRoute,'router.currentRoute',failure)
   if (isNavigationFailure(failure)) {
     NProgress.done();
     console.log("error navigation", failure);
