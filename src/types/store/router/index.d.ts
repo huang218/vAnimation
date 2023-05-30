@@ -18,6 +18,7 @@ export interface Menu {
   createTime?: Date;
   updateTime?: Date;
 }
+
 export interface RouterStoreTypes {
   routerList: Menu[];
 }

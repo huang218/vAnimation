@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, isNavigationFailure } from 'vue-router'
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-import { routerStore } from '@/stores/modules/route';
+import { routerStore } from '@/stores';
 import Login from '../views/login/index.vue';
 import Layout from '@/Layout/layout.vue';
 
@@ -47,6 +47,7 @@ router.beforeEach(async (to, from, next) => {
   NProgress.configure({ showSpinner: false });
   NProgress.start();
 
+  const { routerList, getRouterList } = routerStore();
   const token = localStorage.getItem("token");
   
   if(to.matched.length === 0) {
@@ -68,12 +69,22 @@ router.beforeEach(async (to, from, next) => {
     NProgress.done();
     return next(url);
   }else {
+    if(routerList.length <= 0) {
+      try {
+        const newRouter = await getRouterList();
+        newRouter.forEach((item) => router.addRoute(item));
+        //跳转到目的路由
+        // next({ ...to, replace: true });
+      } catch (err) {
+        console.log(err, "动态添加路由失败");
+      }
+    }
     if(Object.keys(from.query).length === 0) { // 判断路由来源是否有query
       next();
     }else {
       const toRedirect = from.query.redirect //如果来源路由有query
       //这行是解决next无限循环的问题并且判断redirect--目的路由是否有
-      if(to.path === toRedirect || !toRedirect ){
+      if(to.path === toRedirect || !toRedirect){
         next()
       }else{
         //跳转到目的路由

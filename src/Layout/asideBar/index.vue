@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, onMounted, watch } from 'vue'
 import SidebarItem from './SidebarItem.vue';
 import { routerStore } from '@/stores/index';
 import { useRoute } from 'vue-router';
@@ -8,12 +8,11 @@ const { routerList } = routerStoreConfig.$state;
 const currentRoute = useRoute();
 const activeMenu = computed(() => currentRoute.path);
 
-const handleOpen = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath, 'handleOpen')
-}
-const handleClose = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath, 'handleClose')
-}
+
+onMounted(() => {
+  console.log(routerList,'routerList',currentRoute.path)
+})
+
 </script>
 <template>
   <div class="menu">
@@ -24,11 +23,12 @@ const handleClose = (key: string, keyPath: string[]) => {
         </el-col>
         <el-menu
           :default-active="activeMenu"
+          mode="vertical"
           class="el-menu-vertical-demo menus"
-          @open="handleOpen"
-          @close="handleClose"
+          :collapse-transition="false"
+          :uniqueOpened="true"
         >
-          <!-- <SidebarItem v-for="item in routerList" :key="item.id" :route="item" /> -->
+          <SidebarItem v-for="item in routerList" :key="item.id" :route="item" />
         </el-menu>
       </el-scrollbar>
     </el-aside>

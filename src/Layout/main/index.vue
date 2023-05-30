@@ -3,7 +3,9 @@
 </script>
 <template>
   <div class="main-box">
-    <el-main>Main</el-main>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
   </div>
 </template>
 <style lang="less" scoped>
