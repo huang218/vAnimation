@@ -6,6 +6,39 @@ export default {
       total: 8,
       list: [
         {
+          id: 10,
+          parentId: 1,
+          path: "/view",
+          name: "view",
+          component: "Layout",
+          redirect: "/view/AboutView",
+          isHide: false,
+          meta: {
+            title: "view",
+            icon: "menu",
+            isKeepAlive: false,
+            isTagView: true,
+            isAffix: false,
+          },
+          children: [
+            {
+              id: 101,
+              parentId: 10,
+              path: "/view/AboutView",
+              name: "AboutView",
+              component: "/src/views/AboutView.vue",
+              isHide: false,
+              meta: {
+                title: "AboutView",
+                icon: "menu",
+                isKeepAlive: true,
+                isTagView: true,
+                isAffix: false,
+              },
+            }
+          ]
+        },
+        {
           id: 20,
           parentId: 1,
           path: "/menu",
@@ -16,7 +49,7 @@ export default {
           meta: {
             title: "nestedRoutes",
             icon: "menu",
-            isKeepAlive: true,
+            isKeepAlive: false,
             isTagView: true,
             isAffix: false,
           },
@@ -32,7 +65,7 @@ export default {
               meta: {
                 title: "menu-1",
                 icon: "menu",
-                isKeepAlive: true,
+                isKeepAlive: false,
                 isTagView: true,
                 isAffix: false,
               },
@@ -73,6 +106,39 @@ export default {
             },
           ],
         },
+        // {
+        //   id: 40,
+        //   parentId: 1,
+        //   path: "/parms",
+        //   name: "parms",
+        //   component: "Layout",
+        //   isHide: false,
+        //   redirect: "/parms/indexPage",
+        //   meta: {
+        //     title: "parms",
+        //     isKeepAlive: false,
+        //     isTagView: true,
+        //     isAffix: false,
+        //   },
+        //   children: [
+        //     {
+        //       id: 401,
+        //       parentId: 40,
+        //       path: "/parms/indexPage",
+        //       name: "indexPage",
+        //       component: "/src/views/parms/indexPage.vue",
+        //       redirect: null,
+        //       isHide: false,
+        //       meta: {
+        //         title: "indexPage",
+        //         icon: "menu",
+        //         isKeepAlive: true,
+        //         isTagView: true,
+        //         isAffix: false,
+        //       },
+        //     }
+        //   ]
+        // },
         {
           id: 30,
           parentId: 1,
@@ -98,6 +164,7 @@ export default {
             },
           ],
         },
+        
       ],
     },
     code: 200,

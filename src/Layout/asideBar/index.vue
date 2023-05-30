@@ -22,6 +22,7 @@ onMounted(() => {
           <h1 class="logo mb-2">Default colors</h1>
         </el-col>
         <el-menu
+          router
           :default-active="activeMenu"
           mode="vertical"
           class="el-menu-vertical-demo menus"

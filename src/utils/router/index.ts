@@ -6,7 +6,7 @@ export const formatRoutes = (data: Menu[]): Menu[] => {
   return data.map((v) => {
     const children = v.children ? formatRoutes(v.children) : [];
     const component = (() => {
-      if (v.component === "Layout") return () => import(`@/layout/index.vue`);
+      if (v.component === "Layout") return () => import(`@/layout/layout.vue`);
       else if (v.component === "ParentView") return () => import(`@/components/parentView/index.vue`);
       else return modules[v.component];
     })();

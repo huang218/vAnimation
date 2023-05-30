@@ -5,6 +5,7 @@ import { routerStore } from '@/stores';
 import Login from '../views/login/index.vue';
 import Layout from '@/Layout/layout.vue';
 
+
 const router = createRouter({
   history: createWebHistory(),
   routes: [
@@ -17,21 +18,15 @@ const router = createRouter({
     {
       path: '/',
       name: '/',
-      redirect: '/about',
+      redirect: '/dashboard',
       component: Layout,
       children: [
         {
-          path: '/about',
-          name: '/about',
-          component: () => import('@/views/AboutView.vue'),
-          meta: { title: "首页", isTagView: false },
-        },
-        {
-          path: '/indexPage',
-          name: '/indexPage',
-          component: () => import('@/views/parms/indexPage.vue'),
-          meta: { title: "indexPage", isTagView: false },
-        },
+          path: '/dashboard',
+          name: '/dashboard',
+          component: () => import('@/views/dashboard/index'),
+          meta: { title: "工作台", isTagView: false },
+        }
       ]
     },
     {
@@ -50,10 +45,18 @@ router.beforeEach(async (to, from, next) => {
   const { routerList, getRouterList } = routerStore();
   const token = localStorage.getItem("token");
   
-  if(to.matched.length === 0) {
-    NProgress.done();
-    next({ path: '/404' })
+  if(routerList.length <= 0) {
+    try {
+      const newRouter = await getRouterList();
+      newRouter.forEach((item) => router.addRoute(item));
+      //跳转到目的路由
+      next({ ...to, replace: true });
+    } catch (err) {
+      console.log(err, "动态添加路由失败");
+    }
   }
+
+
   if(to.path === '/login') {
     NProgress.done();
     if(token) {
@@ -63,22 +66,16 @@ router.beforeEach(async (to, from, next) => {
       return next()
     }
   }
+  if(to.matched.length === 0) {
+    NProgress.done();
+    next({ path: '/404' })
+  }
   if (!token) {
     const params = JSON.stringify(to.query ? to.query : to.params);
     const url = `/login?redirect=${to.path}&params=${params}`;
     NProgress.done();
     return next(url);
   }else {
-    if(routerList.length <= 0) {
-      try {
-        const newRouter = await getRouterList();
-        newRouter.forEach((item) => router.addRoute(item));
-        //跳转到目的路由
-        // next({ ...to, replace: true });
-      } catch (err) {
-        console.log(err, "动态添加路由失败");
-      }
-    }
     if(Object.keys(from.query).length === 0) { // 判断路由来源是否有query
       next();
     }else {
