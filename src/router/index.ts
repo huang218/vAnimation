@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory, isNavigationFailure } from 'vue-router'
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
+import { Local } from '@/utils';
 import { routerStore } from '@/stores';
 import Login from '../views/login/index.vue';
-import Layout from '@/Layout/layout.vue';
+// import Layout from '@/Layout/layout.vue';
 
 
 const router = createRouter({
@@ -43,12 +44,11 @@ router.beforeEach(async (to, from, next) => {
   NProgress.start();
 
   const { routerList, getRouterList } = routerStore();
-  const token = localStorage.getItem("token");
+  const token = Local.get('token');
   
   if(routerList.length <= 0) {
     try {
       const newRouter = await getRouterList();
-      console.log(newRouter, 'newRouter');
       
       newRouter.forEach((item) => router.addRoute(item));
       //跳转到目的路由

@@ -1,10 +1,13 @@
 <script setup lang="ts">
+import { userStore } from '@/stores';
 import { useRouterJump } from '@/hooks/useRouterJump';
+
 const { replaceRouter } = useRouterJump();
+const { getUserInfo } = userStore();
 
 async function submit() {
-  localStorage.setItem('token', '123455');
-  replaceRouter("/");
+  const datas = await getUserInfo();
+  if(datas) replaceRouter('/')
 }
 </script>
 <template>

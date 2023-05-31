@@ -27,11 +27,11 @@ watch(
 <template>
   <el-container class="main-box overflow-hidden p-2.5">
     <div class="w-full h-auto">
-      <router-view  v-slot="{ Component }">
-        <transition name="slide-right" appear mode="out-in">
-          <div>
-            <keep-alive :include="cachedViews">
-              <component :is="Component" />
+      <router-view  v-slot="{ Component, route }">
+        <transition name="slide-fade" appear mode="out-in">
+          <div :key="route.path">
+            <keep-alive :include="cachedViews"  :max="4">
+              <component :is="Component" :key="route.path" />
             </keep-alive>
           </div>
         </transition>
@@ -42,6 +42,7 @@ watch(
 <style lang="less" scoped>
 .main-box {
   flex: 1;
-  background-color: bisque;
+  background-color: var(--el-bg-color);
 }
+
 </style>

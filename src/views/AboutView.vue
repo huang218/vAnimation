@@ -15,6 +15,7 @@ const goToRoute = () => {
 <template>
   <div class="about">
     <h1>黄佳豪</h1>
+    <el-input></el-input>
     <el-Button @click="goToRoute">
       跳转路由
     </el-Button>

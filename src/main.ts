@@ -1,4 +1,5 @@
 import './assets/main.css'
+import '@/styles/animationExce.scss';
 import 'virtual:windi.css'
 import { createApp } from 'vue'
 

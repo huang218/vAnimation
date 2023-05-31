@@ -16,6 +16,7 @@ export interface User {
 
 export interface userStoreTypes {
   userInfo: User;
+  token: string;
 }
 
 export type UserList = PageInfo & {

@@ -5,7 +5,7 @@
       <el-menu-item class="sub-menu active:text-$el-color-primary-light-7 hover:(text-$el-color-primary-light-2 bg-transparent) select-none" :index="route.path">
         <template #title>
           <el-icon>
-            <component :is="Location" />
+            <component :is="House" />
           </el-icon>
           <span class="ml-3.5">{{ route.meta.title }}</span>
         </template>
@@ -30,7 +30,7 @@ export default {
 
 <script setup lang="ts">
 import {
-  Document,
+  House,
   Menu as IconMenu,
   Location,
   Setting,
