@@ -29,9 +29,11 @@ watch(
     <div class="w-full h-auto">
       <router-view  v-slot="{ Component }">
         <transition name="slide-right" appear mode="out-in">
-          <keep-alive :include="cachedViews">
-            <component :is="Component" />
-          </keep-alive>
+          <div>
+            <keep-alive :include="cachedViews">
+              <component :is="Component" />
+            </keep-alive>
+          </div>
         </transition>
       </router-view>
     </div>

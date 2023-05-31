@@ -6,6 +6,38 @@ export default {
       total: 8,
       list: [
         {
+          id: 30,
+          parentId: 1,
+          path: "/",
+          name: "工作台",
+          component: "Layout",
+          isHide: false,
+          redirect: "/dashboard",
+          meta: {
+            title: "工作台",
+            icon: "Document",
+            isKeepAlive: false,
+            isTagView: false,
+            isAffix: false,
+          },
+          children: [
+            {
+              path: "/dashboard",
+              name: "首页",
+              id: 301,
+              parentID: 30,
+              isHide: false,
+              component: "/src/views/dashboard/index.vue",
+              meta: {
+                title: "首页", 
+                isKeepAlive: true,
+                isTagView: false,
+                isAffix: true,
+              },
+            },
+          ],
+        },
+        {
           id: 10,
           parentId: 1,
           path: "/view",
@@ -17,7 +49,7 @@ export default {
             title: "view",
             icon: "menu",
             isKeepAlive: false,
-            isTagView: true,
+            isTagView: false,
             isAffix: false,
           },
           children: [
@@ -106,65 +138,6 @@ export default {
             },
           ],
         },
-        // {
-        //   id: 40,
-        //   parentId: 1,
-        //   path: "/parms",
-        //   name: "parms",
-        //   component: "Layout",
-        //   isHide: false,
-        //   redirect: "/parms/indexPage",
-        //   meta: {
-        //     title: "parms",
-        //     isKeepAlive: false,
-        //     isTagView: true,
-        //     isAffix: false,
-        //   },
-        //   children: [
-        //     {
-        //       id: 401,
-        //       parentId: 40,
-        //       path: "/parms/indexPage",
-        //       name: "indexPage",
-        //       component: "/src/views/parms/indexPage.vue",
-        //       redirect: null,
-        //       isHide: false,
-        //       meta: {
-        //         title: "indexPage",
-        //         icon: "menu",
-        //         isKeepAlive: true,
-        //         isTagView: true,
-        //         isAffix: false,
-        //       },
-        //     }
-        //   ]
-        // },
-        {
-          id: 30,
-          parentId: 1,
-          path: "/redirect",
-          name: "redirectTo",
-          component: "Layout",
-          isHide: true,
-          redirect: "/redirect/:path(.*)",
-          meta: {
-            title: "redirect",
-          },
-          children: [
-            {
-              path: "/redirect/:path(.*)",
-              name: "redirect",
-              id: 301,
-              parentID: 30,
-              isHide: false,
-              component: "/src/views/redirect/index.vue",
-              meta: {
-                title: "redirect",
-              },
-            },
-          ],
-        },
-        
       ],
     },
     code: 200,

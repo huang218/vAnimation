@@ -10,6 +10,7 @@ const goToRoute = () => {
     },
   })
 }
+
 </script>
 <template>
   <div class="about">

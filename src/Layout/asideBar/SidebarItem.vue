@@ -4,16 +4,18 @@
     <template v-if="!hasChildren(route)">
       <el-menu-item class="sub-menu active:text-$el-color-primary-light-7 hover:(text-$el-color-primary-light-2 bg-transparent) select-none" :index="route.path">
         <template #title>
-          <!-- <svg-icon :name="route.meta.icon"></svg-icon> -->
-          <el-icon><Document /></el-icon>
+          <el-icon>
+            <component :is="Location" />
+          </el-icon>
           <span class="ml-3.5">{{ route.meta.title }}</span>
         </template>
       </el-menu-item>
     </template>
     <el-sub-menu v-else class="sub-menu active:text-$el-color-primary-light-7 hover:(text-$el-color-primary-light-2 bg-transparent) select-none" :index="route.path" teleported>
       <template #title>
-        <!-- <svg-icon :name="route.meta.icon"></svg-icon> -->
-          <el-icon><IconMenu /></el-icon>
+          <el-icon>
+            <component :is="Setting" />
+          </el-icon>
         <span class="ml-3.5">{{ route.meta.title }}</span>
       </template>
       <SidebarItem v-for="child in route.children" :key="child.id" :route="child" />
@@ -62,9 +64,6 @@ const props = defineProps<{ route: Menu }>();
     :deep(.el-sub-menu__icon-arrow) {
       display: none;
     }
-  }
-  .svg-icon {
-    font-size: 16px;
   }
 }
 </style>

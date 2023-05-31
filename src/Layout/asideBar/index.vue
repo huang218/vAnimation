@@ -40,8 +40,8 @@ onMounted(() => {
   .logo {
     height: 60px;
     width: 100%;
-    background-color: rgb(67, 67, 67);
-    color: #fff;
+    background-color: var(--el-bg-color);
+    color: var(--el-text-color-primary);
     line-height: 60px;
     text-align: center;
     font-size: 20px;

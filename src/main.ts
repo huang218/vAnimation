@@ -6,6 +6,8 @@ import App from './App.vue'
 import router from '@/router'
 import { pinia } from "@/stores";
 import "element-plus/dist/index.css";
+// 黑白模式样式
+import 'element-plus/theme-chalk/dark/css-vars.css'
 
 const app = createApp(App)
 

@@ -20,7 +20,6 @@ export const routerStore = defineStore("routerStore", {
             if (code === 200) {
               const newRoute = formatRoutes(data.list);
               this.routerList = newRoute;
-              console.log(this.routerList, 'newRoute');
               
               resolve(newRoute);
             } else {

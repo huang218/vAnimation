@@ -7,7 +7,7 @@ import Layout from '@/Layout/layout.vue';
 
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: "/login",
@@ -15,20 +15,20 @@ const router = createRouter({
       component: Login,
       meta: { title: "登录", isTagView: false },
     },
-    {
-      path: '/',
-      name: '/',
-      redirect: '/dashboard',
-      component: Layout,
-      children: [
-        {
-          path: '/dashboard',
-          name: '/dashboard',
-          component: () => import('@/views/dashboard/index.vue'),
-          meta: { title: "工作台", isTagView: false },
-        }
-      ]
-    },
+    // {
+    //   path: '/',
+    //   name: '/',
+    //   redirect: '/dashboard',
+    //   component: Layout,
+    //   children: [
+    //     {
+    //       path: '/dashboard',
+    //       name: '/dashboard',
+    //       component: () => import('@/views/dashboard/index.vue'),
+    //       meta: { title: "工作台", isTagView: false },
+    //     }
+    //   ]
+    // },
     {
       path: "/404",
       name: "notFound",
@@ -48,6 +48,8 @@ router.beforeEach(async (to, from, next) => {
   if(routerList.length <= 0) {
     try {
       const newRouter = await getRouterList();
+      console.log(newRouter, 'newRouter');
+      
       newRouter.forEach((item) => router.addRoute(item));
       //跳转到目的路由
       next({ ...to, replace: true });
