@@ -24,7 +24,7 @@ const router = createRouter({
         {
           path: '/dashboard',
           name: '/dashboard',
-          component: () => import('@/views/dashboard/index'),
+          component: () => import('@/views/dashboard/index.vue'),
           meta: { title: "工作台", isTagView: false },
         }
       ]

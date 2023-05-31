@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { RouterStoreTypes, Menu } from '@/types/store/route';
+import { RouterStoreTypes, Menu } from '@/types';
 import { formatRoutes } from '@/utils/router/index';
 import { userServerice } from "@/apis";
 
