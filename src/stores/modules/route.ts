@@ -6,6 +6,8 @@ import { userServerice } from "@/apis";
 export const createRouter = (): RouterStoreTypes => {
   return {
     routerList: [],
+    curRootRoute: '/', // header当前选中主路由
+    sideBarRouter: [], // 侧边栏当前子路由
   };
 };
 
@@ -31,5 +33,15 @@ export const routerStore = defineStore("routerStore", {
           });
       });
     },
+    getCurrentRoute(rootRoute: string): void {
+      console.log(rootRoute,'rootRoute');
+      
+      this.routerList.forEach(item => {
+        if(item.path === rootRoute) {
+          this.curRootRoute = rootRoute;
+          this.sideBarRouter = item.children;
+        }
+      })
+    }
   },
 });

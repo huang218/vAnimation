@@ -31,12 +31,9 @@ export default {
 <script setup lang="ts">
 import {
   House,
-  Menu as IconMenu,
-  Location,
   Setting,
 } from '@element-plus/icons-vue'
 import { isHide, hasChildren } from "@/utils";
-import { toRefs } from "vue";
 // import { settingsStore } from "@/store";
 import { Menu } from "@/types";
 const props = defineProps<{ route: Menu }>();
@@ -46,18 +43,25 @@ const props = defineProps<{ route: Menu }>();
 
 <style lang="scss" scoped>
 .sidebar-item {
+  
   .sub-menu {
     color: var(--menu-default-color);
     :deep(.el-sub-menu__title) {
       color: var(--menu-default-color);
       padding-right: 0px;
       &:hover {
-        color: var(--el-color-primary-light-2);
+        color: var(--el-menu-active-color);
       }
     }
+
+
+    &.el-menu-item:hover {
+      color: var(--el-menu-active-color);
+    }
     &.el-menu-item.is-active {
-      background-color: transparent;
-      color: var(--el-color-primary-light-2);
+      // color: var(--text-color);
+      color: var(--el-menu-active-color);
+      background-color: var(--color-bg);
     }
   }
   &.is-collapsed {

@@ -20,5 +20,7 @@ export interface Menu {
 }
 
 export interface RouterStoreTypes {
+  curRootRoute: string;
   routerList: Menu[];
+  sideBarRouter: Menu[];
 }

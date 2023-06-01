@@ -42,8 +42,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.configure({ showSpinner: false });
   NProgress.start();
-
-  const { routerList, getRouterList } = routerStore();
+  const { routerList, curRootRoute, getRouterList, getCurrentRoute } = routerStore();
   const token = Local.get('token');
   
   if(routerList.length <= 0) {
@@ -57,8 +56,6 @@ router.beforeEach(async (to, from, next) => {
       console.log(err, "动态添加路由失败");
     }
   }
-
-
   if(to.path === '/login') {
     NProgress.done();
     if(token) {
@@ -78,6 +75,14 @@ router.beforeEach(async (to, from, next) => {
     NProgress.done();
     return next(url);
   }else {
+    // 初始化header默认选择路由
+    const routeSplit = to.path.split('/')[1];
+    if(routeSplit === '' || routeSplit === 'dashboard') {
+      getCurrentRoute('/')
+    }else if(curRootRoute != (`/${routeSplit}`)) {
+      getCurrentRoute(`/${routeSplit}`)
+    }
+    
     if(Object.keys(from.query).length === 0) { // 判断路由来源是否有query
       next();
     }else {

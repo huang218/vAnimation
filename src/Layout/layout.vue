@@ -6,9 +6,9 @@ import Main from '@/Layout/main/index.vue';
 <template>
   <div class="common-layout">
     <el-container class="h-full">
-      <AsideBar />
+      <Header />
       <div class="flex-column">
-        <Header />
+        <AsideBar />
         <Main />
       </div>
     </el-container>
@@ -20,10 +20,10 @@ import Main from '@/Layout/main/index.vue';
   width: 100%;
   .h-full {
     height: 100vh;
+    flex-direction: column;
     .flex-column {
       display: flex;
       flex: 1;
-      flex-direction: column;
     }
   }
 }

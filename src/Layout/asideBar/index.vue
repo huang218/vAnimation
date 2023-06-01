@@ -1,83 +1,51 @@
 <script setup lang="ts">
-import { computed, onMounted, watch } from 'vue'
-import SidebarItem from './SidebarItem.vue';
-import { routerStore } from '@/stores/index';
+import { computed } from 'vue'
 import { useRoute } from 'vue-router';
-import { useRouterJump } from '@/hooks/useRouterJump';
+import { storeToRefs } from 'pinia';
+import SidebarItem from './SidebarItem.vue';
+import { routerStore, settingsStore } from '@/stores/index';
 
-
-const { pushRouter } = useRouterJump();
-const routerStoreConfig = routerStore();
-const { routerList } = routerStoreConfig.$state;
 const currentRoute = useRoute();
+const settingGlobal = settingsStore();
+const routerStoreConfig = routerStore();
+
+const { config } = storeToRefs(settingGlobal);
+const { sideBarRouter } = storeToRefs(routerStoreConfig);
+
 const activeMenu = computed(() => currentRoute.path);
-
-
-onMounted(() => {
-})
 
 </script>
 <template>
-  <div class="menu">
-    <el-aside width="200px">
-      <el-scrollbar class="flex-1">
-        <el-col :span="24" class="title">
-          <img 
-            src="@/assets/vue.svg" 
-            class="logo vue" 
-            alt="Vue logo" 
-            @click="pushRouter('/')"  
-          />
-          <h1 class="name">Vue</h1>
-        </el-col>
-        <el-menu
-          router
-          :default-active="activeMenu"
-          mode="vertical"
-          class="el-menu-vertical-demo menus"
-          :collapse-transition="false"
-          :uniqueOpened="true"
-        >
-          <SidebarItem v-for="item in routerList" :key="item.id" :route="item" />
-        </el-menu>
-      </el-scrollbar>
+  <div class="menu" :style="{width: config.isCollapsed ? '64px' : '200px'}">
+    <el-aside width="100%">
+      <el-menu
+        router
+        mode="vertical"
+        class="el-menu-vertical-demo menus"
+        :collapse="config.isCollapsed"
+        :default-active="activeMenu"
+        :collapse-transition="true"
+        :uniqueOpened="true"
+      >
+        <!-- <transition name="slide-fade" appear mode="out-in"> -->
+          <el-scrollbar max-height="100%">
+              <SidebarItem v-for="item in sideBarRouter" :key="item.id" :route="item" />
+          </el-scrollbar>
+        <!-- </transition> -->
+      </el-menu>
     </el-aside>
   </div>
 </template>
 <style lang="less" scoped>
 .menu {
-  .title {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-right: solid 1px var(--el-menu-border-color);
-    .name {
-      height: 60px;
-      width: auto;
-      font-weight: 600;
-      background-color: var(--el-bg-color);
-      color: var(--el-text-color-primary);
-      line-height: 60px;
-      text-align: center;
-      font-size: 20px;
-    }
-    .logo {
-      height: 50px;
-      // padding: ;
-      will-change: filter;
-      transition: filter 300ms;
-      cursor: pointer;
-    }
-    .logo:hover {
-      filter: drop-shadow(0 0 0.5em #3c46fea7);
-    }
-    .logo .vue:hover {
-      filter: drop-shadow(0 0 0.5em #30ea96a5);
-    }
+  width: auto;
+    transition: all .6s;
+  :deep(.el-aside) {
+    transition: all .8s;
   }
-
   .menus {
-    height: calc(100vh - 60px);
+    // height: calc(100vh - 60px);
+    height: 100vh;
     overflow-y: auto;
   }
 }
