@@ -10,6 +10,7 @@ import "element-plus/dist/index.css";
 // 黑白模式样式
 import 'element-plus/theme-chalk/dark/css-vars.css';
 import '@/styles/dark/css-vars.css';
+
 const app = createApp(App)
 
 app.use(pinia)

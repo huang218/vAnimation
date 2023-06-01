@@ -26,7 +26,7 @@ const handleSelect = (key: string) => {
         alt="Vue logo" 
         @click="pushRouter('/')"  
       />
-      <!-- <h1 class="name">Vue</h1> -->
+      <h1 class="name">Vue3 PC</h1>
     </div>
     <div class="collapse">
       <el-icon @click="settingGlobal.setIsCollapsed(!config.isCollapsed)">

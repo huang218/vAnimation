@@ -23,7 +23,7 @@ import Main from '@/Layout/main/index.vue';
     flex-direction: column;
     .flex-column {
       display: flex;
-      flex: 1;
+      height: calc(100vh - 60px);
     }
   }
 }

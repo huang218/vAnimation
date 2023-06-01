@@ -39,7 +39,7 @@ const activeMenu = computed(() => currentRoute.path);
 <style lang="less" scoped>
 .menu {
   width: auto;
-    transition: all .6s;
+  transition: all .5s;
   :deep(.el-aside) {
     transition: all .8s;
   }
