@@ -27,13 +27,14 @@ const props = withDefaults(
   {
     total: 0,
     page: 1,
-    size: 20,
+    size: 10,
     pageSizes: () => [10, 20, 30, 50],
     layout: "total, sizes, prev, pager, next, jumper",
     background: true,
   }
 );
 
+// eslint-disable-next-line vue/no-dupe-keys
 const { total, page, pageSizes, size, layout, background } = toRefs(props);
 const { proxy } = getCurrentInstance() as any;
 const currentPage = computed(() => page.value);
@@ -48,7 +49,10 @@ const handleCurrentChange = (val: number) => {
 </script>
 <style lang="scss" scoped>
 .pagination-container {
-  background: #fff;
+  // position: fixed;
+  // bottom: 0;
+  // right: 0;
+  // background: #fff;
   padding: 12px 16px;
   text-align: right;
 }

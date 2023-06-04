@@ -1,5 +1,4 @@
 <template>
-  <!-- :class="{ 'is-collapsed': settingsConfig.config.isCollapsed }" -->
   <div v-if="!isHide(route)" class="w-full sidebar-item" :class="{ 'is-collapsed': settingsConfig.config.isCollapsed }">
     <template v-if="!hasChildren(route)">
       <el-menu-item class="sub-menu active:text-$el-color-primary-light-7 hover:(text-$el-color-primary-light-2 bg-transparent) select-none" :index="route.path">
@@ -9,6 +8,9 @@
           </el-icon>
           <span class="ml-3.5">{{ route.meta.title }}</span>
         </template>
+        <el-icon v-if="settingsConfig.config.isCollapsed && isIcon">
+          <component :is="House" />
+        </el-icon>
       </el-menu-item>
     </template>
     <el-sub-menu v-else class="sub-menu active:text-$el-color-primary-light-7 hover:(text-$el-color-primary-light-2 bg-transparent) select-none" :index="route.path" teleported>
@@ -18,7 +20,7 @@
         </el-icon>
         <span class="ml-3.5">{{ route.meta.title }}</span>
       </template>
-      <SidebarItem v-for="child in route.children" :key="child.id" :route="child" />
+      <SidebarItem v-for="child in route.children" :key="child.id" :route="child" :is-icon="false" />
     </el-sub-menu>
   </div>
 </template>
@@ -36,7 +38,10 @@ import {
 import { isHide, hasChildren } from "@/utils";
 import { settingsStore } from "@/stores";
 import { Menu } from "@/types";
-defineProps<{ route: Menu }>();
+defineProps<{ 
+  route: Menu,
+  isIcon: Boolean,
+}>();
 // const { route } = toRefs(props);
 const settingsConfig = settingsStore();
 </script>

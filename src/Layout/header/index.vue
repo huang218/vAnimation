@@ -15,6 +15,7 @@ const { replaceRouter } = useRouterJump();
 const dialogVisible = ref(false);
 const switchType = ref(false);
 
+
 const logOut = () => {
   userStores.logOut();
   dialogVisible.value = false
@@ -28,7 +29,7 @@ const switchClick = async (newVal: boolean) => {
 }
 const initSitch = (): void => {
   const darkType = Local.getNoJson('vueuse-color-scheme');
-  switchType.value = darkType === 'dark';
+  switchType.value = darkType === 'light';
 }
 
 

@@ -82,6 +82,21 @@ export default {
                 isTagView: true,
                 isAffix: false,
               },
+            },
+            {
+              id: 103,
+              parentId: 10,
+              path: "/view/Table",
+              name: "Table",
+              component: "/src/views/table/index.vue",
+              isHide: false,
+              meta: {
+                title: "Table",
+                icon: "menu",
+                isKeepAlive: true,
+                isTagView: true,
+                isAffix: false,
+              },
             }
           ]
         },

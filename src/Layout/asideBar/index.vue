@@ -25,11 +25,10 @@ const activeMenu = computed(() => currentRoute.path);
         :collapse="config.isCollapsed"
         :default-active="activeMenu"
         :collapse-transition="true"
-        :uniqueOpened="true"
       >
         <!-- <transition name="slide-fade" appear mode="out-in"> -->
           <el-scrollbar max-height="100%">
-              <SidebarItem v-for="item in sideBarRouter" :key="item.id" :route="item" />
+              <SidebarItem v-for="item in sideBarRouter" :key="item.id" :route="item" :is-icon="true" />
           </el-scrollbar>
         <!-- </transition> -->
       </el-menu>
