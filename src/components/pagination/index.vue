@@ -52,7 +52,8 @@ const handleCurrentChange = (val: number) => {
   // position: fixed;
   // bottom: 0;
   // right: 0;
-  // background: #fff;
+  display: flex;
+  justify-content: right;
   padding: 12px 16px;
   text-align: right;
 }

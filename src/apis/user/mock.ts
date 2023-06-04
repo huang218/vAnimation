@@ -97,7 +97,22 @@ export default {
                 isTagView: true,
                 isAffix: false,
               },
-            }
+            },
+            {
+              id: 104,
+              parentId: 10,
+              path: "/view/TableDetail",
+              name: "TableDetail",
+              component: "/src/views/table/detail.vue",
+              isHide: true,
+              meta: {
+                title: "Table详情",
+                icon: "menu",
+                isKeepAlive: true,
+                isTagView: true,
+                isAffix: false,
+              },
+            },
           ]
         },
         {

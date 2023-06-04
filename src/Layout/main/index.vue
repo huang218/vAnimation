@@ -26,7 +26,7 @@ watch(
 </script>
 <template>
   <el-container class="main-box overflow-hidden p-2.5">
-    <div class="w-full h-auto p-2.5 rounded-6px bg-light-600/40 dark:bg-dark-600">
+    <div class="w-full h-auto p-2.5 rounded-6px bg-light-600/60 dark:bg-dark-600">
       <router-view  v-slot="{ Component, route }">
         <transition name="slide-fade" appear mode="out-in">
           <div :key="route.path" class="h-full w-full" >
