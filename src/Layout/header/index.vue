@@ -5,6 +5,7 @@ import { useDark, useToggle } from '@vueuse/core';
 import { userStore } from '@/stores'
 import { useRouterJump } from '@/hooks/useRouterJump';
 import { Local } from '@/utils';
+import { formatAxis } from '@/utils/formatTime';
 import leftHeader from './leftHeader.vue';
 
 
@@ -35,6 +36,8 @@ const initSitch = (): void => {
 
 onMounted(() => {
   initSitch();
+  console.log(formatAxis(new Date()), '问候语');
+  
 })
 </script>
 <template>
@@ -43,15 +46,17 @@ onMounted(() => {
       <div class="left h-full flex-1">
         <leftHeader />
       </div>
-      <div class="right flex justify-end h-full w-20 items-center">
+      <div class="right flex justify-end h-full w-50 items-center">
+        <div>{{ formatAxis(new Date()) }}</div>
         <el-switch
           v-model="switchType"
           :inline-prompt="true"
           :active-icon="Sunny"
           :inactive-icon="Moon"
+          :size="'large'"
           @change="switchClick"
         />
-        <el-icon><component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true" /></el-icon>
+        <el-icon :size="'large'"><component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true" /></el-icon>
       </div>
     </el-header>
   </div>
@@ -77,6 +82,11 @@ onMounted(() => {
   height: 60px;
   border-bottom: solid 1px var(--el-menu-border-color);
   .right {
+    :deep(.el-switch__inner, .el-switch__action) {
+      .is-icon {
+        font-size: 16px;
+      }
+    }
     .logOutIcon {
       cursor: pointer;
       color: var(--el-text-color-primary);

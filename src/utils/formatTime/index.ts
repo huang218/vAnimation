@@ -124,7 +124,7 @@ export function formatPast(param: string | Date, format: string = "YYYY-mm-dd"):
  * @returns 返回拼接后的时间字符串
  */
 export function formatAxis(param: Date): string {
-  let hour: number = new Date(param).getHours();
+  const hour: number = new Date(param).getHours();
   if (hour < 6) return "凌晨好";
   else if (hour < 9) return "早上好";
   else if (hour < 12) return "上午好";
@@ -132,5 +132,5 @@ export function formatAxis(param: Date): string {
   else if (hour < 17) return "下午好";
   else if (hour < 19) return "傍晚好";
   else if (hour < 22) return "晚上好";
-  else return "夜里好";
+  else return "深夜好";
 }
