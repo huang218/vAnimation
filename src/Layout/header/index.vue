@@ -30,7 +30,7 @@ const switchClick = async (newVal: boolean) => {
 }
 const initSitch = (): void => {
   const darkType = Local.getNoJson('vueuse-color-scheme');
-  switchType.value = darkType === 'light';
+  switchType.value = darkType === ('light' || 'dark');
 }
 
 
