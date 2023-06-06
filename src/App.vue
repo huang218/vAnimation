@@ -1,6 +1,8 @@
 <script setup lang="ts">
-// import { RouterLink, RouterView } from 'vue-router'
-// import HelloWorld from './components/HelloWorld.vue'
+import { provide, ref } from 'vue';
+
+const provideInfo = ref<number>(10086);
+provide('provideInfo', provideInfo);
 </script>
 
 <template>
@@ -43,7 +45,7 @@ nav a:first-of-type {
   border: 0;
 }
 
-@media (min-width: 1024px) {
+/* @media (min-width: 1024px) {
   header {
     display: flex;
     place-items: center;
@@ -68,5 +70,5 @@ nav a:first-of-type {
     padding: 1rem 0;
     margin-top: 1rem;
   }
-}
+} */
 </style>
