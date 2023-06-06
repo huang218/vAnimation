@@ -2,21 +2,21 @@ import { useRouter } from 'vue-router'
 
 /**
  * 封装路由操作
-*/
+ */
 export function useRouterJump() {
-  const router = useRouter();
+  const router = useRouter()
 
   // push
   const pushRouter = (path: string, query = {}) => {
-    router.push({ path, ...query });
+    router.push({ path, ...query })
   }
   // replace
   const replaceRouter = (path: string, query = {}) => {
-    router.replace({ path, query });
+    router.replace({ path, query })
   }
 
   const goRouter = (delta: number) => {
-    router.go(delta);
+    router.go(delta)
   }
 
   return {

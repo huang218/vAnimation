@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import { reactive } from 'vue'
-import { userStore } from '@/stores';
-import { useRouterJump } from '@/hooks/useRouterJump';
+import { userStore } from '@/stores'
+import { useRouterJump } from '@/hooks/useRouterJump'
 
 const formLabelAlign = reactive({
   name: '',
-  password: '',
+  password: ''
 })
-const { replaceRouter } = useRouterJump();
-const { getUserInfo } = userStore();
+const { replaceRouter } = useRouterJump()
+const { getUserInfo } = userStore()
 
 async function submit() {
-  const datas = await getUserInfo();
-  if(datas) replaceRouter('/')
+  const datas = await getUserInfo()
+  if (datas) replaceRouter('/')
 }
 </script>
 <template>

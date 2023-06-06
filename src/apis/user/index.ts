@@ -1,4 +1,4 @@
-import Mock from './mock';
+import Mock from './mock'
 
 export class userServerice {
   // 获取用户按钮

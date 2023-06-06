@@ -1,23 +1,23 @@
-import { defineComponent, onMounted } from "vue";
+import { defineComponent, onMounted } from 'vue'
 
 export default defineComponent({
-  name: "ADialog",
+  name: 'ADialog',
   props: {
     visible: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   setup(props: { visible: boolean }) {
-    console.log(props);
+    console.log(props)
     onMounted(() => {
-      console.log("ADialog mounted");
-    });
+      console.log('ADialog mounted')
+    })
 
     return () => (
       <div>
         <div>ADialog</div>
       </div>
-    );
-  },
-});
+    )
+  }
+})

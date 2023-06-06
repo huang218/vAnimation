@@ -1,13 +1,11 @@
-<script setup lang="ts">
-
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <MainPage alias="">
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <div class="box">
       <div>
@@ -58,7 +56,7 @@
       width: 10px;
       height: 0px;
       border-radius: 5px;
-      transition: all .3s ease;
+      transition: all 0.3s ease;
     }
     & > span:first-child {
       font-weight: 600;

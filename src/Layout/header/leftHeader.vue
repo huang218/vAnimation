@@ -1,17 +1,15 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia';
-import { routerStore } from '@/stores/index';
-import { useRouterJump } from '@/hooks/useRouterJump';
-import { Expand, Fold } from '@element-plus/icons-vue';
-import { settingsStore } from '@/stores';
-const settingGlobal = settingsStore();
-const { config } = storeToRefs(settingGlobal);
+import { storeToRefs } from 'pinia'
+import { routerStore } from '@/stores/index'
+import { useRouterJump } from '@/hooks/useRouterJump'
+import { Expand, Fold } from '@element-plus/icons-vue'
+import { settingsStore } from '@/stores'
+const settingGlobal = settingsStore()
+const { config } = storeToRefs(settingGlobal)
 
-
-
-const { pushRouter } = useRouterJump();
-const routerStoreConfig = routerStore();
-const { routerList, curRootRoute } = storeToRefs(routerStoreConfig);
+const { pushRouter } = useRouterJump()
+const routerStoreConfig = routerStore()
+const { routerList, curRootRoute } = storeToRefs(routerStoreConfig)
 
 const handleSelect = (key: string) => {
   routerStoreConfig.getCurrentRoute(key)
@@ -20,12 +18,7 @@ const handleSelect = (key: string) => {
 <template>
   <div class="flex header-left">
     <div class="title">
-      <img 
-        src="@/assets/vue.svg" 
-        class="logo vue" 
-        alt="Vue logo" 
-        @click="pushRouter('/')"  
-      />
+      <img src="@/assets/vue.svg" class="logo vue" alt="Vue logo" @click="pushRouter('/')" />
       <h1 class="name">Vue3 PC</h1>
     </div>
     <div class="collapse">
@@ -39,7 +32,9 @@ const handleSelect = (key: string) => {
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-menu-item v-for="item in routerList" :key="item.path" :index="item.path">{{ item.name }}</el-menu-item>
+      <el-menu-item v-for="item in routerList" :key="item.path" :index="item.path">{{
+        item.name
+      }}</el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -52,7 +47,7 @@ const handleSelect = (key: string) => {
 }
 .header-left {
   height: 100%;
- 
+
   .title {
     display: flex;
     justify-content: center;

@@ -20,8 +20,8 @@
   --vt-c-text-dark-1: var(--vt-c-white);
   --vt-c-text-dark-2: rgba(235, 235, 235, 0.64);
 
-  --hjh-bg-01: rgba(64, 158, 255, .1);
-  --hjh-bg-06: #ECF6FF;
+  --hjh-bg-01: rgba(64, 158, 255, 0.1);
+  --hjh-bg-06: #ecf6ff;
   --hjh-text-color-01: rgb(226, 226, 226);
   --hjh-text-color-02: rgb(48, 49, 51);
 }

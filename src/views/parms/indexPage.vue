@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { useRoute } from 'vue-router'
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 
-// const route = useRoute();
 const queryID = ref<string | number>(7)
 
 // onMounted(() => {
@@ -11,12 +9,8 @@ const queryID = ref<string | number>(7)
 // })
 </script>
 <template>
-  <div>
-    123
-  </div>
+  <div>123</div>
   <span>{{ queryID }}</span>
 </template>
 
-<style lang="less" scoped>
-
-</style>
+<style lang="less" scoped></style>

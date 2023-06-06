@@ -1,43 +1,39 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
-import { Moon, Sunny, SwitchButton } from '@element-plus/icons-vue';
-import { useDark, useToggle } from '@vueuse/core';
+import { ref, onMounted } from 'vue'
+import { Moon, Sunny, SwitchButton } from '@element-plus/icons-vue'
+import { useDark, useToggle } from '@vueuse/core'
 import { userStore } from '@/stores'
-import { useRouterJump } from '@/hooks/useRouterJump';
-import { Local } from '@/utils';
-import { formatAxis } from '@/utils/formatTime';
-import leftHeader from './leftHeader.vue';
+import { useRouterJump } from '@/hooks/useRouterJump'
+import { Local } from '@/utils'
+import { formatAxis } from '@/utils/formatTime'
+import leftHeader from './leftHeader.vue'
 
-
-const isDark = useDark();
+const isDark = useDark()
 const toggleDark = useToggle(isDark)
-const userStores = userStore();
-const { replaceRouter } = useRouterJump();
-const dialogVisible = ref(false);
-const switchType = ref(false);
-
+const userStores = userStore()
+const { replaceRouter } = useRouterJump()
+const dialogVisible = ref(false)
+const switchType = ref(false)
 
 const logOut = () => {
-  userStores.logOut();
+  userStores.logOut()
   dialogVisible.value = false
   replaceRouter('/login')
 }
 const switchClick = async (newVal: boolean) => {
-  switchType.value = newVal;
+  switchType.value = newVal
   setTimeout(() => {
-    toggleDark(!newVal);
+    toggleDark(!newVal)
   }, 200)
 }
 const initSitch = (): void => {
-  const darkType = Local.getNoJson('vueuse-color-scheme');
-  switchType.value = darkType === ('light' || 'dark');
+  const darkType = Local.getNoJson('vueuse-color-scheme')
+  switchType.value = darkType === ('light' || 'dark')
 }
 
-
 onMounted(() => {
-  initSitch();
-  console.log(formatAxis(new Date()), '问候语');
-  
+  initSitch()
+  console.log(formatAxis(new Date()), '问候语')
 })
 </script>
 <template>
@@ -56,27 +52,20 @@ onMounted(() => {
           :size="'large'"
           @change="switchClick"
         />
-        <el-icon :size="'large'"><component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true" /></el-icon>
+        <el-icon :size="'large'"><component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true"/></el-icon>
       </div>
     </el-header>
   </div>
-  <el-dialog
-    v-model="dialogVisible"
-    title="是否退出登陆"
-    width="30%"
-  >
+  <el-dialog v-model="dialogVisible" title="是否退出登陆" width="30%">
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="logOut()">
-          确定
-        </el-button>
+        <el-button type="primary" @click="logOut()"> 确定 </el-button>
       </span>
     </template>
   </el-dialog>
 </template>
 <style lang="less" scoped>
-
 .header-box {
   width: 100%;
   height: 60px;
@@ -91,7 +80,7 @@ onMounted(() => {
       cursor: pointer;
       color: var(--el-text-color-primary);
       font-size: 20px;
-      transition: all .2s;
+      transition: all 0.2s;
       &:hover {
         transform: scale(1.2);
       }
@@ -103,7 +92,6 @@ onMounted(() => {
   .flex-box {
     padding-left: 0;
     @apply flex justify-between items-center;
-
   }
 }
 </style>

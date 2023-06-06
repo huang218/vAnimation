@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { onMounted } from 'vue';
-import { useRoute } from 'vue-router';
+import { onMounted } from 'vue'
+import { useRoute } from 'vue-router'
 
-const currentRoute = useRoute();
+const currentRoute = useRoute()
 
 onMounted(() => {
-  console.log(currentRoute,'onMounted')
+  console.log(currentRoute, 'onMounted')
 })
 </script>
 <template>
@@ -22,83 +22,82 @@ onMounted(() => {
       </el-descriptions-item>
     </el-descriptions>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.
     </p>
     <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal
-      circumstance, but critical bug fixes would require hotfix so the actual
-      release number <b>could be</b> more than 1 per week.12312
+      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
+      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
+      week.12312
     </p>
   </MainPage>
 </template>
-
 
 <style scoped lang="less">
 // main区域为剩余高度

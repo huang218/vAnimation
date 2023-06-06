@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-import AsideBar from '@/Layout/asideBar/index.vue';
-import Header from '@/Layout/header/index.vue';
-import Main from '@/Layout/main/index.vue';
-import { ref } from 'vue';
+import AsideBar from '@/Layout/asideBar/index.vue'
+import Header from '@/Layout/header/index.vue'
+import Main from '@/Layout/main/index.vue'
+import { ref } from 'vue'
 
 const locale = ref(zhCn)
 </script>
@@ -19,7 +19,6 @@ const locale = ref(zhCn)
       </el-container>
     </div>
   </el-config-provider>
- 
 </template>
 <style lang="less" scoped>
 .common-layout {

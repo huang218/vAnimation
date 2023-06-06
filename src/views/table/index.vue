@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue';
-import { dayjs } from 'element-plus';
-import { useRouterJump } from '@/hooks/useRouterJump';
+import { reactive, ref } from 'vue'
+import { dayjs } from 'element-plus'
+import { useRouterJump } from '@/hooks/useRouterJump'
 
-const { pushRouter } = useRouterJump();
-const MaxRow = ref<number>(15);
+const { pushRouter } = useRouterJump()
+const MaxRow = ref<number>(15)
 const formInline = reactive({
   user: '',
-  region: '',
+  region: ''
 })
 const now = new Date()
 
@@ -18,7 +18,7 @@ const tableData = ref([
     state: 'California',
     city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
+    zip: 'CA 90036'
   },
   {
     date: '2016-05-02',
@@ -26,7 +26,7 @@ const tableData = ref([
     state: 'California',
     city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
+    zip: 'CA 90036'
   },
   {
     date: '2016-05-03',
@@ -34,13 +34,12 @@ const tableData = ref([
     state: 'California',
     city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
-  },
+    zip: 'CA 90036'
+  }
 ])
 
-
 const pagination = (page) => {
-  console.log('pagination', page);
+  console.log('pagination', page)
 }
 const onSubmit = () => {
   console.log('submit!')
@@ -49,7 +48,7 @@ const deleteRow = (index: number) => {
   tableData.value.splice(index, 1)
 }
 const goToDetail = (date: any) => {
-  console.log(date.row, 'scope');
+  console.log(date.row, 'scope')
   pushRouter('/view/TableDetail', {
     query: date.row
   })
@@ -62,7 +61,7 @@ const onAddItem = () => {
     state: 'California',
     city: 'Los Angeles',
     address: 'No. 189, Grove St, Los Angeles',
-    zip: 'CA 90036',
+    zip: 'CA 90036'
   })
 }
 </script>
@@ -86,12 +85,7 @@ const onAddItem = () => {
       <el-button plain @click="onAddItem">新增</el-button>
       <el-button plain>删除</el-button>
     </div>
-    <el-table
-      stripe
-      :data="tableData" 
-      :max-height="`${40 + 40 * MaxRow}`"
-      style="width: 100%"
-    >
+    <el-table stripe :data="tableData" :max-height="`${40 + 40 * MaxRow}`" style="width: 100%">
       <el-table-column type="selection" width="55" />
       <el-table-column fixed prop="index" label="序号" width="80">
         <template #default="scope">
@@ -101,27 +95,19 @@ const onAddItem = () => {
       <el-table-column fixed prop="date" label="Date" />
       <el-table-column prop="name" label="Name" />
       <el-table-column prop="state" label="State" />
-      <el-table-column prop="city" label="City"  />
+      <el-table-column prop="city" label="City" />
       <el-table-column prop="address" label="Address" width="400" />
       <el-table-column prop="zip" label="Zip" />
       <el-table-column fixed="right" label="Operations" width="180">
         <template #default="scope">
-          <el-button plain @click="goToDetail(scope)">
-            Detail
-          </el-button>
-          <el-button
-            type="danger"
-            @click="deleteRow(scope.$index)"
-          >Delete</el-button>
+          <el-button plain @click="goToDetail(scope)"> Detail </el-button>
+          <el-button type="danger" @click="deleteRow(scope.$index)">Delete</el-button>
         </template>
       </el-table-column>
     </el-table>
-    <Pagination
-      :total="tableData.length"
-      @pagination="pagination"
-    />
+    <Pagination :total="tableData.length" @pagination="pagination" />
   </div>
 </template>
 <style lang="less" scoped>
-// 
+//
 </style>

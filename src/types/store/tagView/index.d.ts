@@ -1,5 +1,5 @@
-import { Menu } from "../router";
+import { Menu } from '../router'
 export interface TagViewStoreType {
-  visitedViews: Array<Menu>;
-  cachedViews: Array<Menu["name"]>;
+  visitedViews: Array<Menu>
+  cachedViews: Array<Menu['name']>
 }

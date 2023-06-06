@@ -1,3 +1,3 @@
-import { ref } from "vue";
-const route = ref();
-export { route };
+import { ref } from 'vue'
+const route = ref()
+export { route }

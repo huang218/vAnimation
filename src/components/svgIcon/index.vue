@@ -5,26 +5,26 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed } from 'vue'
 
 const props = defineProps({
   name: {
     type: String,
-    required: true,
+    required: true
   },
   color: {
     type: String,
-    default: "",
-  },
-});
+    default: ''
+  }
+})
 
-const iconName = computed(() => `#icon-${props.name}`);
+const iconName = computed(() => `#icon-${props.name}`)
 const svgClass = computed(() => {
   if (props.name) {
-    return `svg-icon icon-${props.name}`;
+    return `svg-icon icon-${props.name}`
   }
-  return "svg-icon";
-});
+  return 'svg-icon'
+})
 </script>
 
 <style lang="scss">
@@ -37,5 +37,5 @@ const svgClass = computed(() => {
 </style>
 
 <script lang="ts">
-export default { name: "SvgIcon" };
+export default { name: 'SvgIcon' }
 </script>

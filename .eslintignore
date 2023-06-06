@@ -1,5 +1,10 @@
-lib
+.vscode
+.idea
+.local
 dist
-node_modules
+index.html
+!.env-config.ts
 components.d.ts
-docs
+/node_modules/
+/public/
+src/assets

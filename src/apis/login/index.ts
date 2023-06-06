@@ -1,4 +1,4 @@
-import Mock from './mock';
+import Mock from './mock'
 
 export class LoginServerice {
   public static async login() {

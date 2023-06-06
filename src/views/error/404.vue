@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useRouterJump } from '@/hooks/useRouterJump';
+import { useRouterJump } from '@/hooks/useRouterJump'
 
-const { replaceRouter } = useRouterJump();
+const { replaceRouter } = useRouterJump()
 const goBack = () => {
   replaceRouter('/')
 }

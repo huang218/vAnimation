@@ -1,8 +1,12 @@
 <script setup lang="ts">
-import { provide, ref } from 'vue';
+import { provide, ref } from 'vue'
 
-const provideInfo = ref<number>(10086);
-provide('provideInfo', provideInfo);
+const provideInfo = ref<number>(10086)
+provide('provideInfo', provideInfo)
+const asd = () => {
+
+  
+}
 </script>
 
 <template>
