@@ -8,7 +8,7 @@ module.exports = {
     es2021: true,
     node: true
   },
-  'extends': [
+  extends: [
     'plugin:vue/vue3-essential',
     'eslint:recommended',
     '@vue/eslint-config-typescript',
@@ -16,9 +16,23 @@ module.exports = {
     'prettier'
   ],
   parserOptions: {
-    ecmaVersion: 'latest'
+    ecmaVersion: 12,
+    parser: '@typescript-eslint/parser',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true
+    }
   },
+  plugins: ['vue', '@typescript-eslint', 'prettier'],
   rules: {
+    'prettier/prettier': [
+      'error',
+      {
+        singleQuote: true,
+        semi: false, // eslint 分号
+        printWidth: 100
+      }
+    ],
     'import/no-extraneous-dependencies': 'off',
     'no-param-reassign': 'off',
     'vue/multi-word-component-names': 'off',
