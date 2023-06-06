@@ -11,28 +11,28 @@ import WindiCSS from 'vite-plugin-windicss'
 export default defineConfig({
   base: './',
   build: {
-    outDir: './dist',
+    outDir: './dist'
   },
   plugins: [
     vue(),
     WindiCSS(),
     AutoImport({
-      resolvers: [ElementPlusResolver()],
+      resolvers: [ElementPlusResolver()]
     }),
     Components({
-      resolvers: [ElementPlusResolver()],
-    }),
+      resolvers: [ElementPlusResolver()]
+    })
   ],
   server: {
     port: 8800,
     hmr: {
-      overlay: false,
-    },
+      overlay: false
+    }
   },
   resolve: {
     alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url)),
+      '@': fileURLToPath(new URL('./src', import.meta.url))
       // types: path.resolve(__dirname, "src/types"),
     }
-  },
+  }
 })
