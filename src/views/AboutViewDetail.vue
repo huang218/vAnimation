@@ -4,6 +4,7 @@ import { useRoute } from 'vue-router'
 import { useRouterJump } from '@/hooks/useRouterJump'
 
 const { goRouter } = useRouterJump()
+
 const currentRoute = useRoute()
 
 const onBack = () => {

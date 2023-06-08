@@ -49,6 +49,7 @@ router.beforeEach(async (to, from, next) => {
       const newRouter = await getRouterList()
 
       newRouter.forEach((item) => router.addRoute(item))
+      console.log('添加动态路由')
       //跳转到目的路由
       next({ ...to, replace: true })
     } catch (err) {
