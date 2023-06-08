@@ -10,7 +10,7 @@ import routeView from '../routeView/index.vue'
 </template>
 <style lang="less" scoped>
 .main-box {
-  flex: 1;
+  // flex: 1;
   background-color: var(--el-bg-color);
 }
 </style>

@@ -92,12 +92,12 @@ const onAddItem = () => {
           <span>{{ scope.$index + 1 }}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed prop="date" label="Date" />
-      <el-table-column prop="name" label="Name" />
-      <el-table-column prop="state" label="State" />
-      <el-table-column prop="city" label="City" />
-      <el-table-column prop="address" label="Address" width="400" />
-      <el-table-column prop="zip" label="Zip" />
+      <el-table-column fixed prop="date" label="Date" width="150" />
+      <el-table-column prop="name" label="Name" width="150" />
+      <el-table-column prop="state" label="State" width="150" />
+      <el-table-column prop="city" label="City" width="150" />
+      <el-table-column prop="address" label="Address" />
+      <el-table-column prop="zip" label="Zip" width="150" />
       <el-table-column fixed="right" label="Operations" width="180">
         <template #default="scope">
           <el-button plain @click="goToDetail(scope)"> Detail </el-button>

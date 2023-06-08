@@ -34,8 +34,6 @@ export const routerStore = defineStore('routerStore', {
       })
     },
     getCurrentRoute(rootRoute: string): void {
-      console.log(rootRoute, 'rootRoute')
-
       this.routerList.forEach((item) => {
         if (item.path === rootRoute) {
           this.curRootRoute = rootRoute

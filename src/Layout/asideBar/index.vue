@@ -37,9 +37,12 @@ const activeMenu = computed(() => currentRoute.path)
 <style lang="less" scoped>
 .menu {
   width: auto;
-  transition: all 0.5s;
-  :deep(.el-aside) {
-    transition: all 0.8s;
+  transition: all 0.4s;
+  // :deep(.el-aside) {
+  //   transition: all 0.8s;
+  // }
+  .el-menu-vertical-demo:not(.el-menu--collapse) {
+    width: 200px;
   }
   .menus {
     // height: calc(100vh - 60px);
