@@ -1,48 +1,124 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from 'vue'
+
+const ulRef = ref(null)
+const ind = ref(0)
+const items = ref([
+  { name: '1' },
+  { name: '2' },
+  { name: '3' },
+  { name: '4' },
+  { name: '5' },
+  { name: '6' },
+  { name: '7' },
+  { name: '8' }
+])
+// const pushMathRender = () => {
+//   items.value.push(Math.round(Math.random() * 100))
+//   items.value.sort()
+// }
+// const deleteMathRender = () => {
+//   let ramdomNum = Math.round(Math.random() * (items.value.length - 1)) // 随机list索引
+//   items.value = items.value.filter((item, index) => {
+//     if (index !== ramdomNum) return 1
+//   })
+//   items.value.sort()
+// }
+
+const scroll = (scroll) => {
+  const boxHeight = ulRef.value.$el.offsetHeight - 22
+  console.log(scroll, boxHeight)
+  scrollJs(scroll.scrollTop, boxHeight)
+}
+
+const scrollJs = (curNum, offsetHeight) => {
+  const er = (curNum / offsetHeight) * items.value.length
+  if (ind.value != Math.round(er)) {
+    ind.value = Math.round(er)
+    console.log(Math.round(er), '该粘性定位的元素索引')
+  }
+}
+</script>
 
 <template>
   <MainPage alias="">
-    <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
-      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
-      week.
-    </p>
-    <div class="box">
-      <div>
-        <span>L1</span>
-        <div class="zz color1" style="height: 10px"></div>
-        <span>0分</span>
-      </div>
-      <div>
-        <span>L2</span>
-        <div class="zz color1" style="height: 20px"></div>
-        <span>1万分</span>
-      </div>
-      <div>
-        <span>L3</span>
-        <div class="zz color1" style="height: 30px"></div>
-        <span>2万分</span>
-      </div>
-      <div>
-        <span>L4</span>
-        <div class="zz color1" style="height: 50px"></div>
-        <span>5万分</span>
-      </div>
-      <div>
-        <span>L5</span>
-        <div class="zz color2" style="height: 70px"></div>
-        <span>10万分</span>
-      </div>
-      <div>
-        <span>L6</span>
-        <div class="zz color2" style="height: 100px"></div>
-        <span>20万分</span>
-      </div>
-    </div>
+    <!-- <el-button plain @click="pushMathRender">pushList</el-button>
+    <el-button plain @click="deleteMathRender">deleteList</el-button> -->
+    <el-scrollbar noresize height="500px" @scroll="scroll">
+      <div class="h-438px"></div>
+      <TransitionGroup ref="ulRef" name="list" tag="ul">
+        <li
+          v-for="(item, index) in items"
+          :key="item.name"
+          :style="{ zIndex: items.length - index }"
+          :class="index === ind ? 'li-sticky' : index > ind ? 'li-stickys-opacity' : ''"
+          class="example"
+        >
+          {{ item.name }}
+        </li>
+      </TransitionGroup>
+    </el-scrollbar>
   </MainPage>
 </template>
 
 <style scoped lang="less">
+:deep(.el-scrollbar) {
+  position: relative;
+  width: 320px;
+  border: 1px solid #ccc;
+  background: radial-gradient(circle at 60% 90%, rgba(46, 103, 161, 1), transparent 60%),
+    radial-gradient(circle at 20px 20px, rgba(46, 103, 161, 0.8), transparent 25%), #182336;
+}
+ul {
+  width: 300px;
+  margin: 0 auto;
+  .li-stickys-opacity {
+    bottom: 30px;
+    opacity: 0;
+  }
+  .li-sticky {
+    bottom: 30px;
+    transform: scale(0.9);
+  }
+  .example {
+    color: rgba(255, 255, 255, 0.8);
+    z-index: 10;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.4);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    background: linear-gradient(to top right, rgba(90, 149, 207, 0.5), rgba(58, 76, 99, 0.8));
+    box-shadow: 10px -10px 20px rgba(0, 0, 0, 0.2), -10px 10px 20px rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(6px); /*  元素后面区域添加模糊效果 */
+  }
+  li {
+    position: sticky;
+    height: 60px;
+    width: 300px;
+    border-radius: 10px;
+    text-align: center;
+    line-height: 40px;
+    margin-top: 10px;
+    background-color: #858585;
+    transition: all 0.5s;
+  }
+}
+.list-move, /* 对移动中的元素应用的过渡 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(30px);
+}
+
+/* 确保将离开的元素从布局流中删除
+  以便能够正确地计算移动的动画。 */
+.list-leave-active {
+  position: absolute;
+}
+
 .box {
   display: flex;
   width: 400px;

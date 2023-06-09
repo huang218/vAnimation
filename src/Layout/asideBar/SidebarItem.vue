@@ -11,12 +11,12 @@
       >
         <template #title>
           <el-icon>
-            <component :is="House" />
+            <component :is="route.meta.icon" />
           </el-icon>
           <span class="ml-3.5">{{ route.meta.title }}</span>
         </template>
         <el-icon v-if="settingsConfig.config.isCollapsed && isIcon">
-          <component :is="House" />
+          <component :is="route.meta.icon" />
         </el-icon>
       </el-menu-item>
     </template>
@@ -28,7 +28,7 @@
     >
       <template #title>
         <el-icon>
-          <component :is="Setting" />
+          <component :is="route.meta.icon" />
         </el-icon>
         <span class="ml-3.5">{{ route.meta.title }}</span>
       </template>

@@ -30,6 +30,7 @@ export default {
               component: '/src/views/dashboard/index.vue',
               meta: {
                 title: '首页',
+                icon: 'HomeFilled',
                 isKeepAlive: true,
                 isTagView: true,
                 isAffix: false
@@ -77,7 +78,7 @@ export default {
               isHide: false,
               meta: {
                 title: 'AboutView',
-                icon: 'menu',
+                icon: 'Operation',
                 isKeepAlive: true,
                 isTagView: true,
                 isAffix: false
@@ -92,7 +93,7 @@ export default {
               isHide: false,
               meta: {
                 title: 'Table',
-                icon: 'menu',
+                icon: 'List',
                 isKeepAlive: true,
                 isTagView: true,
                 isAffix: false
@@ -141,7 +142,7 @@ export default {
               isHide: false,
               meta: {
                 title: 'menu-1',
-                icon: 'menu',
+                icon: 'Tools',
                 isKeepAlive: false,
                 isTagView: true,
                 isAffix: false
@@ -157,7 +158,7 @@ export default {
                   isHide: false,
                   meta: {
                     title: 'menu-1-1',
-                    icon: 'menu',
+                    icon: 'Notebook',
                     isKeepAlive: true,
                     isTagView: true,
                     isAffix: false
@@ -173,7 +174,7 @@ export default {
                   isHide: false,
                   meta: {
                     title: 'menu-1-2',
-                    icon: 'menu',
+                    icon: 'CopyDocument',
                     isKeepAlive: true,
                     isTagView: true,
                     isAffix: false
@@ -191,7 +192,7 @@ export default {
               isHide: false,
               meta: {
                 title: 'home',
-                icon: 'menu',
+                icon: 'Coffee',
                 isKeepAlive: true,
                 isTagView: true,
                 isAffix: true
