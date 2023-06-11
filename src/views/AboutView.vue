@@ -21,21 +21,7 @@ onMounted(() => {
         No.1188, Wuzhong Avenue, Wuzhong District, Suzhou, Jiangsu Province
       </el-descriptions-item>
     </el-descriptions>
-    <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
-      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
-      week.
-    </p>
-    <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
-      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
-      week.
-    </p>
-    <p class="mt-4 text-sm">
-      Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
-      bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
-      week.
-    </p>
+
     <p class="mt-4 text-sm">
       Element Plus team uses <b>weekly</b> release strategy under normal circumstance, but critical
       bug fixes would require hotfix so the actual release number <b>could be</b> more than 1 per
