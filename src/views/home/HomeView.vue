@@ -20,7 +20,9 @@ import Test from '@/components/Test.vue'
 // inject 参数名称 默认值/或getter函数
 const global = inject('provideInfo', 'default')
 const ref1 = ref<number>(0)
+const hei = ref<number>(10)
 const deboNum = useDebouncedRef(0)
+let anima = null
 
 // 响应式最外层
 const reactive1 = shallowReactive<reactiveType>({
@@ -45,6 +47,31 @@ const getts = computed({
     ref1.value = val
   }
 })
+/**
+ * 清除动画
+ */
+const clearAnimation = () => {
+  if (anima) cancelAnimationFrame(anima)
+}
+/**
+ * requestAnimationFrame动画
+ */
+const boxAnimation = () => {
+  anima = requestAnimationFrame(() => {
+    if (hei.value <= 300) {
+      hei.value += 100
+      setTimeout(() => {
+        boxAnimation()
+      }, 1000)
+    } else {
+      clearAnimation()
+    }
+  })
+}
+const init = () => {
+  hei.value = 10
+  boxAnimation()
+}
 onMounted(() => {
   getts.value = 1
   console.log(
@@ -83,6 +110,10 @@ const changes = (prop) => {
     {{ reactive2.name }}
     {{ deboNum }}
     <Test @changes="changes" />
+    <el-button @click="init">开启动画</el-button>
+    <div class="flex w-200px justify-between">
+      <div class="box" :style="{ height: `${hei}px` }"></div>
+    </div>
   </div>
 </template>
 
@@ -90,5 +121,10 @@ const changes = (prop) => {
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
+}
+.box {
+  width: 150px;
+  background-color: antiquewhite;
+  transition: all 0.3s;
 }
 </style>
