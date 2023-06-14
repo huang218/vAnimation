@@ -6,7 +6,7 @@ let configGlobal: GlobalUrl = {
   BASE_URL: ''
   // ...
 }
-switch (import.meta.env.VITE_NODE_ENV) {
+switch (import.meta.env.VITE_MODE_ENV) {
   case 'dev':
     console.warn('DEV 环境标识')
     configGlobal = {
