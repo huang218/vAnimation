@@ -9,7 +9,7 @@ import WindiCSS from 'vite-plugin-windicss'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: './',
+  base: '/',
   build: {
     outDir: './dist',
     terserOptions: {

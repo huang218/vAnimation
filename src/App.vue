@@ -2,6 +2,7 @@
 import { provide, ref } from 'vue'
 
 const provideInfo = ref<number>(10086)
+
 provide('provideInfo', provideInfo)
 </script>
 
