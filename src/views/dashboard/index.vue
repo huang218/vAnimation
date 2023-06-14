@@ -1,6 +1,13 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
+import { weatherType } from '@/types'
+import { settingsStore } from '@/stores'
+import { commonServer } from '@/apis'
 
+const setting = settingsStore()
+
+const weatherInfo = ref<weatherType>({})
+const weathLoading = ref<boolean>(true)
 const ulRef = ref(null)
 const ind = ref(0)
 const items = ref([
@@ -25,26 +32,48 @@ const items = ref([
 //   items.value.sort()
 // }
 
-const scroll = (scroll) => {
-  const boxHeight = ulRef.value.$el.offsetHeight - 22
-  console.log(scroll, boxHeight)
-  scrollJs(scroll.scrollTop, boxHeight)
-}
+// const scroll = (scroll) => {
+//   const boxHeight = ulRef.value.$el.offsetHeight - 22
+//   console.log(scroll, boxHeight)
+//   scrollJs(scroll.scrollTop, boxHeight)
+// }
 
-const scrollJs = (curNum, offsetHeight) => {
-  const er = (curNum / offsetHeight) * items.value.length
-  if (ind.value != Math.round(er)) {
-    ind.value = Math.round(er)
-    console.log(Math.round(er), '该粘性定位的元素索引')
+// const scrollJs = (curNum, offsetHeight) => {
+//   const er = (curNum / offsetHeight) * items.value.length
+//   if (ind.value != Math.round(er)) {
+//     ind.value = Math.round(er)
+//     console.log(Math.round(er), '该粘性定位的元素索引')
+//   }
+// }
+
+const getWeather = async () => {
+  weathLoading.value = true
+  try {
+    const { data } = await commonServer.region({ key: setting.weatherKey })
+    if (data?.status === '1') {
+      const { data: weatherDate } = await commonServer.weather({
+        key: setting.weatherKey,
+        city: data.adcode
+      })
+      weatherInfo.value = { ...weatherDate?.lives[0] }
+      setTimeout(() => {
+        weathLoading.value = false
+      }, 500)
+      console.log(weatherInfo, 'weather')
+    }
+  } catch (error) {
+    console.error(error)
+    weathLoading.value = false
   }
 }
+onMounted(() => {
+  getWeather()
+})
 </script>
 
 <template>
-  <MainPage alias="">
-    <!-- <el-button plain @click="pushMathRender">pushList</el-button>
-    <el-button plain @click="deleteMathRender">deleteList</el-button> -->
-    <el-scrollbar noresize height="500px" @scroll="scroll">
+  <!-- <MainPage alias=""> -->
+  <!-- <el-scrollbar noresize height="500px" @scroll="scroll">
       <div class="h-438px"></div>
       <TransitionGroup ref="ulRef" name="list" tag="ul">
         <li
@@ -57,17 +86,43 @@ const scrollJs = (curNum, offsetHeight) => {
           {{ item.name }}
         </li>
       </TransitionGroup>
-    </el-scrollbar>
-  </MainPage>
+    </el-scrollbar> -->
+  <!-- </MainPage> -->
+  <el-skeleton :loading="weathLoading" animated :count="1">
+    <template #template>
+      <div style="padding: 14px">
+        <el-skeleton-item variant="h3" style="width: 10%" />
+        <div v-for="item in 3" :key="item" class="flex items-center justify-between mt-16px h-16px">
+          <el-skeleton-item variant="text" class="flex-1 mr-2" />
+          <el-skeleton-item variant="text" class="flex-1 mr-2" />
+          <el-skeleton-item variant="text" class="flex-1" />
+        </div>
+      </div>
+    </template>
+    <template #default>
+      <el-descriptions title="天气状况">
+        <el-descriptions-item
+          v-for="(value, key, index) in weatherInfo"
+          :key="index"
+          :label="`${key}：`"
+          label-align="center"
+        >
+          {{ value }}
+        </el-descriptions-item>
+      </el-descriptions>
+    </template>
+  </el-skeleton>
 </template>
 
 <style scoped lang="less">
-:deep(.el-scrollbar) {
-  position: relative;
-  width: 320px;
-  border: 1px solid #ccc;
-  background: radial-gradient(circle at 60% 90%, rgba(46, 103, 161, 1), transparent 60%),
-    radial-gradient(circle at 20px 20px, rgba(46, 103, 161, 0.8), transparent 25%), #182336;
+.cur {
+  :deep(.el-scrollbar) {
+    position: relative;
+    width: 320px;
+    border: 1px solid #ccc;
+    background: radial-gradient(circle at 60% 90%, rgba(46, 103, 161, 1), transparent 60%),
+      radial-gradient(circle at 20px 20px, rgba(46, 103, 161, 0.8), transparent 25%), #182336;
+  }
 }
 ul {
   width: 300px;

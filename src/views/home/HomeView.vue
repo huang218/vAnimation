@@ -2,9 +2,9 @@
 import { computed, onMounted, reactive, ref, watch, isRef, unref, inject } from 'vue'
 import type { reactiveType } from '@/types/view/home'
 import { useDebouncedRef } from '@/hooks/useDebouncedRef'
-import Test from '@/components/Test.vue'
 import configGlobal from '@/global.vue'
 import { WebLogger } from '@/utils' // 封装console
+import Test from '@/components/Test.vue'
 
 // inject 参数名称 默认值/或getter函数
 const global = inject('provideInfo', 'default')

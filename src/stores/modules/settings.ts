@@ -4,6 +4,7 @@ import { Local, setHtmlCssVarBySettings } from '@/utils'
 
 export const createSettings = (): settingsStoreType => {
   return {
+    weatherKey: '26c067d98dc0aac59a97eaa2a204ab62',
     themesState: {
       primary: '#40A9FF',
       success: '#67C23A',
