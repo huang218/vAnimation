@@ -5,8 +5,6 @@ import {
   reactive,
   ref,
   shallowReactive,
-  readonly,
-  shallowReadonly,
   watch,
   watchEffect,
   isRef,
@@ -25,13 +23,13 @@ const deboNum = useDebouncedRef(0)
 let anima = null
 
 // 响应式最外层
-const reactive1 = shallowReactive<reactiveType>({
-  name: '123',
-  age: 11,
-  obj: {
-    name: 'obj'
-  }
-})
+// const reactive1 = shallowReactive<reactiveType>({
+//   name: '123',
+//   age: 11,
+//   obj: {
+//     name: 'obj'
+//   }
+// })
 // 深层也会进行响应式
 const reactive2 = reactive<reactiveType>({
   name: '456',
@@ -95,13 +93,16 @@ watch(
     deep: true // 深度监听
   }
 )
-const clearWatch = watchEffect(() => {
-  console.log(ref1.value, '更新了')
-})
+// const clearWatch = watchEffect(() => {
+//   console.log(ref1.value, '更新了')
+// })
 const changes = (prop) => {
   console.log('changes-emit', prop)
 }
 // clearWatch() 函数可以清楚watchEffect监听
+const consoleEnv = () => {
+  console.log(import.meta.env.VITE_NODE_ENV, 'import.meta.env.VITE_NODE_ENV')
+}
 </script>
 <template>
   <div>
@@ -110,6 +111,7 @@ const changes = (prop) => {
     {{ reactive2.name }}
     {{ deboNum }}
     <Test @changes="changes" />
+    <el-button @click="consoleEnv">打印环境码</el-button>
     <el-button @click="init">开启动画</el-button>
     <div class="flex w-200px justify-between">
       <div class="box" :style="{ height: `${hei}px` }"></div>
@@ -117,7 +119,7 @@ const changes = (prop) => {
   </div>
 </template>
 
-<style>
+<style lang="less" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
