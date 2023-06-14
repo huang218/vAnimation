@@ -56,11 +56,10 @@ const getWeather = async () => {
         city: data.adcode
       })
       weatherInfo.value = { ...weatherDate?.lives[0] }
-      setTimeout(() => {
-        weathLoading.value = false
-      }, 500)
-      console.log(weatherInfo, 'weather')
     }
+    setTimeout(() => {
+      weathLoading.value = false
+    }, 500)
   } catch (error) {
     console.error(error)
     weathLoading.value = false
