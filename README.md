@@ -36,9 +36,13 @@ npm run dev
 ### Type-Check, Compile and Minify for Production
 
 ```sh
-npm run build
+npm run build-prod
 ```
+### Type-Check, Compile and Minify for staging
 
+```sh
+npm run build-stage
+```
 ### Run Unit Tests with [Vitest](https://vitest.dev/)
 
 ```sh

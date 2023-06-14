@@ -1,19 +1,10 @@
 <script lang="ts" setup>
-import {
-  computed,
-  onMounted,
-  reactive,
-  ref,
-  shallowReactive,
-  watch,
-  watchEffect,
-  isRef,
-  unref,
-  inject
-} from 'vue'
+import { computed, onMounted, reactive, ref, watch, isRef, unref, inject } from 'vue'
 import type { reactiveType } from '@/types/view/home'
 import { useDebouncedRef } from '@/hooks/useDebouncedRef'
 import Test from '@/components/Test.vue'
+import configGlobal from '@/global.vue'
+import { WebLogger } from '@/utils' // 封装console
 
 // inject 参数名称 默认值/或getter函数
 const global = inject('provideInfo', 'default')
@@ -69,6 +60,7 @@ const boxAnimation = () => {
 const init = () => {
   hei.value = 10
   boxAnimation()
+  WebLogger.log('123 WebLogger')
 }
 onMounted(() => {
   getts.value = 1
@@ -82,6 +74,7 @@ onMounted(() => {
     global,
     'provide-inject'
   )
+  console.log(configGlobal.WS_URL)
 })
 watch(
   () => reactive2,
@@ -100,9 +93,6 @@ const changes = (prop) => {
   console.log('changes-emit', prop)
 }
 // clearWatch() 函数可以清楚watchEffect监听
-const consoleEnv = () => {
-  console.log(import.meta.env.VITE_NODE_ENV, 'import.meta.env.VITE_NODE_ENV')
-}
 </script>
 <template>
   <div>
@@ -111,7 +101,6 @@ const consoleEnv = () => {
     {{ reactive2.name }}
     {{ deboNum }}
     <Test @changes="changes" />
-    <el-button @click="consoleEnv">打印环境码</el-button>
     <el-button @click="init">开启动画</el-button>
     <div class="flex w-200px justify-between">
       <div class="box" :style="{ height: `${hei}px` }"></div>

@@ -4,6 +4,7 @@ import { HttpGlobalResponse } from '@/types'
 import { ElNotification } from 'element-plus'
 import router from '@/router'
 import { Local, Session } from '@/utils'
+import configGlobal from '@/global.vue'
 // import LoginService from "@/apis";
 
 const showStatus = (status: number) => {
@@ -57,7 +58,7 @@ const instance = axios.create({
   },
   // 请求时长
   timeout: TIME_OUT,
-  baseURL: import.meta.env.VITE_API_BASE_URL as any,
+  baseURL: configGlobal.BASE_URL,
   // 表示跨域请求时是否需要使用凭证
   withCredentials: false
 })
