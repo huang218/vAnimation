@@ -10,3 +10,8 @@ export interface PageInfo {
   pageSize: number
   total: number
 }
+
+export interface GlobalUrl {
+  WS_URL: string
+  BASE_URL: string
+}

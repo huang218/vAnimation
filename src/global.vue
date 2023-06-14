@@ -1,5 +1,7 @@
-<script>
-let configGlobal = {
+<script lang="ts">
+import { GlobalUrl } from '@/types'
+
+let configGlobal: GlobalUrl = {
   WS_URL: '',
   BASE_URL: ''
   // ...
