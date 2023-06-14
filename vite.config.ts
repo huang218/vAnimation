@@ -11,7 +11,27 @@ import WindiCSS from 'vite-plugin-windicss'
 export default defineConfig({
   base: './',
   build: {
-    outDir: './dist'
+    outDir: './dist',
+    terserOptions: {
+      compress: {
+        drop_console: true, //剔除console,和debugger
+        drop_debugger: true
+      }
+    },
+    rollupOptions: {
+      output: {
+        //静态资源分类打包
+        chunkFileNames: 'static/js/[name]-[hash].js',
+        entryFileNames: 'static/js/[name]-[hash].js',
+        assetFileNames: 'static/[ext]/[name]-[hash].[ext]',
+        manualChunks(id) {
+          //静态资源分拆打包
+          if (id.includes('node_modules')) {
+            return id.toString().split('node_modules/')[1].split('/')[0].toString()
+          }
+        }
+      }
+    }
   },
   plugins: [
     vue(),
