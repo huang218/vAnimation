@@ -9,6 +9,7 @@ const setting = settingsStore()
 const weatherInfo = ref<weatherType>({})
 const weathLoading = ref<boolean>(true)
 const ulRef = ref(null)
+
 const ind = ref(0)
 const items = ref([
   { name: '1' },

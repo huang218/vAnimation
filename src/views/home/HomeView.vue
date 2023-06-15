@@ -1,41 +1,17 @@
 <script lang="ts" setup>
-import { computed, onMounted, reactive, ref, watch, isRef, unref, inject } from 'vue'
-import type { reactiveType } from '@/types/view/home'
-import { useDebouncedRef } from '@/hooks/useDebouncedRef'
+import { nextTick, onMounted, ref } from 'vue'
 import configGlobal from '@/global.vue'
 import { WebLogger } from '@/utils' // 封装console
-import Test from '@/components/Test.vue'
 
 // inject 参数名称 默认值/或getter函数
-const global = inject('provideInfo', 'default')
-const ref1 = ref<number>(0)
-const hei = ref<number>(10)
-const deboNum = useDebouncedRef(0)
+const scrollBox = ref<HTMLElement | null>(null)
+const step = ref<number>(40)
+const duration = ref<number>(2000)
+const scrollNum = ref<number>(0)
+const isOpenTransition = ref<boolean>(true)
 let anima = null
 
-// 响应式最外层
-// const reactive1 = shallowReactive<reactiveType>({
-//   name: '123',
-//   age: 11,
-//   obj: {
-//     name: 'obj'
-//   }
-// })
-// 深层也会进行响应式
-const reactive2 = reactive<reactiveType>({
-  name: '456',
-  age: 33,
-  obj: {}
-})
-// computed设置get set
-const getts = computed({
-  get: () => {
-    return ref1.value
-  },
-  set: (val) => {
-    ref1.value = val
-  }
-})
+const num = ref<number>(10)
 /**
  * 清除动画
  */
@@ -47,63 +23,57 @@ const clearAnimation = () => {
  */
 const boxAnimation = () => {
   anima = requestAnimationFrame(() => {
-    if (hei.value <= 300) {
-      hei.value += 100
-      setTimeout(() => {
-        boxAnimation()
-      }, 1000)
-    } else {
-      clearAnimation()
+    if (scrollBox.value.offsetHeight / 2 === scrollNum.value) {
+      isOpenTransition.value = false
+      nextTick(() => {
+        scrollNum.value = 0
+        scrollBox.value.style.bottom = '0px'
+        // isOpenTransition.value = true
+      })
+      boxAnimation()
+      return
     }
+    if (scrollBox.value.offsetHeight / 2 > scrollNum.value) {
+      scrollNum.value += step.value
+      scrollBox.value.style.bottom = `${scrollNum.value}px`
+    }
+
+    console.log(scrollBox.value.offsetHeight, scrollBox.value.getBoundingClientRect())
+    setTimeout(() => {
+      boxAnimation()
+    }, 3500)
   })
 }
 const init = () => {
-  hei.value = 10
-  boxAnimation()
-  WebLogger.log('123 WebLogger')
+  console.log(scrollBox.value.getBoundingClientRect(), 'scrollBox.value.getBoundingClientRect()')
+
+  setTimeout(() => {
+    boxAnimation()
+  }, 2000)
+}
+const pushData = () => {
+  num.value++
 }
 onMounted(() => {
-  getts.value = 1
-  console.log(
-    getts.value,
-    'getts|',
-    isRef(ref1),
-    'isRef|',
-    unref(ref1),
-    'unRef|',
-    global,
-    'provide-inject'
-  )
   console.log(configGlobal.WS_URL)
 })
-watch(
-  () => reactive2,
-  (per, old) => {
-    console.log(per, old, 'watch更新')
-  },
-  {
-    // immdiate: true, // 首次加载执行
-    deep: true // 深度监听
-  }
-)
-// const clearWatch = watchEffect(() => {
-//   console.log(ref1.value, '更新了')
-// })
-const changes = (prop) => {
-  console.log('changes-emit', prop)
-}
-// clearWatch() 函数可以清楚watchEffect监听
 </script>
 <template>
   <div>
-    <el-button @click="deboNum++">deboNum++</el-button>
-    <el-button @click="reactive2.name = 'hjh'">替换</el-button>
-    {{ reactive2.name }}
-    {{ deboNum }}
-    <Test @changes="changes" />
+    <el-button @click="pushData">push数据</el-button>
     <el-button @click="init">开启动画</el-button>
-    <div class="flex w-200px justify-between">
-      <div class="box" :style="{ height: `${hei}px` }"></div>
+    <div class="w-300px h-200px overflow-hidden m-9">
+      <div
+        ref="scrollBox"
+        :class="`scroll flex w-300px h-400px justify-between flex-col relative `"
+      >
+        <ul class="box">
+          <li v-for="item in num" :key="item">{{ item }}</li>
+        </ul>
+        <ul class="box">
+          <li v-for="item in num" :key="item">{{ item }}</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -113,9 +83,19 @@ const changes = (prop) => {
   width: 200px;
   min-height: 400px;
 }
+.scroll {
+  transition: all 1s ease-in;
+}
 .box {
   width: 150px;
-  background-color: antiquewhite;
-  transition: all 0.3s;
+  transition: all 0.5s;
+  li {
+    height: 18px;
+    line-height: 20px;
+    text-align: center;
+    color: #000;
+    background-color: aquamarine;
+    margin-top: 2px;
+  }
 }
 </style>
