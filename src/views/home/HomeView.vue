@@ -3,6 +3,14 @@ import { nextTick, onMounted, ref } from 'vue'
 import configGlobal from '@/global.vue'
 import { WebLogger } from '@/utils' // 封装console
 
+enum as {
+  ONE,
+  TWO
+}
+const marr = {
+  [as.ONE]: 'one',
+  [as.TWO]: 'two'
+}
 // inject 参数名称 默认值/或getter函数
 const scrollBox = ref<HTMLElement | null>(null)
 const step = ref<number>(40)
@@ -60,6 +68,7 @@ onMounted(() => {
 </script>
 <template>
   <div>
+    <span>{{ marr }}</span>
     <el-button @click="pushData">push数据</el-button>
     <el-button @click="init">开启动画</el-button>
     <div class="w-300px h-200px overflow-hidden m-9">
