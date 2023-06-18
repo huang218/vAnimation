@@ -15,3 +15,8 @@ export interface GlobalUrl {
   WS_URL: string
   BASE_URL: string
 }
+
+// 全局loading类型
+export interface Loading {
+  globalLoading: boolean
+}

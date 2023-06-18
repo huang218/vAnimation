@@ -199,6 +199,39 @@ export default {
               }
             }
           ]
+        },
+        {
+          id: 40,
+          parentId: 1,
+          path: '/loading',
+          name: 'Loading',
+          component: 'Layout',
+          redirect: '/loading/load',
+          isHide: false,
+          meta: {
+            title: 'nestedRoutes',
+            icon: 'menu',
+            isKeepAlive: false,
+            isTagView: true,
+            isAffix: false
+          },
+          children: [
+            {
+              id: 401,
+              parentId: 40,
+              path: '/loading/load',
+              name: 'load',
+              component: '/src/views/loading/index.vue',
+              isHide: false,
+              meta: {
+                title: '加载动画',
+                icon: 'Refresh',
+                isKeepAlive: false,
+                isTagView: true,
+                isAffix: false
+              }
+            }
+          ]
         }
       ]
     },

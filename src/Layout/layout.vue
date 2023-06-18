@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+import Loading from '@/components/Loading/index.vue'
 import AsideBar from '@/Layout/asideBar/index.vue'
 import Header from '@/Layout/header/index.vue'
 import Tags from '@/Layout/tags/index.vue'
@@ -22,6 +23,8 @@ const locale = ref(zhCn)
         </div>
       </el-container>
     </div>
+    <!-- loading -->
+    <Loading></Loading>
   </el-config-provider>
 </template>
 <style lang="less" scoped>
