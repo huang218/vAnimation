@@ -6,6 +6,7 @@ import { useLoading } from '@/hooks/useLoading'
 interface user1 {
   name?: string
   age: number
+  home: string
 }
 interface type2 {
   hjh: string
@@ -19,10 +20,11 @@ type user4 = Omit<user1, 'age'> // 从user1中删除age属性 生成新的类型
 type user5 = Record<string, { name: string }>
 type user6 = Exclude<type2, undefined>
 type user7 = Readonly<user1>
-
+type ThreeStringProps = Record<keyof user1, string>
 const obj = ref<user7>({
   name: '214',
-  age: 1
+  age: 1,
+  home: '1'
 })
 
 /**
@@ -44,7 +46,7 @@ const logginIdentity = <T extends LenType>(num: T): T => {
   console.log(num.length)
   return num
 }
-logginIdentity([]) // logginIdentity(2) => error
+logginIdentity([1, 2, 3]) // logginIdentity(2) => error
 // ----------------------------------------------------
 
 /**
