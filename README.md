@@ -54,3 +54,15 @@ npm run test:unit
 ```sh
 npm run lint
 ```
+
+### Window 
+
+```sh
+git config --global core.autocrlf true
+```
+
+### Mac 
+
+```sh
+git config --global core.autocrlf input
+```
