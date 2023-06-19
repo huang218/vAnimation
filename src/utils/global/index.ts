@@ -39,3 +39,7 @@ export const WebLogger = {
   error: showLog ? error.bind(console) : hideLogFunc,
   warn: showLog ? warn.bind(console) : hideLogFunc
 }
+
+export const array_column = <T, K extends keyof T>(data: T[], key: K) => {
+  return data.map((item) => item[key])
+}
