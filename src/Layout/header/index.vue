@@ -52,9 +52,9 @@ onMounted(() => {
           :size="'large'"
           @change="switchClick"
         />
-        <el-icon :size="'large'"
-          ><component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true"
-        /></el-icon>
+        <el-icon :size="'large'">
+          <component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true" />
+        </el-icon>
       </div>
     </el-header>
   </div>
