@@ -80,6 +80,28 @@ let ob = { name: 'hjh', age: 18 }
 getValueBykey(ob, 'name')
 // ----------------------------------------------------
 
+// infer 练习------------------------------------------
+type infer1 = string[]
+type UnpackdArray<T> = T extends (infer U)[] ? U : T
+type U0 = UnpackdArray<infer1>
+
+declare function fn1(num: string, x: boolean): number
+type GetFnReturn<T> = T extends (...args: any[]) => infer U ? U : T // 获取函数返回值类型
+type GetFnValue<T> = T extends (...args: (infer U)[]) => any ? U : T // 获取函数形参类型
+type TestFn1 = GetFnReturn<typeof fn1>
+type TestFn2 = GetFnValue<typeof fn1>
+
+type Obj = {
+  name: string
+  age: number
+  home: string
+  isShow: boolean
+}
+type GetObjType<T> = T extends { name: infer A; age: infer B; home: infer C; isShow: infer D }
+  ? [A, B, C, D]
+  : T // 获取对象属性类型
+type Obj1 = GetObjType<Obj>
+
 const { setLoading } = useLoading()
 const mockRquest = (): void => {
   setLoading(true)
