@@ -21,6 +21,7 @@ interface type2 {
   ages: number
   home?: string
 }
+type obj1 = Record<number, { name?: string }>
 type user = Partial<user1> // user1中属性变为可选
 type user2 = Required<user1> // 将user1可选属性变为必填
 type user3 = Pick<user1, 'age' | 'home'> // 从user1中拿到age属性生成新的类型
@@ -37,7 +38,8 @@ type ConstructorParameters<T extends new (...args: any) => any> = T extends new 
 ) => any
   ? P
   : never
-
+type isOne<T extends number> = T extends 1 ? true : false
+const isone = ref<isOne<1>>(true)
 const obj = ref<user7>({
   name: '214',
   age: 1,
