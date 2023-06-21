@@ -1,8 +1,14 @@
 <script setup lang="ts">
-import { reactive, ref } from 'vue'
+import { reactive, ref, watch } from 'vue'
+import { useSessionStorage } from '@vueuse/core'
 import { useLoading } from '@/hooks/useLoading'
 import { MyReadonly, MyRecord } from '@/types'
 
+const sess = useSessionStorage('session', { age: 18 })
+const initSess = () => {
+  sess.value.age++
+  console.log('更新后的sess', sess.value.age)
+}
 // 将user1中可选属性变为必选
 interface user1 {
   name?: string
@@ -83,6 +89,7 @@ const mockRquest = (): void => {
 <template>
   <div>
     <el-button plain @click="mockRquest">加载loading</el-button>
+    <el-button plain @click="initSess">更改sessionStorage</el-button>
   </div>
 </template>
 <style lang="less" scoped></style>
