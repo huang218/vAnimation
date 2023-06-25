@@ -45,7 +45,7 @@ type MyPick<T, U extends keyof T> = {
 type MyExclude<T, U> = T extends U ? never : T
 
 // 从T接口中排除K联合类型的属性
-type MyOmit<T, K extends union> = {
+type MyOmit<T, K extends any> = {
   [P in MyExclude<keyof T, K>]: T[P]
 }
 
@@ -64,3 +64,6 @@ type MyReadonly<T> = {
 
 // NonNullable 联合类型去除null、undefined
 type MyNonNullabl<T> = T extends null | undefined ? never : T
+
+// 根据U联合类型设置T中对应属性为可选 ------------左边是U以外的必选，右边是U类型可选
+type AssignPartial<T, U extends keyof T> = MyOmit<T, U> & MyPartial<MyPick<T, U>>

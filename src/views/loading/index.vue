@@ -2,7 +2,8 @@
 import { reactive, ref, watch } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 import { useLoading } from '@/hooks/useLoading'
-import { MyReadonly, MyRecord } from '@/types'
+import { throttle, debounce } from '@/utils'
+import { MyReadonly, MyRecord, AssignPartial } from '@/types'
 
 const sess = useSessionStorage('session', { age: 18 })
 const initSess = () => {
@@ -102,6 +103,12 @@ type GetObjType<T> = T extends { name: infer A; age: infer B; home: infer C; isS
   : T // 获取对象属性类型
 type Obj1 = GetObjType<Obj>
 
+type MyType = AssignPartial<Obj, 'age' | 'isShow'>
+const obj123 = reactive<MyType>({
+  name: '123',
+  home: '123'
+})
+
 const { setLoading } = useLoading()
 const mockRquest = (): void => {
   setLoading(true)
@@ -109,11 +116,19 @@ const mockRquest = (): void => {
     setLoading(false)
   }, 2000)
 }
+const aaa = throttle((...e) => {
+  console.log(typeof e, 'throttle', ...e)
+}, 300)
+const bbb = debounce((...e) => {
+  console.log(typeof e, 'debounce', ...e)
+}, 300)
 </script>
 <template>
   <div>
     <el-button plain @click="mockRquest">加载loading</el-button>
     <el-button plain @click="initSess">更改sessionStorage</el-button>
+    <el-button plain @click="aaa('hjh', true, '13', 22)">节流</el-button>
+    <el-button plain @click="bbb('hjh')">防抖</el-button>
   </div>
 </template>
 <style lang="less" scoped></style>

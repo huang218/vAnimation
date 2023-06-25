@@ -43,3 +43,34 @@ export const WebLogger = {
 export const array_column = <T, K extends keyof T>(data: T[], key: K) => {
   return data.map((item) => item[key])
 }
+
+/**
+ * @name 节流
+ * @param cb {Function}
+ * @param wait {Number}
+ */
+export const throttle = (cb: (...args: any[]) => void, wait: number = 300) => {
+  let timer: any = null
+  return (...args: any[]) => {
+    if (timer) return
+    timer = window.setTimeout(() => {
+      cb(...args)
+      timer = null
+    }, wait)
+  }
+}
+/**
+ * @name 防抖
+ * @param cb {Function}
+ * @param wait {Number}
+ */
+export const debounce = (cb: (...args: any[]) => void, wait: number = 300) => {
+  let timer: any = null
+  return (...args: any[]) => {
+    if (timer) clearTimeout(timer)
+    timer = window.setTimeout(() => {
+      cb(...args)
+      timer = null
+    }, wait)
+  }
+}
