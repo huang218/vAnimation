@@ -32,9 +32,9 @@ const handleSelect = (key: string) => {
       mode="horizontal"
       @select="handleSelect"
     >
-      <el-menu-item v-for="item in routerList" :key="item.path" :index="item.path">{{
-        item.name
-      }}</el-menu-item>
+      <el-menu-item v-for="item in routerList" :key="item.path" :index="item.path">
+        {{ item.name }}
+      </el-menu-item>
     </el-menu>
   </div>
 </template>
@@ -57,7 +57,8 @@ const handleSelect = (key: string) => {
       height: 58px;
       width: auto;
       font-weight: 600;
-      background-color: var(--el-bg-color);
+      // background-color: var(--el-bg-color);
+      background-color: transparent;
       color: var(--el-text-color-primary);
       line-height: 60px;
       text-align: center;
@@ -93,6 +94,7 @@ const handleSelect = (key: string) => {
   }
   .el-menu-demo {
     width: calc(100% - 200px);
+    background-color: transparent !important;
   }
 }
 </style>
