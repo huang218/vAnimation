@@ -41,10 +41,8 @@ type ConstructorParameters<T extends new (...args: any) => any> = T extends new 
   : never
 type isOne<T extends number> = T extends 1 ? true : false
 const isone = ref<isOne<1>>(true)
-const obj = ref<user7>({
-  name: '214',
-  age: 1,
-  home: '1'
+const obj = ref<user51>({
+  name: { name: 'ss' }
 })
 type aa = NonNullable<1 | 2 | null>
 /**

@@ -22,48 +22,57 @@ export interface Loading {
 }
 type union = string | boolean | symbol
 
-// 递归遍历可选
-type DeepPartial<T> = {
-  [P in keyof T]?: T[P] extends Object ? DeepPartial<T[P]> : T[P]
+// 解耦类型 ----------------------------------------------------------------
+/**单个提问数据结构 */
+interface QsData {
+  avator?: string
+  time?: number | string
+  name?: string
+  quesitons: {
+    title: string
+    picture: string[]
+  }
 }
 
-// 将属性变为可选
-type MyPartial<T> = {
-  [P in keyof T]?: T[P]
+/**单个回答数据结构 */
+interface AsData {
+  avator?: string
+  time?: number | string
+  name?: string
+  answers: {
+    text: string
+    audio?: {
+      url: string
+      total: number
+    }
+  }
 }
-
-// 将属性变为必选
-type MyRequired<T> = {
-  [P in keyof T]-?: T[P]
+// 解耦 ⬇️
+interface Qs {
+  avator?: string
+  time?: number | string
+  name?: string
 }
-
-// 以U联合类型为准，查找T中相应的类型，生成新的类型
-type MyPick<T, U extends keyof T> = {
-  [P in U]: T[P]
+interface DataOne {
+  quesitions: {
+    title: string
+    picture: string[]
+  }
 }
-// 从T联合类型中中排除U类型 / 联合类型
-type MyExclude<T, U> = T extends U ? never : T
-
-// 从T接口中排除K联合类型的属性
-type MyOmit<T, K extends any> = {
-  [P in MyExclude<keyof T, K>]: T[P]
+interface DataTwo {
+  answers: {
+    text: string
+    audio?: {
+      url: string
+      total: number
+    }
+  }
 }
-
-// 过滤null 、undefined
-type MyNonNullable<T> = T extends null | undefined ? never : T
-
-// Record
-type MyRecord<K extends keyof any, T> = {
-  [P in K]: T
+// 混入接口。交叉类型
+type Mixin<U, T> = U & T
+type MixWithDataAvAtor<T> = Mixin<Qs, T>
+export interface TestConfig {
+  asker: MixWithDataAvAtor<DataOne>
+  answer?: MixWithDataAvAtor<DataTwo>
 }
-
-// Readonly -? // ?
-type MyReadonly<T> = {
-  readonly [K in keyof T]: T[K]
-}
-
-// NonNullable 联合类型去除null、undefined
-type MyNonNullabl<T> = T extends null | undefined ? never : T
-
-// 根据U联合类型设置T中对应属性为可选 ------------左边是U以外的必选，右边是U类型可选
-type AssignPartial<T, U extends keyof T> = MyOmit<T, U> & MyPartial<MyPick<T, U>>
+// 结束 ----------------------------------------------------------------

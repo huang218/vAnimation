@@ -6,4 +6,5 @@ declare module '*.vue' {
   export default component
 }
 declare module '*.scss' {}
+declare module '*.d.ts' {}
 declare module 'qs'
