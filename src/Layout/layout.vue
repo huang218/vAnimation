@@ -5,6 +5,7 @@ import AsideBar from '@/Layout/asideBar/index.vue'
 import Header from '@/Layout/header/index.vue'
 import Tags from '@/Layout/tags/index.vue'
 import Main from '@/Layout/main/index.vue'
+import FollowMove from '@/components/FollowMove/index.vue'
 import { ref } from 'vue'
 
 const locale = ref(zhCn)
@@ -25,6 +26,7 @@ const locale = ref(zhCn)
     </div>
     <!-- loading -->
     <Loading></Loading>
+    <FollowMove></FollowMove>
   </el-config-provider>
 </template>
 <style lang="less" scoped>

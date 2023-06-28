@@ -124,7 +124,7 @@ const bbb = debounce((...e) => {
 }, 300)
 </script>
 <template>
-  <div>
+  <div class="h-full w-full">
     <el-button plain @click="mockRquest">加载loading</el-button>
     <el-button plain @click="initSess">更改sessionStorage</el-button>
     <el-button plain @click="aaa('hjh', true, '13', 22)">节流</el-button>
