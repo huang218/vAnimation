@@ -43,6 +43,7 @@ onMounted(() => {
         <leftHeader />
       </div>
       <div class="right flex justify-end h-full w-50 items-center">
+        <a href="#">测试</a>
         <div>{{ formatAxis(new Date()) }}</div>
         <el-switch
           v-model="switchType"
