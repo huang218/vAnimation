@@ -6,6 +6,7 @@ import { useRouter } from 'vue-router'
 const { x, y } = useMouse()
 const router = useRouter()
 const size = ref<number>(36)
+const doms = ref<HTMLElement[]>([])
 const pelletStyle = computed(() => {
   return {
     '--pelletSize': `${size.value}px`,
@@ -17,19 +18,20 @@ const pelletStyle = computed(() => {
 watch(
   () => router.currentRoute.value,
   () => {
-    nextTick(() => {
+    doms.value = []
+    setTimeout(() => {
       init()
-    })
+    }, 300)
   },
   { immediate: true }
 )
 const init = () => {
   const aDom = Array.from(document.querySelectorAll('a'))
   const buttonDom: any[] = Array.from(document.querySelectorAll('button'))
-  const doms = aDom.concat(buttonDom)
-  console.log(doms, 'dom', buttonDom)
+  doms.value = aDom.concat(buttonDom)
+  console.log(aDom, 'dom', buttonDom)
 
-  doms.forEach((dom) => {
+  doms.value.forEach((dom) => {
     dom.addEventListener('mouseover', () => {
       size.value = 54
     })
