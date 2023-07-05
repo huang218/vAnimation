@@ -33,6 +33,12 @@ interface QsData {
     picture: string[]
   }
 }
+// 防抖节流 配置参数类型
+export interface UtilsCommon {
+  leading?: boolean
+  maxWait?: number
+  trailing?: boolean
+}
 
 /**单个回答数据结构 */
 interface AsData {
