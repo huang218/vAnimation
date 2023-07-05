@@ -116,10 +116,10 @@ const mockRquest = (): void => {
 }
 const aaa = throttle((...e) => {
   console.log(typeof e, 'throttle', ...e)
-}, 300)
+}, 2000)
 const bbb = debounce((...e) => {
   console.log(typeof e, 'debounce', ...e)
-}, 300)
+}, 2000)
 </script>
 <template>
   <div class="h-full w-full">

@@ -1,7 +1,8 @@
 /**
  * 函数on类型推导
  */
-type Watcher<T> = {
+
+export type Watcher<T> = {
   on<K extends keyof T>(
     eventText: `${string & K}Change`,
     callback: (oldVal: T[K], newVal: T[K]) => void
@@ -53,3 +54,30 @@ type GetArrayType<A> = A extends (infer K)[] ? K : never
 
 type testVal1 = GetArrayType<string[]> // string
 type testVal2 = GetArrayType<[string, boolean, number]> // string | boolean | number
+
+/**
+ * ********************************
+ */
+type JsTypeMap = {
+  string: string
+  boolean: boolean
+  number: number
+  object: object
+  function: Function
+  symbol: symbol
+  undefined: undefined
+  bigint: bigint
+}
+
+// 获取JsTypeMap  key联合类型
+type JsTypeName = keyof JsTypeMap
+
+// 给ArgsMap一个数组联合类型 ， 推导出每一项对应的参数类型
+type ArgsMap<T extends JsTypeName[]> = {
+  [I in keyof T]: JsTypeMap[T[I]]
+}
+// T 限制为JsTypeName[]
+declare function addImpl<T extends JsTypeName[]>(
+  ...args: [...T, (...args: ArgsMap<T>) => any]
+): void
+addImpl('string', 'object', (a, b) => {})

@@ -1,3 +1,5 @@
+import { UtilsCommon } from '@/types'
+
 export const hasLength = (target: Array<any>) => target && target.length > 0
 
 /** element 组件的全局配置size  因为这个是全局的,故写在于此 */
@@ -45,32 +47,54 @@ export const array_column = <T, K extends keyof T>(data: T[], key: K) => {
 }
 
 /**
- * @name 节流
- * @param cb {Function}
- * @param wait {Number}
+ * common工具函数
  */
-export const throttle = (cb: (...args: any[]) => void, wait: number = 300) => {
+export const utilCommon = (
+  cb: (...args: any[]) => void,
+  wait: number = 300,
+  options?: UtilsCommon
+) => {
   let timer: any = null
+  let leading: boolean = false
+  let maxWait: number = 0
+  let trailing: boolean = false
+
+  if (options) {
+    leading = !!options.leading
+    maxWait = Math.max(+options.maxWait || 0, wait)
+    trailing = 'trailing' in options ? !!options.trailing : trailing
+  }
+
   return (...args: any[]) => {
-    if (timer) return
+    if (timer) {
+      if (leading) {
+        // throttle
+        return
+      } else {
+        // debounce
+        clearTimeout(timer)
+      }
+    }
     timer = window.setTimeout(() => {
       cb(...args)
       timer = null
     }, wait)
   }
 }
+
+/**
+ * @name 节流
+ * @param {Function} cb
+ * @param {Number} wait
+ */
+export const throttle = (cb: (...args: any[]) => void, wait: number = 300) => {
+  return utilCommon(cb, wait, { leading: true })
+}
 /**
  * @name 防抖
- * @param cb {Function}
- * @param wait {Number}
+ * @param {Function} cb
+ * @param {Number} wait
  */
 export const debounce = (cb: (...args: any[]) => void, wait: number = 300) => {
-  let timer: any = null
-  return (...args: any[]) => {
-    if (timer) clearTimeout(timer)
-    timer = window.setTimeout(() => {
-      cb(...args)
-      timer = null
-    }, wait)
-  }
+  return utilCommon(cb, wait)
 }
