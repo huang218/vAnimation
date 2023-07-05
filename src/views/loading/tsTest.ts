@@ -81,3 +81,38 @@ declare function addImpl<T extends JsTypeName[]>(
   ...args: [...T, (...args: ArgsMap<T>) => any]
 ): void
 addImpl('string', 'object', (a, b) => {})
+
+/**
+ * 协变 逆变
+ */
+
+type UnionToIntersection<T> = (T extends any ? (x: T) => any : never) extends (x: infer K) => any
+  ? K
+  : never
+
+type test4 = { a: string } | { b: number } | { c: boolean }
+
+type Val = UnionToIntersection<test4>
+const value: Val = {
+  a: '1',
+  b: 1,
+  c: false
+}
+
+// Test案例
+type Small = { a: string } | { b: number } | { c: boolean } // 大类型
+type Big = { a: string } & { b: number } & { c: boolean } // 小类型
+
+// 协变 小类型传给大类型
+const small: Small = { a: '1', b: 1 }
+const big: Big = { a: '1', b: 1, c: false }
+
+// big = small // OK
+// small = big // Error
+
+// 逆变  大类型传给小类型  联合类型转为交叉类型
+const fn1 = (x: Big) => {}
+const fn2 = (x: Small) => {}
+
+// fn2 = fn1 // OK
+// fn1 = fn2 // Error
