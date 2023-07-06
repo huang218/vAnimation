@@ -35,7 +35,7 @@ type returnVal1 = ReturnT<func1> // string
  */
 type PromiseType<T> = T extends Promise<infer U> ? PromiseType<U> : T
 
-type promiseT = PromiseType<Promise<Promise<boolean>>> // boolean
+type promiseT = PromiseType<string | Promise<Promise<boolean>>> // boolean
 
 /**
  * 获取一个函数第一个参数类型
