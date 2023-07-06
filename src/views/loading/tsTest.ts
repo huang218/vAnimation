@@ -16,7 +16,7 @@ const personWatcher = watch({
   lastName: 'home',
   bool: true
 })
-personWatcher.on('lastNameChange', (oldVal, newVal) => {})
+personWatcher.on('fristNameChange', (oldVal, newVal) => {})
 
 /**
  * 获取一个函数的返回值类型
