@@ -1,4 +1,4 @@
-import { effect, reactive, Ref } from './core.js'
+import { effect, reactive, RefImpl } from './core.js'
 let btn = document.getElementById('btn')
 let btn1 = document.getElementById('btn1')
 let texts = document.getElementById('text')
@@ -9,7 +9,7 @@ let text = { age: 0, child: { age: 1 } }
 const proxyText = reactive(text)
 let text1 = { age: 0 }
 const proxyText1 = reactive(text1)
-let text2 = new Ref(true)
+let text2 = new RefImpl(true)
 console.log(text2.value)
 
 effect(() => {

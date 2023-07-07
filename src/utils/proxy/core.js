@@ -26,7 +26,7 @@ export const reactive = (obj) => {
   })
 }
 
-export class Ref {
+export class RefImpl {
   constructor(value) {
     this._value = value
     this.__v_isRef = true
