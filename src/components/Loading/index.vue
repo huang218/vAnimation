@@ -3,13 +3,15 @@ import { useLoading } from '@/hooks/useLoading'
 const { loading } = useLoading()
 </script>
 <template>
-  <div v-show="loading" class="mask">
-    <div class="container">
-      <div class="sami-ring"></div>
-      <div class="sami-ring"></div>
-      <div class="sami-ring"></div>
+  <Teleport to="body">
+    <div v-show="loading" class="mask">
+      <div class="container">
+        <div class="sami-ring"></div>
+        <div class="sami-ring"></div>
+        <div class="sami-ring"></div>
+      </div>
     </div>
-  </div>
+  </Teleport>
 </template>
 <style lang="less" scoped>
 @keyframes loading_one {

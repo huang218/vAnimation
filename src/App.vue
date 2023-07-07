@@ -10,7 +10,6 @@ onMounted(() => {
   //   const buttonDom: any[] = Array.from(document.querySelectorAll('button'))
   //   const doms = aDom.concat(buttonDom)
   //   console.log(doms, 'dom', buttonDom)
-
   //   doms.forEach((dom) => {
   //     dom.addEventListener('mouseover', (event) => {
   //       console.log(event, 'mouseover')

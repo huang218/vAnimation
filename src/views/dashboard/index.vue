@@ -3,9 +3,10 @@ import { ref, onMounted } from 'vue'
 import { weatherType } from '@/types'
 import { settingsStore } from '@/stores'
 import { commonServer } from '@/apis'
+import Child from './components/child.vue'
 
 const setting = settingsStore()
-
+const comRef = ref<any>(null)
 const weatherInfo = ref<weatherType>({})
 const weathLoading = ref<boolean>(true)
 const ulRef = ref(null)
@@ -66,6 +67,11 @@ const getWeather = async () => {
     weathLoading.value = false
   }
 }
+
+const childClick = (e: Event) => {
+  console.log(e.target, 'childClick')
+  console.log(comRef.value.exportVal)
+}
 onMounted(() => {
   getWeather()
 })
@@ -112,6 +118,12 @@ onMounted(() => {
       </el-descriptions>
     </template>
   </el-skeleton>
+  <Child ref="comRef" @on-changed="childClick">
+    <template #hjh>
+      <div>插槽</div>
+    </template>
+  </Child>
+  {{ comRef?.exportVal }}
 </template>
 
 <style scoped lang="less">

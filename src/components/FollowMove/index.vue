@@ -47,7 +47,9 @@ const init = () => {
 onMounted(() => {})
 </script>
 <template>
-  <div class="pellet" :style="pelletStyle"></div>
+  <Teleport to="#app">
+    <div class="pellet" :style="pelletStyle"></div>
+  </Teleport>
 </template>
 <style lang="less" scoped>
 .pellet {
