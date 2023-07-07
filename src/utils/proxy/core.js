@@ -1,3 +1,6 @@
+/* eslint-disable no-redeclare */
+/* eslint-disable prettier/prettier */
+
 let shouldTrack = false // 是否可收集依赖
 let activeEffect = null // 存储当前依赖
 // 保存原始对象与依赖集合之间的关系
@@ -32,22 +35,30 @@ export class RefImpl {
     this.__v_isRef = true
     this.depsList = new Set()
   }
-  // eslint-disable-next-line getter-return, prettier/prettier
   get value () {
     if (shouldTrack) {
       trackEffect(this.depsList)
     }
     return this._value
   }
-  // eslint-disable-next-line prettier/prettier
   set value (value) {
     this._value = value
     triggerEffect(this.depsList)
   }
 }
 
+export function ref (value) {
+  return createRef(value, false)
+}
+
+function createRef (value, shallow) {
+  if (isRef(value)) {
+    return value
+  }
+  return new RefImpl(value, shallow)
+}
+
 // 依赖收集
-// eslint-disable-next-line prettier/prettier
 function track (target, key) {
   let keyDeps = targetMap.get(target)
   if (!keyDeps) {
@@ -62,31 +73,31 @@ function track (target, key) {
   trackEffect(deps)
 }
 
-// eslint-disable-next-line prettier/prettier
 function trackEffect (deps) {
   deps.add(activeEffect)
 }
 
 // 触发依赖
-// eslint-disable-next-line prettier/prettier
 function trigger (target, key) {
   const keyDeps = targetMap.get(target)
   const deps = keyDeps.get(key)
   triggerEffect(deps)
 }
 
-// eslint-disable-next-line prettier/prettier
 function triggerEffect (deps) {
   for (const dep of deps) {
     dep()
   }
 }
 
-// eslint-disable-next-line prettier/prettier
 export function effect (fn) {
   activeEffect = fn
   shouldTrack = true
   fn()
   shouldTrack = false
   activeEffect = null
+}
+
+function isRef (ref) {
+  return !!ref && ref.__v_isRef === true
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, toRaw, reactive } from 'vue'
 import { weatherType } from '@/types'
 import { settingsStore } from '@/stores'
 import { commonServer } from '@/apis'
@@ -10,7 +10,7 @@ const comRef = ref<any>(null)
 const weatherInfo = ref<weatherType>({})
 const weathLoading = ref<boolean>(true)
 const ulRef = ref(null)
-
+const testObj = reactive({ name: 1 })
 const ind = ref(0)
 const items = ref([
   { name: '1' },
@@ -74,6 +74,7 @@ const childClick = (e: Event) => {
 }
 onMounted(() => {
   getWeather()
+  console.log(toRaw(testObj), testObj)
 })
 </script>
 
