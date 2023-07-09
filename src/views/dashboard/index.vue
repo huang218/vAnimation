@@ -5,6 +5,7 @@ import { settingsStore } from '@/stores'
 import { commonServer } from '@/apis'
 import Child from './components/child.vue'
 
+const map = reactive(new Set())
 const setting = settingsStore()
 const comRef = ref<any>(null)
 const weatherInfo = ref<weatherType>({})
@@ -68,13 +69,17 @@ const getWeather = async () => {
   }
 }
 
-const childClick = (e: Event) => {
+const childClick = (e: Record<string, string | number>) => {
   console.log(e.target, 'childClick')
   console.log(comRef.value.exportVal)
 }
 onMounted(() => {
   getWeather()
+  map.add('h')
+  map.add('hs')
+  map.add('hs')
   console.log(toRaw(testObj), testObj)
+  console.log('map', map)
 })
 </script>
 
@@ -124,6 +129,8 @@ onMounted(() => {
       <div>插槽</div>
     </template>
   </Child>
+  <div v-for="(item, index) in map" :key="index">{{ item }}</div>
+  <el-button @click="() => map.add('242')">pushMap</el-button>
   {{ comRef?.exportVal }}
 </template>
 
