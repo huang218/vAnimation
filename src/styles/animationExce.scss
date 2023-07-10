@@ -25,3 +25,8 @@
   opacity: 0;
   transform: translateX(30px);
 }
+
+.active:active {
+  opacity: 0;
+  transform: translateY(-30px);
+}
