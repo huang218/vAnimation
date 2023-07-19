@@ -73,6 +73,10 @@ const childClick = (e: Record<string, string | number>) => {
   console.log(e.target, 'childClick')
   console.log(comRef.value.exportVal)
 }
+
+const change = (type: boolean) => {
+  console.log(type, '按钮状态')
+}
 onMounted(() => {
   getWeather()
   map.add('h')
@@ -84,6 +88,8 @@ onMounted(() => {
 </script>
 
 <template>
+  <t-button class="w-40px h-40px" @change="change" />
+
   <!-- <MainPage alias=""> -->
   <!-- <el-scrollbar noresize height="500px" @scroll="scroll">
       <div class="h-438px"></div>

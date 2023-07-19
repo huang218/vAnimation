@@ -30,6 +30,9 @@ const initSitch = (): void => {
   const darkType = Local.getNoJson('vueuse-color-scheme')
   switchType.value = darkType === ('light' || 'dark')
 }
+const change = (type: boolean) => {
+  console.log(type, '按钮状态')
+}
 
 onMounted(() => {
   initSitch()
@@ -42,7 +45,8 @@ onMounted(() => {
       <div class="left h-full flex-1">
         <leftHeader />
       </div>
-      <div class="right flex justify-end h-full w-50 items-center">
+      <div class="right flex justify-end h-full w-100 items-center">
+        <t-button class="w-40px h-40px" @change="change" />
         <a href="#">测试</a>
         <div>{{ formatAxis(new Date()) }}</div>
         <el-switch
