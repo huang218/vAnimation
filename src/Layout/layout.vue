@@ -17,7 +17,7 @@ const locale = ref(zhCn)
         <Header />
         <div class="flex-column">
           <AsideBar />
-          <div class="flex flex-col h-full flex-1 content-box">
+          <div class="flex flex-col h-full flex-1 content-box transition-bgc">
             <Tags />
             <Main />
           </div>

@@ -53,7 +53,7 @@ onMounted(() => {
           :size="'large'"
           @change="switchClick"
         />
-        <el-icon :size="'large'">
+        <el-icon :size="24">
           <component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true" />
         </el-icon>
       </div>
@@ -82,7 +82,7 @@ onMounted(() => {
     .logOutIcon {
       cursor: pointer;
       color: var(--el-text-color-primary);
-      font-size: 20px;
+      font-size: 24px;
       transition: all 0.2s;
       &:hover {
         transform: scale(1.2);
