@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia'
 import { Menu, TagViewStoreType } from '@/types'
 import { route } from '@/hooks/useRoute'
-import { useRouterJump } from '@/hooks/useRouterJump'
 
-const { pushRouter } = useRouterJump()
 export const createTagView = (): TagViewStoreType => {
   return {
     visitedViews: [

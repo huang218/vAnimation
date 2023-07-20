@@ -67,7 +67,7 @@ watch(
       @apply text-blue-400;
     }
     span {
-      @apply block w-full whitespace-nowrap;
+      @apply block w-full whitespace-nowrap mx-2;
     }
   }
   // 选中tag style
