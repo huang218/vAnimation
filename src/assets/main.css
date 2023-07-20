@@ -20,7 +20,7 @@
   font-size: 16px;
   overflow: hidden;
   position: relative;
-  transition: color 0.5s, background-color 0.5s !important;
+  transition: background-color 0.5s !important;
 }
 
 a {
@@ -57,3 +57,7 @@ a:hover:after{
     transition: width .3s;
   }
 } */
+
+.transition-bgc {
+  transition: background-color 0.5s !important;
+}
