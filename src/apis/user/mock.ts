@@ -33,7 +33,7 @@ export default {
                 icon: 'HomeFilled',
                 isKeepAlive: true,
                 isTagView: true,
-                isAffix: false
+                isAffix: true
               }
             }
           ]
@@ -195,7 +195,7 @@ export default {
                 icon: 'Coffee',
                 isKeepAlive: true,
                 isTagView: true,
-                isAffix: true
+                isAffix: false
               }
             }
           ]

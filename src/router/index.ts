@@ -2,7 +2,7 @@ import { createRouter, createWebHistory, isNavigationFailure } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Local } from '@/utils'
-import { routerStore } from '@/stores'
+import { routerStore, tagViewStore } from '@/stores'
 import Login from '../views/login/index.vue'
 // import Layout from '@/Layout/layout.vue';
 
@@ -41,6 +41,7 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.configure({ showSpinner: false })
   NProgress.start()
+  const tagStore = tagViewStore()
   const { routerList, curRootRoute, getRouterList, getCurrentRoute } = routerStore()
   const token = Local.get('token')
 
@@ -48,7 +49,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       const newRouter = await getRouterList()
 
-      newRouter.forEach((item) => router.addRoute(item))
+      newRouter.forEach((item: any) => router.addRoute(item))
       console.log('添加动态路由')
       //跳转到目的路由
       next({ ...to, replace: true })
@@ -77,6 +78,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // 初始化header默认选择路由
     const routeSplit = to.path.split('/')[1]
+    tagStore.addCurrentView(to.path)
     if (routeSplit === '' || routeSplit === 'dashboard') {
       getCurrentRoute('/')
     } else if (curRootRoute != `/${routeSplit}`) {

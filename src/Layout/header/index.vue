@@ -46,7 +46,7 @@ onMounted(() => {
         <leftHeader />
       </div>
       <div class="right flex justify-end h-full w-100 items-center">
-        <t-button class="w-40px h-40px" @change="change" />
+        <t-button class="transform w-40px h-40px scale-80" @change="change" />
         <a href="#">测试</a>
         <div>{{ formatAxis(new Date()) }}</div>
         <el-switch

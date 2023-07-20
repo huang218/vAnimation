@@ -1,3 +1,25 @@
+<script lang="ts">
+export default {
+  name: 'SidebarItem'
+}
+</script>
+
+<script setup lang="ts">
+import { isHide, hasChildren } from '@/utils'
+import { settingsStore, tagViewStore } from '@/stores'
+import { Menu } from '@/types'
+const props = defineProps<{
+  route: Menu
+  isIcon: Boolean
+}>()
+
+const settingsConfig = settingsStore()
+const tagStore = tagViewStore()
+
+const menuClick = () => {
+  tagStore.addTagView(props.route)
+}
+</script>
 <template>
   <div
     v-if="!isHide(route)"
@@ -8,6 +30,7 @@
       <el-menu-item
         class="sub-menu active:text-$el-color-primary-light-7 hover:(text-$el-color-primary-light-2 bg-transparent) select-none"
         :index="route.path"
+        @click="menuClick"
       >
         <template #title>
           <el-icon>
@@ -41,24 +64,6 @@
     </el-sub-menu>
   </div>
 </template>
-<script lang="ts">
-export default {
-  name: 'SidebarItem'
-}
-</script>
-
-<script setup lang="ts">
-import { House, Setting } from '@element-plus/icons-vue'
-import { isHide, hasChildren } from '@/utils'
-import { settingsStore } from '@/stores'
-import { Menu } from '@/types'
-defineProps<{
-  route: Menu
-  isIcon: Boolean
-}>()
-// const { route } = toRefs(props);
-const settingsConfig = settingsStore()
-</script>
 
 <style lang="scss" scoped>
 .sidebar-item {

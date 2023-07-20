@@ -21,34 +21,32 @@ const btnClick = () => {
   position: relative;
   cursor: pointer;
   border-radius: 4px;
-  @apply border-dark-600 bg-transparent dark:border-light-600;
+  @apply flex flex-col justify-evenly items-center border-dark-600 bg-transparent dark:border-light-600;
   .line {
-    transform-origin: 26% 50%;
+    transform-origin: 16% 50%;
     @apply transform
-      absolute
       block
       w-30px
       h-3px
-      left-5px
       rounded-2px
       rotate-0
       transition-transform
       transition-width
-      duration-300
+      duration-200
       bg-dark-600
       dark:bg-light-600;
   }
-  .line:first-child {
-    @apply top-15px;
-  }
-  .line:last-child {
-    @apply top-25px;
-  }
+  // .line:first-child {
+  //   @apply top-15px;
+  // }
+  // .line:last-child {
+  //   @apply top-25px;
+  // }
 }
 .clickStatus {
-  .line {
-    @apply translate-x-2px;
-  }
+  // .line {
+  //   @apply translate-x-2px;
+  // }
   .line:first-child {
     @apply rotate-45;
   }
