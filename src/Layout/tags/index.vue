@@ -12,6 +12,9 @@ const { pushRouter } = useRouterJump()
 const tagClick = (route: Menu) => {
   tagStore.addCurrentView(route.path)
 }
+const rightclick = (a, b, c) => {
+  console.log(a, b, c)
+}
 const iconClose = (route: Menu) => {
   tagStore.deleteTagView(route)
 }
@@ -25,23 +28,27 @@ watch(
 <template>
   <el-scrollbar class="w-full max-h-10">
     <div class="tag-list">
-      <ul class="flex pr-1">
+      <TransitionGroup name="tag" tag="ul" class="flex pr-1 relative">
         <li
-          v-for="item in visitedViews"
+          v-for="(item, index) in visitedViews"
           :key="item.path"
           :class="`tag ${currentView === item.path ? 'tagSelect' : 'tagNoSelect'}`"
           @click="tagClick(item)"
+          @contextmenu.prevent="rightclick(item, index, $event)"
         >
           <span>{{ item.name }}</span>
           <el-icon v-if="!item.meta.isAffix" @click.stop="iconClose(item)">
             <component :is="'Close'" />
           </el-icon>
         </li>
-      </ul>
+      </TransitionGroup>
     </div>
   </el-scrollbar>
 </template>
 <style lang="less" scoped>
+:deep(.el-scrollbar__bar) {
+  z-index: 10;
+}
 .tag-list {
   @apply flex
   items-center
@@ -53,18 +60,28 @@ watch(
     @apply flex
     justify-between
     items-center
-    text-14px
+    text-12px
     px-1
     ml-1
     h-8
+    z-4
     leading-8
     rounded-4px
     min-w-16
     transition
     text-center
-    cursor-pointer;
-    &:hover span {
-      @apply text-blue-400;
+    cursor-pointer
+    border
+    border-gray-300
+    dark:border-gray-500/60;
+    &:hover {
+      @apply bg-light-800 dark:bg-dark-50;
+    }
+    :deep(.el-icon) {
+      @apply rounded-1/2;
+      &:hover {
+        @apply bg-light-50 dark: bg-dark-500;
+      }
     }
     span {
       @apply block w-full whitespace-nowrap mx-2;
@@ -72,11 +89,34 @@ watch(
   }
   // 选中tag style
   .tagSelect {
-    @apply bg-blue-400 dark:bg-dark-50;
+    @apply bg-light-800 dark:bg-dark-50;
   }
   // 未选中tag style
   .tagNoSelect {
-    @apply bg-blue-200 dark:bg-dark-300;
+    @apply bg-light-50 dark:bg-dark-500;
+  }
+
+  .tag-move, /* 对移动中的元素应用的过渡 */
+  .tag-enter-active,
+  .tag-leave-active {
+    transition: all 0.5s cubic-bezier(0.55, 0, 0.1, 1);
+  }
+
+  .tag-enter-from {
+    opacity: 0;
+    transform: translate(30px, 0);
+    z-index: 1;
+  }
+  .tag-leave-to {
+    opacity: 0;
+    transform: scale(0.5) translateX(30px);
+    z-index: 1;
+  }
+
+  /* 确保将离开的元素从布局流中删除
+  以便能够正确地计算移动的动画。 */
+  .tag-leave-active {
+    position: absolute;
   }
 }
 </style>

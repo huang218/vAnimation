@@ -48,9 +48,7 @@ router.beforeEach(async (to, from, next) => {
   if (routerList.length <= 0) {
     try {
       const newRouter = await getRouterList()
-
       newRouter.forEach((item: any) => router.addRoute(item))
-      console.log('添加动态路由')
       //跳转到目的路由
       next({ ...to, replace: true })
     } catch (err) {
@@ -108,7 +106,6 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from, failure) => {
   if (isNavigationFailure(failure)) {
     NProgress.done()
-    console.log('error navigation', failure)
   } else {
     document.title = router.currentRoute.value.meta.title as string
     NProgress.done()
