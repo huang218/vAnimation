@@ -1,29 +1,64 @@
 <script setup lang="ts">
-import { watch } from 'vue'
+import { computed, onMounted, ref, watch, nextTick, inject } from 'vue'
 import { storeToRefs } from 'pinia'
 import { tagViewStore } from '@/stores'
 import { useRouterJump } from '@/hooks/useRouterJump'
-import { Menu } from '@/types'
+import { Menu, Client } from '@/types'
 
 const tagStore = tagViewStore()
 const { visitedViews, currentView } = storeToRefs(tagStore)
 const { pushRouter } = useRouterJump()
+const reload = inject<Function>('reload')
+const menuIsShow = ref<boolean>(false)
+const menuWidth = ref<number>(100)
+const clientXY = ref<Record<Client, number>>({
+  clientX: 0,
+  clientY: 0
+})
 
-const tagClick = (route: Menu) => {
-  tagStore.addCurrentView(route.path)
-}
-const rightclick = (a, b, c) => {
-  console.log(a, b, c)
-}
-const iconClose = (route: Menu) => {
-  tagStore.deleteTagView(route)
-}
 watch(
   () => currentView.value,
   (newValue) => {
     pushRouter(newValue)
   }
 )
+const positionInfo = computed(() => {
+  return {
+    top: `${clientXY.value.clientY}px`,
+    left: `${clientXY.value.clientX}px`,
+    width: `${menuWidth.value}px`
+  }
+})
+const tagClick = (route: Menu) => {
+  tagStore.addCurrentView(route.path)
+}
+const rightclick = async (route, index, event) => {
+  let { clientX, clientY } = event
+  const { innerWidth } = window
+  if (innerWidth < clientX + menuWidth.value) {
+    clientX = innerWidth - menuWidth.value
+  }
+  clientXY.value = { clientX, clientY }
+  await nextTick()
+  menuIsShow.value = true
+}
+const iconClose = (route: Menu) => {
+  tagStore.deleteTagView(route)
+}
+const closeCur = () => {
+  console.log('关闭当前')
+}
+const closeOrther = () => {
+  console.log('关闭其他')
+}
+const closeAll = () => {
+  console.log('关闭全部')
+}
+onMounted(() => {
+  document.onclick = function () {
+    menuIsShow.value = false
+  }
+})
 </script>
 <template>
   <el-scrollbar class="w-full max-h-10">
@@ -42,6 +77,14 @@ watch(
           </el-icon>
         </li>
       </TransitionGroup>
+      <Teleport to="#app">
+        <ul v-show="menuIsShow" class="rightMenu" :style="positionInfo">
+          <li @click="reload()">刷新页面</li>
+          <li @click="closeCur">关闭当前</li>
+          <li @click="closeOrther">关闭其他</li>
+          <li @click="closeAll">关闭全部</li>
+        </ul>
+      </Teleport>
     </div>
   </el-scrollbar>
 </template>
@@ -117,6 +160,17 @@ watch(
   以便能够正确地计算移动的动画。 */
   .tag-leave-active {
     position: absolute;
+  }
+}
+</style>
+<style lang="less">
+.rightMenu {
+  @apply absolute top-0 left-0 z-999 text-14px h-auto py-4px rounded-4px overflow-hidden dark: bg-dark-100;
+  li {
+    @apply h-25px text-center leading-25px cursor-pointer;
+    &:hover {
+      @apply dark: bg-dark-200;
+    }
   }
 }
 </style>

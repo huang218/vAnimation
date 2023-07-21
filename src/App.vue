@@ -1,10 +1,4 @@
-<script setup lang="ts">
-import { provide, ref } from 'vue'
-
-const provideInfo = ref<number>(10086)
-
-provide('provideInfo', provideInfo)
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <router-view> </router-view>
