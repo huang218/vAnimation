@@ -23,3 +23,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 const i18nType = { name: 'hjh' }
 app.use(pinia).use(i18nPlugin, i18nType).use(router).directive('focus', vFocus).mount('#app')
 console.log(app, 'App')
+/**
+ * test-bug-branch 测试bug分支
+ */
