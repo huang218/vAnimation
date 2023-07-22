@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, nextTick } from 'vue'
+import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Moon, Sunny, SwitchButton } from '@element-plus/icons-vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { userStore } from '@/stores'
@@ -8,6 +9,7 @@ import { Local } from '@/utils'
 import { formatAxis } from '@/utils/formatTime'
 import leftHeader from './leftHeader.vue'
 
+const router = useRouter()
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const userStores = userStore()
@@ -16,11 +18,9 @@ const dialogVisible = ref(false)
 const switchType = ref(false)
 
 const logOut = () => {
+  router.push({ path: '/login' })
   dialogVisible.value = false
   userStores.logOut()
-  nextTick(() => {
-    replaceRouter('/login')
-  })
 }
 const switchClick = async (newVal: boolean) => {
   switchType.value = newVal

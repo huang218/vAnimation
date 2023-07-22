@@ -55,7 +55,6 @@ router.beforeEach(async (to, from, next) => {
       console.log(err, '动态添加路由失败')
     }
   }
-  debugger
   if (to.path === '/login') {
     NProgress.done()
     if (token) {
