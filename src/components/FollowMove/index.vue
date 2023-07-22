@@ -6,7 +6,7 @@ import { obtainKey } from '@/types'
 
 const { x, y } = useMouse()
 const router = useRouter()
-const domType = ref<obtainKey<HTMLElementTagNameMap>>(['a', 'button', 'img']) // dom节点类型数组
+const domType = ref<obtainKey<HTMLElementTagNameMap>>(['a', 'img']) // dom节点类型数组
 const size = ref<number>(36)
 const doms = ref<HTMLElement[]>([])
 
@@ -48,7 +48,7 @@ const init = () => {
 onMounted(() => {})
 </script>
 <template>
-  <Teleport to="#app">
+  <Teleport to="body">
     <div class="pellet" :style="pelletStyle"></div>
   </Teleport>
 </template>

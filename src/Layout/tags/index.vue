@@ -111,7 +111,7 @@ onMounted(() => {
           </el-icon>
         </li>
       </TransitionGroup>
-      <Teleport to="#app">
+      <Teleport to="body">
         <ul v-show="menuIsShow" class="rightMenu" :style="positionInfo">
           <li
             v-show="currentView === currentRouteInfo.path"
@@ -207,7 +207,7 @@ onMounted(() => {
 .rightMenu {
   @apply absolute top-0 left-0 z-999 text-14px h-auto py-4px rounded-4px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
   li {
-    @apply h-25px text-center leading-25px cursor-pointer;
+    @apply h-25px text-center leading-25px cursor-pointer text-light-500;
     &:hover {
       @apply bg-light-800 dark: bg-dark-50;
     }
