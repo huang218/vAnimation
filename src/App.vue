@@ -1,29 +1,7 @@
-<script setup lang="ts">
-import { provide, ref, onMounted, nextTick } from 'vue'
-
-const provideInfo = ref<number>(10086)
-
-provide('provideInfo', provideInfo)
-onMounted(() => {
-  // nextTick(() => {
-  //   const aDom = Array.from(document.querySelectorAll('a'))
-  //   const buttonDom: any[] = Array.from(document.querySelectorAll('button'))
-  //   const doms = aDom.concat(buttonDom)
-  //   console.log(doms, 'dom', buttonDom)
-  //   doms.forEach((dom) => {
-  //     dom.addEventListener('mouseover', (event) => {
-  //       console.log(event, 'mouseover')
-  //     })
-  //     dom.addEventListener('mouseleave', (event) => {
-  //       console.log(event, 'mouseleave')
-  //     })
-  //   })
-  // })
-})
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <router-view> </router-view>
+  <router-view></router-view>
 </template>
 
 <style scoped>

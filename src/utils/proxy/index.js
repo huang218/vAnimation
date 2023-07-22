@@ -1,6 +1,7 @@
-import { effect, reactive, Ref } from './core.js'
+import { effect, reactive, ref } from './core.js'
 let btn = document.getElementById('btn')
 let btn1 = document.getElementById('btn1')
+let btn2 = document.getElementById('btn2')
 let texts = document.getElementById('text')
 let texts1 = document.getElementById('text1')
 let texts2 = document.getElementById('text2')
@@ -9,7 +10,7 @@ let text = { age: 0, child: { age: 1 } }
 const proxyText = reactive(text)
 let text1 = { age: 0 }
 const proxyText1 = reactive(text1)
-let text2 = new Ref(true)
+let text2 = ref(true)
 console.log(text2.value)
 
 effect(() => {
@@ -28,8 +29,11 @@ const update = () => {
 btn.addEventListener('click', update)
 
 const update1 = () => {
-  // proxyText1.age++
-  text2.value = !text2.value
-  console.log(text2)
+  proxyText1.age++
 }
 btn1.addEventListener('click', update1)
+
+const update2 = () => {
+  text2.value = !text2.value
+}
+btn2.addEventListener('click', update2)

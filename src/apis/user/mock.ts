@@ -1,3 +1,11 @@
+const path = {
+  PersonManage: '/src/views/systemManagement/UserManagement/PersonManage/view.vue',
+  RegionManage: '/src/views/systemManagement/UserManagement/RegionManage/index.vue',
+  RoleManage: '/src/views/systemManagement/UserManagement/RoleManage/index.vue',
+  OrganManage: '/src/views/systemManagement/UserManagement/OrganManage/index.vue',
+  MessageManagement: '/src/views/systemManagement/UserManagement/MessageManagement/index.vue'
+}
+
 export default {
   menu: {
     data: {
@@ -33,7 +41,7 @@ export default {
                 icon: 'HomeFilled',
                 isKeepAlive: true,
                 isTagView: true,
-                isAffix: false
+                isAffix: true
               }
             }
           ]
@@ -195,7 +203,7 @@ export default {
                 icon: 'Coffee',
                 isKeepAlive: true,
                 isTagView: true,
-                isAffix: true
+                isAffix: false
               }
             }
           ]
@@ -230,6 +238,122 @@ export default {
                 isTagView: true,
                 isAffix: false
               }
+            }
+          ]
+        },
+        {
+          id: 50,
+          parentId: 1,
+          path: '/systemManagement',
+          name: '系统管理',
+          component: 'Layout',
+          redirect: '/systemManagement/UserManagement',
+          isHide: false,
+          meta: {
+            title: 'nestedRoutes',
+            icon: 'menu',
+            isKeepAlive: false,
+            isTagView: true,
+            isAffix: false
+          },
+          children: [
+            {
+              id: 501,
+              parentId: 50,
+              path: '/systemManagement/UserManagement',
+              name: '用户管理',
+              component: 'ParentView',
+              redirect: '/systemManagement/UserManagement/PersonManage',
+              isHide: false,
+              meta: {
+                title: '用户管理',
+                icon: 'HomeFilled',
+                isKeepAlive: false,
+                isTagView: true,
+                isAffix: false
+              },
+              children: [
+                {
+                  id: 5010,
+                  parentId: 501,
+                  path: '/systemManagement/UserManagement/PersonManage',
+                  name: '人员管理',
+                  component: path.PersonManage,
+                  redirect: null,
+                  isHide: false,
+                  meta: {
+                    title: '人员管理',
+                    icon: 'Avatar',
+                    isKeepAlive: true,
+                    isTagView: true,
+                    isAffix: false
+                  }
+                },
+                {
+                  id: 5011,
+                  parentId: 501,
+                  path: '/systemManagement/UserManagement/RegionManage',
+                  name: '数据域管理',
+                  component: path.RegionManage,
+                  redirect: null,
+                  isHide: false,
+                  meta: {
+                    title: '数据域管理',
+                    icon: 'Grid',
+                    isKeepAlive: true,
+                    isTagView: true,
+                    isAffix: false
+                  }
+                },
+                {
+                  id: 5012,
+                  parentId: 501,
+                  path: '/systemManagement/UserManagement/RoleManage',
+                  name: '角色管理',
+                  component: path.RoleManage,
+                  redirect: null,
+                  isHide: false,
+                  meta: {
+                    title: '角色管理',
+                    icon: 'UserFilled',
+                    isKeepAlive: true,
+                    isTagView: true,
+                    isAffix: false
+                  }
+                },
+                {
+                  id: 5013,
+                  parentId: 501,
+                  path: '/systemManagement/UserManagement/OrganManage',
+                  name: '组织管理',
+                  component: path.OrganManage,
+                  redirect: null,
+                  isHide: false,
+                  meta: {
+                    title: '组织管理',
+                    icon: 'Promotion',
+                    isKeepAlive: true,
+                    isTagView: true,
+                    isAffix: false
+                  }
+                },
+                {
+                  id: 5014,
+                  parentId: 501,
+                  path: '/systemManagement/UserManagement/MessageManagement',
+                  name: '通知管理',
+                  component: path.MessageManagement,
+                  redirect: null,
+                  isHide: false,
+                  meta: {
+                    title: '通知管理',
+                    icon: 'Comment',
+                    isKeepAlive: true,
+                    isTagView: true,
+                    isAffix: false
+                  }
+                }
+              ]
             }
           ]
         }

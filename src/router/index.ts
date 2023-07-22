@@ -2,9 +2,9 @@ import { createRouter, createWebHistory, isNavigationFailure } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Local } from '@/utils'
-import { routerStore } from '@/stores'
+import { routerStore, tagViewStore } from '@/stores'
 import Login from '../views/login/index.vue'
-// import Layout from '@/Layout/layout.vue';
+import Layout from '@/Layout/layout.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,20 +15,20 @@ const router = createRouter({
       component: Login,
       meta: { title: '登录', isTagView: false }
     },
-    // {
-    //   path: '/',
-    //   name: '/',
-    //   redirect: '/dashboard',
-    //   component: Layout,
-    //   children: [
-    //     {
-    //       path: '/dashboard',
-    //       name: '/dashboard',
-    //       component: () => import('@/views/dashboard/index.vue'),
-    //       meta: { title: "工作台", isTagView: false },
-    //     }
-    //   ]
-    // },
+    {
+      path: '/',
+      name: '/',
+      redirect: '/dashboard',
+      component: Layout,
+      children: [
+        {
+          path: '/dashboard',
+          name: '/dashboard',
+          component: () => import('@/views/dashboard/index.vue'),
+          meta: { title: '工作台', isTagView: false }
+        }
+      ]
+    },
     {
       path: '/404',
       name: 'notFound',
@@ -41,15 +41,14 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   NProgress.configure({ showSpinner: false })
   NProgress.start()
+  const tagStore = tagViewStore()
   const { routerList, curRootRoute, getRouterList, getCurrentRoute } = routerStore()
   const token = Local.get('token')
 
   if (routerList.length <= 0) {
     try {
       const newRouter = await getRouterList()
-
-      newRouter.forEach((item) => router.addRoute(item))
-      console.log('添加动态路由')
+      newRouter.forEach((item: any) => router.addRoute(item))
       //跳转到目的路由
       next({ ...to, replace: true })
     } catch (err) {
@@ -77,6 +76,7 @@ router.beforeEach(async (to, from, next) => {
   } else {
     // 初始化header默认选择路由
     const routeSplit = to.path.split('/')[1]
+    tagStore.addCurrentView(to.path)
     if (routeSplit === '' || routeSplit === 'dashboard') {
       getCurrentRoute('/')
     } else if (curRootRoute != `/${routeSplit}`) {
@@ -106,7 +106,6 @@ router.beforeEach(async (to, from, next) => {
 router.afterEach((to, from, failure) => {
   if (isNavigationFailure(failure)) {
     NProgress.done()
-    console.log('error navigation', failure)
   } else {
     document.title = router.currentRoute.value.meta.title as string
     NProgress.done()

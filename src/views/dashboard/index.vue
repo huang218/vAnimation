@@ -1,16 +1,17 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, toRaw, reactive } from 'vue'
 import { weatherType } from '@/types'
 import { settingsStore } from '@/stores'
 import { commonServer } from '@/apis'
 import Child from './components/child.vue'
 
+const map = reactive(new Set())
 const setting = settingsStore()
 const comRef = ref<any>(null)
 const weatherInfo = ref<weatherType>({})
 const weathLoading = ref<boolean>(true)
 const ulRef = ref(null)
-
+const testObj = reactive({ name: 1, child: { child2: 22 } })
 const ind = ref(0)
 const items = ref([
   { name: '1' },
@@ -68,12 +69,18 @@ const getWeather = async () => {
   }
 }
 
-const childClick = (e: Event) => {
+const childClick = (e: Record<string, string | number>) => {
   console.log(e.target, 'childClick')
   console.log(comRef.value.exportVal)
 }
+
 onMounted(() => {
   getWeather()
+  map.add('h')
+  map.add('hs')
+  map.add('hs')
+  console.log(toRaw(testObj), weatherInfo)
+  console.log('map', map)
 })
 </script>
 
@@ -120,10 +127,22 @@ onMounted(() => {
   </el-skeleton>
   <Child ref="comRef" @on-changed="childClick">
     <template #hjh>
-      <div>插槽</div>
+      <div>{{ testObj.child.child2 }}插槽{{ $translate('name') }}</div>
     </template>
   </Child>
+  <div v-for="(item, index) in map" :key="index">{{ item }}</div>
+  <el-button
+    @click="
+      () => {
+        map.add('242')
+        testObj.child.child2++
+      }
+    "
+  >
+    pushMap
+  </el-button>
   {{ comRef?.exportVal }}
+  <el-input v-model="ind" v-focus></el-input>
 </template>
 
 <style scoped lang="less">

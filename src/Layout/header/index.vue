@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
 import { Moon, Sunny, SwitchButton } from '@element-plus/icons-vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { userStore } from '@/stores'
@@ -8,6 +9,7 @@ import { Local } from '@/utils'
 import { formatAxis } from '@/utils/formatTime'
 import leftHeader from './leftHeader.vue'
 
+const router = useRouter()
 const isDark = useDark()
 const toggleDark = useToggle(isDark)
 const userStores = userStore()
@@ -16,9 +18,9 @@ const dialogVisible = ref(false)
 const switchType = ref(false)
 
 const logOut = () => {
-  userStores.logOut()
+  router.push({ path: '/login' })
   dialogVisible.value = false
-  replaceRouter('/login')
+  userStores.logOut()
 }
 const switchClick = async (newVal: boolean) => {
   switchType.value = newVal
@@ -29,6 +31,9 @@ const switchClick = async (newVal: boolean) => {
 const initSitch = (): void => {
   const darkType = Local.getNoJson('vueuse-color-scheme')
   switchType.value = darkType === ('light' || 'dark')
+}
+const change = (type: boolean) => {
+  console.log(type, '按钮状态')
 }
 
 onMounted(() => {
@@ -42,7 +47,8 @@ onMounted(() => {
       <div class="left h-full flex-1">
         <leftHeader />
       </div>
-      <div class="right flex justify-end h-full w-50 items-center">
+      <div class="right flex justify-end h-full w-100 items-center">
+        <t-button class="transform w-40px h-40px scale-80" @change="change" />
         <a href="#">测试</a>
         <div>{{ formatAxis(new Date()) }}</div>
         <el-switch
@@ -53,20 +59,20 @@ onMounted(() => {
           :size="'large'"
           @change="switchClick"
         />
-        <el-icon :size="'large'">
+        <el-icon :size="24">
           <component :is="SwitchButton" class="logOutIcon" @click="dialogVisible = true" />
         </el-icon>
       </div>
     </el-header>
+    <el-dialog v-model="dialogVisible" title="是否退出登陆" width="30%">
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="logOut()"> 确定 </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
-  <el-dialog v-model="dialogVisible" title="是否退出登陆" width="30%">
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="logOut()"> 确定 </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 <style lang="less" scoped>
 .header-box {
@@ -82,7 +88,7 @@ onMounted(() => {
     .logOutIcon {
       cursor: pointer;
       color: var(--el-text-color-primary);
-      font-size: 20px;
+      font-size: 24px;
       transition: all 0.2s;
       &:hover {
         transform: scale(1.2);

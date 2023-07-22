@@ -10,7 +10,6 @@ export const formatRoutes = (data: Menu[]): Menu[] => {
         return () => import(`@/components/parentView/index.vue`)
       else return modules[v.component]
     })()
-
     return {
       ...v,
       children,

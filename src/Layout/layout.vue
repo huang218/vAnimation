@@ -6,9 +6,21 @@ import Header from '@/Layout/header/index.vue'
 import Tags from '@/Layout/tags/index.vue'
 import Main from '@/Layout/main/index.vue'
 import FollowMove from '@/components/FollowMove/index.vue'
-import { ref } from 'vue'
+import { nextTick, provide, ref } from 'vue'
 
 const locale = ref(zhCn)
+
+const isRouterAlive = ref(true)
+/**
+ * 组件刷新
+ * */
+const reload = () => {
+  isRouterAlive.value = false
+  nextTick(() => {
+    isRouterAlive.value = true
+  })
+}
+provide('reload', reload)
 </script>
 <template>
   <el-config-provider :locale="locale">
@@ -17,14 +29,13 @@ const locale = ref(zhCn)
         <Header />
         <div class="flex-column">
           <AsideBar />
-          <div class="flex flex-col h-full flex-1 content-box">
+          <div class="flex flex-col h-full flex-1 content-box transition-bgc">
             <Tags />
-            <Main />
+            <Main v-if="isRouterAlive" />
           </div>
         </div>
       </el-container>
     </div>
-    <!-- loading -->
     <Loading></Loading>
     <FollowMove></FollowMove>
   </el-config-provider>

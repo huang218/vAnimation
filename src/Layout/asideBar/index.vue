@@ -25,11 +25,9 @@ const activeMenu = computed(() => currentRoute.path)
         :default-active="activeMenu"
         :collapse-transition="true"
       >
-        <!-- <transition name="slide-fade" appear mode="out-in"> -->
         <el-scrollbar max-height="100%">
           <SidebarItem v-for="item in sideBarRouter" :key="item.id" :route="item" :is-icon="true" />
         </el-scrollbar>
-        <!-- </transition> -->
       </el-menu>
     </el-aside>
   </div>
@@ -37,7 +35,7 @@ const activeMenu = computed(() => currentRoute.path)
 <style lang="less" scoped>
 .menu {
   width: auto;
-  transition: all 0.4s;
+  transition: width 0.4s;
   // :deep(.el-aside) {
   //   transition: all 0.8s;
   // }

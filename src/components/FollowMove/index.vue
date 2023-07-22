@@ -30,17 +30,18 @@ const pelletStyle = computed(() => {
 })
 
 const init = () => {
+  const sizeNum: number = 36
   const doms: any = domType.value.reduce((doms: NodeList[] = [], b: string) => {
     const _d: any = document.querySelectorAll(b)
     doms.push(..._d)
     return doms
   }, [])
-  doms.forEach((dom) => {
+  doms.forEach((dom: HTMLElement) => {
     dom.addEventListener('mouseover', () => {
-      size.value = 54
+      size.value = sizeNum * 1.5
     })
     dom.addEventListener('mouseleave', () => {
-      size.value = 36
+      size.value = sizeNum
     })
   })
 }

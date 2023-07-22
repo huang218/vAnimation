@@ -2,8 +2,8 @@
 import { ref } from 'vue'
 
 interface Props {
-  name: string
-  age: number
+  name?: string
+  age?: number
   home?: string
 }
 const defaProps = withDefaults(defineProps<Props>(), {

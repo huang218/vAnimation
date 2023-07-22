@@ -3,9 +3,9 @@ export interface Menu {
   parentId?: number
   name: string
   path: string
-  redirect: string
-  component: any
-  children: Menu[]
+  redirect?: string
+  component?: any
+  children?: Menu[]
   isHide?: boolean
   meta: {
     title: string
