@@ -11,6 +11,9 @@ import { nextTick, provide, ref } from 'vue'
 const locale = ref(zhCn)
 
 const isRouterAlive = ref(true)
+/**
+ * 组件刷新
+ * */
 const reload = () => {
   isRouterAlive.value = false
   nextTick(() => {

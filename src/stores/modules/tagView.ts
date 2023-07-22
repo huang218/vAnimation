@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { Menu, TagViewStoreType } from '@/types'
-import { route } from '@/hooks/useRoute'
 
 export const createTagView = (): TagViewStoreType => {
   return {
@@ -67,35 +66,43 @@ export const tagViewStore = defineStore('tagViewStore', {
       this.currentView = path
     },
     // 关闭左边tag
-    closeLeftTagView() {
-      const findIndex = this.visitedViews.findIndex((item) => item.name === route.value.name)
+    async closeLeftTagView(rot: Menu) {
+      const findIndex = this.visitedViews.findIndex((item) => item.name === rot.name)
       this.visitedViews = this.visitedViews.filter((item, index) => {
         if (item.meta.isAffix) return item
         if (index >= findIndex) {
           return item
         }
       })
+      this.cachedViews = this.visitedViews.map((item) => item.name) // 重置cachedViews数据
+
+      // if()
     },
     // 关闭右边tag
-    closeRightTagView() {
-      const findIndex = this.visitedViews.findIndex((item) => item.name === route.value.name)
+    closeRightTagView(rot: Menu) {
+      const findIndex = this.visitedViews.findIndex((item) => item.name === rot.name)
       this.visitedViews = this.visitedViews.filter((item, index) => {
         if (item.meta.isAffix) return item
         if (findIndex >= index) {
           return item
         }
       })
+      this.cachedViews = this.visitedViews.map((item) => item.name)
     },
     // 关闭其他
-    closeOtherTagView() {
+    closeOtherTagView(rot: Menu) {
       const emitAffixList = this.visitedViews.filter((item) => item.meta.isAffix)
       this.visitedViews = emitAffixList.concat(
-        this.visitedViews.filter((item) => item.name === route.value.name)
+        this.visitedViews.filter((item) => !item.meta.isAffix && item.name === rot.name)
       )
+      console.log(this.visitedViews)
+
+      this.cachedViews = this.visitedViews.map((item) => item.name)
     },
     // 关闭所有
     closeAllTagView() {
       this.visitedViews = this.visitedViews.filter((item) => item.meta.isAffix)
+      this.cachedViews = this.visitedViews.map((item) => item.name)
     }
   }
 })

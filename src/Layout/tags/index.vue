@@ -1,16 +1,24 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, watch, nextTick, inject } from 'vue'
+import { computed, onMounted, ref, watch, nextTick, inject, unref } from 'vue'
 import { storeToRefs } from 'pinia'
 import { tagViewStore } from '@/stores'
 import { useRouterJump } from '@/hooks/useRouterJump'
-import { Menu, Client } from '@/types'
+import { Menu, Client, MenuType } from '@/types'
 
+const rightClickType: Record<MenuType, Symbol> = {
+  Reload: Symbol('reload'),
+  CloseLeft: Symbol('closeLeft'),
+  CloseRight: Symbol('closeRight'),
+  CloseOrther: Symbol('closeOrther'),
+  CloseAll: Symbol('closeAll')
+}
 const tagStore = tagViewStore()
-const { visitedViews, currentView } = storeToRefs(tagStore)
+const { visitedViews, currentView, cachedViews } = storeToRefs(tagStore)
 const { pushRouter } = useRouterJump()
 const reload = inject<Function>('reload')
 const menuIsShow = ref<boolean>(false)
 const menuWidth = ref<number>(100)
+const currentRouteInfo = ref<Partial<Menu>>({})
 const clientXY = ref<Record<Client, number>>({
   clientX: 0,
   clientY: 0
@@ -39,24 +47,50 @@ const rightclick = async (route, index, event) => {
     clientX = innerWidth - menuWidth.value
   }
   clientXY.value = { clientX, clientY }
+  currentRouteInfo.value = route
   await nextTick()
   menuIsShow.value = true
 }
 const iconClose = (route: Menu) => {
   tagStore.deleteTagView(route)
 }
-const closeCur = () => {
-  console.log('关闭当前')
-}
-const closeOrther = () => {
-  console.log('关闭其他')
-}
-const closeAll = () => {
-  console.log('关闭全部')
+
+const menuFun = (type: Symbol) => {
+  if (visitedViews.value.length <= 1) return
+  const { Reload, CloseLeft, CloseRight, CloseOrther, CloseAll } = rightClickType
+  const oldRoute = visitedViews.value.map((item) => {
+    if (item.path === currentView.value) return item.name
+  })
+  const isPushRoute = currentRouteInfo.value.path !== currentView.value
+  switch (type) {
+    case Reload:
+      reload()
+      break
+    case CloseLeft:
+      tagStore.closeLeftTagView(currentRouteInfo.value as Menu)
+      break
+    case CloseRight:
+      tagStore.closeRightTagView(currentRouteInfo.value as Menu)
+      break
+    case CloseOrther:
+      tagStore.closeOtherTagView(currentRouteInfo.value as Menu)
+      break
+    case CloseAll:
+      tagStore.closeAllTagView()
+      tagStore.addCurrentView('/dashboard')
+      break
+    default:
+      console.log('default')
+      break
+  }
+  if (isPushRoute && !unref(cachedViews).includes(oldRoute[0]) && (type !== CloseAll || Reload)) {
+    tagStore.addCurrentView(currentRouteInfo.value.path)
+  }
 }
 onMounted(() => {
   document.onclick = function () {
     menuIsShow.value = false
+    currentRouteInfo.value = {}
   }
 })
 </script>
@@ -79,10 +113,16 @@ onMounted(() => {
       </TransitionGroup>
       <Teleport to="#app">
         <ul v-show="menuIsShow" class="rightMenu" :style="positionInfo">
-          <li @click="reload()">刷新页面</li>
-          <li @click="closeCur">关闭当前</li>
-          <li @click="closeOrther">关闭其他</li>
-          <li @click="closeAll">关闭全部</li>
+          <li
+            v-show="currentView === currentRouteInfo.path"
+            @click="menuFun(rightClickType.Reload)"
+          >
+            刷新
+          </li>
+          <li @click="menuFun(rightClickType.CloseLeft)">关闭左侧</li>
+          <li @click="menuFun(rightClickType.CloseRight)">关闭右侧</li>
+          <li @click="menuFun(rightClickType.CloseOrther)">关闭其他</li>
+          <li @click="menuFun(rightClickType.CloseAll)">关闭全部</li>
         </ul>
       </Teleport>
     </div>
@@ -165,11 +205,11 @@ onMounted(() => {
 </style>
 <style lang="less">
 .rightMenu {
-  @apply absolute top-0 left-0 z-999 text-14px h-auto py-4px rounded-4px overflow-hidden dark: bg-dark-100;
+  @apply absolute top-0 left-0 z-999 text-14px h-auto py-4px rounded-4px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
   li {
     @apply h-25px text-center leading-25px cursor-pointer;
     &:hover {
-      @apply dark: bg-dark-200;
+      @apply bg-light-800 dark: bg-dark-50;
     }
   }
 }

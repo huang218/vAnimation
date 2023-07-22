@@ -28,7 +28,7 @@ watch(
   <router-view v-slot="{ Component }">
     <transition name="slide-fade" appear mode="out-in">
       <!-- :include="cachedViews" -->
-      <div :key="route.path" class="h-full w-full">
+      <div :key="route.path" class="h-full w-full overflow-auto">
         <keep-alive :max="3">
           <component :is="Component" :key="route.path" />
         </keep-alive>
