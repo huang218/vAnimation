@@ -1,11 +1,9 @@
 import { useRouter } from 'vue-router'
-
 /**
  * 封装路由操作
  */
 export function useRouterJump() {
   const router = useRouter()
-
   // push
   const pushRouter = (path: string, query = {}) => {
     router.push({ path, ...query })

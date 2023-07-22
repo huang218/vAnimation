@@ -36,7 +36,6 @@ provide('reload', reload)
         </div>
       </el-container>
     </div>
-    <!-- loading -->
     <Loading></Loading>
     <FollowMove></FollowMove>
   </el-config-provider>

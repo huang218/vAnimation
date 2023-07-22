@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue'
 import { Moon, Sunny, SwitchButton } from '@element-plus/icons-vue'
 import { useDark, useToggle } from '@vueuse/core'
 import { userStore } from '@/stores'
@@ -16,9 +16,11 @@ const dialogVisible = ref(false)
 const switchType = ref(false)
 
 const logOut = () => {
-  userStores.logOut()
   dialogVisible.value = false
-  replaceRouter('/login')
+  userStores.logOut()
+  nextTick(() => {
+    replaceRouter('/login')
+  })
 }
 const switchClick = async (newVal: boolean) => {
   switchType.value = newVal
@@ -62,15 +64,15 @@ onMounted(() => {
         </el-icon>
       </div>
     </el-header>
+    <el-dialog v-model="dialogVisible" title="是否退出登陆" width="30%">
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="dialogVisible = false">取消</el-button>
+          <el-button type="primary" @click="logOut()"> 确定 </el-button>
+        </span>
+      </template>
+    </el-dialog>
   </div>
-  <el-dialog v-model="dialogVisible" title="是否退出登陆" width="30%">
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogVisible = false">取消</el-button>
-        <el-button type="primary" @click="logOut()"> 确定 </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 <style lang="less" scoped>
 .header-box {

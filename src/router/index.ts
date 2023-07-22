@@ -4,7 +4,7 @@ import 'nprogress/nprogress.css'
 import { Local } from '@/utils'
 import { routerStore, tagViewStore } from '@/stores'
 import Login from '../views/login/index.vue'
-// import Layout from '@/Layout/layout.vue';
+import Layout from '@/Layout/layout.vue'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -15,20 +15,20 @@ const router = createRouter({
       component: Login,
       meta: { title: '登录', isTagView: false }
     },
-    // {
-    //   path: '/',
-    //   name: '/',
-    //   redirect: '/dashboard',
-    //   component: Layout,
-    //   children: [
-    //     {
-    //       path: '/dashboard',
-    //       name: '/dashboard',
-    //       component: () => import('@/views/dashboard/index.vue'),
-    //       meta: { title: "工作台", isTagView: false },
-    //     }
-    //   ]
-    // },
+    {
+      path: '/',
+      name: '/',
+      redirect: '/dashboard',
+      component: Layout,
+      children: [
+        {
+          path: '/dashboard',
+          name: '/dashboard',
+          component: () => import('@/views/dashboard/index.vue'),
+          meta: { title: '工作台', isTagView: false }
+        }
+      ]
+    },
     {
       path: '/404',
       name: 'notFound',
@@ -55,6 +55,7 @@ router.beforeEach(async (to, from, next) => {
       console.log(err, '动态添加路由失败')
     }
   }
+  debugger
   if (to.path === '/login') {
     NProgress.done()
     if (token) {
