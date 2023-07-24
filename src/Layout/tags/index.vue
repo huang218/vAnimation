@@ -205,9 +205,9 @@ onMounted(() => {
 </style>
 <style lang="less">
 .rightMenu {
-  @apply absolute top-0 left-0 z-999 text-14px h-auto py-4px rounded-4px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
+  @apply absolute top-0 left-0 z-999 text-14px h-auto p-4px rounded-4px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
   li {
-    @apply h-25px text-center leading-25px cursor-pointer text-light-500;
+    @apply h-25px text-center rounded-4px leading-25px cursor-pointer dark: text-light-500;
     &:hover {
       @apply bg-light-800 dark: bg-dark-50;
     }
