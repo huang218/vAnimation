@@ -17,7 +17,7 @@ const { visitedViews, currentView, cachedViews } = storeToRefs(tagStore)
 const { pushRouter } = useRouterJump()
 const reload = inject<Function>('reload')
 const menuIsShow = ref<boolean>(false)
-const menuWidth = ref<number>(100)
+const menuWidth = ref<number>(90)
 const currentRouteInfo = ref<Partial<Menu>>({})
 const clientXY = ref<Record<Client, number>>({
   clientX: 0,
@@ -205,7 +205,7 @@ onMounted(() => {
 </style>
 <style lang="less">
 .rightMenu {
-  @apply absolute top-0 left-0 z-999 text-14px h-auto p-4px rounded-6px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
+  @apply absolute top-0 left-0 z-999 text-12px h-auto p-4px rounded-6px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
   li {
     @apply h-25px text-center rounded-4px leading-25px cursor-pointer dark: text-light-500;
     &:hover {
