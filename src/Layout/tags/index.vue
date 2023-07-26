@@ -40,7 +40,7 @@ const positionInfo = computed(() => {
 const tagClick = (route: Menu) => {
   tagStore.addCurrentView(route.path)
 }
-const rightclick = async (route, index, event) => {
+const rightclick = async (route: Menu, index: number, event: any) => {
   let { clientX, clientY } = event
   const { innerWidth } = window
   if (innerWidth < clientX + menuWidth.value) {

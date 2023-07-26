@@ -39,7 +39,7 @@ export const tagViewStore = defineStore('tagViewStore', {
     removeVisitedViews(route: Menu) {
       this.visitedViews = this.visitedViews.filter((v) => v.name !== route.name)
     },
-    removeCachedViews(name: string) {
+    removeCachedViews(name: Menu['name']) {
       this.cachedViews = this.cachedViews.filter((v) => v !== name)
     },
     deleteTagView(route: Menu) {
