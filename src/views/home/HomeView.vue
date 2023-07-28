@@ -67,7 +67,7 @@ onMounted(() => {
 })
 </script>
 <template>
-  <div>
+  <div style="display: none">
     <span>{{ marr }}</span>
     <el-button @click="pushData">push数据</el-button>
     <el-button @click="init">开启动画</el-button>
@@ -85,9 +85,70 @@ onMounted(() => {
       </div>
     </div>
   </div>
+  <div class="crad">
+    <div class="c1">
+      <p>主文字1</p>
+      以三维场景为依托、生产数据为核心、生产业务为纽带，为工厂打造数字孪生空间，赋能企业安全生产、高效管理和智慧运营，为企业降本、创收，推动工厂、车间、产能的数字化转型。
+    </div>
+    <div class="c2">
+      <p>主文字2</p>
+      以三维场景为依托、生产数据为核心、生产业务为纽带，为工厂打造数字孪生空间，赋能企业安全生产、高效管理和智慧运营，为企业降本、创收，推动工厂、车间、产能的数字化转型。
+    </div>
+    <div class="c3">
+      <p>主文字3</p>
+      以三维场景为依托、生产数据为核心、生产业务为纽带，为工厂打造数字孪生空间，赋能企业安全生产、高效管理和智慧运营，为企业降本、创收，推动工厂、车间、产能的数字化转型。
+    </div>
+    <div class="c4">
+      <p>主文字4</p>
+      以三维场景为依托、生产数据为核心、生产业务为纽带，为工厂打造数字孪生空间，赋能企业安全生产、高效管理和智慧运营，为企业降本、创收，推动工厂、车间、产能的数字化转型。
+    </div>
+  </div>
 </template>
 
 <style lang="less" scoped>
+.crad {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 65%;
+  margin: 0 auto;
+  div {
+    flex: 1;
+    height: 400px;
+    margin: 0 10px;
+    padding: 10px;
+    // color: #000;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    transition: all 0.3s ease-in-out;
+    filter: grayscale(1);
+    p {
+      font-size: 20px;
+      font-weight: 600;
+    }
+  }
+  div:hover {
+    flex: 3;
+    color: #fff;
+    filter: none;
+  }
+  .c1 {
+    background-image: url('@/assets/image/iotBig.png');
+  }
+  .c2 {
+    background-image: url('@/assets/image/mesBig.png');
+  }
+  .c3 {
+    background-image: url('@/assets/image/nextBig.png');
+  }
+  .c4 {
+    background-image: url('@/assets/image/numBig.png');
+  }
+}
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
   min-height: 400px;
