@@ -1,5 +1,5 @@
 export * from './router'
-// export * from "./request";
+export * from './model'
 export * from './formatTime'
 export * from './storage'
 export * from './theme'

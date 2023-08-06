@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import Loading from '@/components/Loading/index.vue'
-import FollowMove from '@/components/FollowMove/index.vue'
+// import FollowMove from '@/components/FollowMove/index.vue'
 </script>
 
 <template>
   <router-view></router-view>
   <Loading></Loading>
-  <FollowMove></FollowMove>
+  <!-- <FollowMove></FollowMove> -->
 </template>
 
 <style scoped>
