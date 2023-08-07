@@ -56,17 +56,12 @@ const onMouseMove = (event) => {
 }
 
 const logCuBe = () => {
-  console.log(cube.rotation, 'cube.rotation')
+  console.log(container.value.offsetWidth, 'cube.rotation')
 }
 
 // 动画循环函数
 const animate = () => {
   requestAnimationFrame(animate)
-  // // 自动旋转
-  // if (!isMouseOver) {
-  //   targetRotationY += 0.01
-  //   targetRotationY = Math.max(Math.min(targetRotationY, maxRotation), -maxRotation)
-  // }
   // 平滑过渡旋转角度
   rotationX += (targetRotationX - rotationX) * 0.05
   rotationY += (targetRotationY - rotationY) * 0.05
@@ -94,15 +89,20 @@ onMounted(() => {
 
   // 创建渲染器
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-  renderer.setSize(400, 300)
+  renderer.setSize(container.value.offsetWidth, container.value.offsetHeight)
   container.value.appendChild(renderer.domElement)
 
   // 创建相机
-  camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 1000)
+  camera = new THREE.PerspectiveCamera(
+    25,
+    container.value.offsetWidth / container.value.offsetHeight,
+    0.1,
+    1000
+  )
   camera.position.z = 5
 
   // 创建几何体
-  const geometry = new THREE.BoxGeometry(1.5, 1, 1.5)
+  const geometry = new THREE.BoxGeometry(1, 1, 1)
   const material = new THREE.MeshBasicMaterial({
     color: 0xffff00,
     fog: true,
@@ -142,7 +142,7 @@ onUnmounted(() => {
     <div class="flex-1 relative">
       <div
         ref="container"
-        class="mx-auto my-0 w-400px h-300px cursor-pointer border-1"
+        class="mx-auto my-0 w-400px h-400px cursor-pointer border-1"
         @mouseenter="onMouseEnter"
         @mouseleave="onMouseLeave"
       ></div>
