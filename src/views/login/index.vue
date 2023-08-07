@@ -1,153 +1,150 @@
 <script setup lang="ts">
+import * as THREE from 'three'
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { userStore } from '@/stores'
 import { useRouterJump } from '@/hooks/useRouterJump'
-import { reactive, ref, toRef, watch } from 'vue'
-import { useMouseInElement } from '@vueuse/core'
-import { useModel } from './hooks/useModel'
-import { throttle } from '@/utils'
-import { MouseType } from '@/types'
+import { onMounted, onUnmounted, reactive, ref } from 'vue'
 
-const { container, loading, stopAnimation, xueRenReset, setX } = useModel()
-const { elementX, elementY, isOutside } = useMouseInElement(container)
+let scene, renderer, camera, cube
+let isMouseOver = false // 鼠标是否在容器区域内
+let rotationX = 0 // 当前旋转角度 X 轴
+let rotationY = 0 // 当前旋转角度 Y 轴
+let targetRotationX = 0 // 目标旋转角度 X 轴
+let targetRotationY = 0 // 目标旋转角度 Y 轴
+let mouseX = 0 // 鼠标相对于容器的 X 坐标
+let mouseY = 0 // 鼠标相对于容器的 Y 坐标
+const maxRotation = Math.PI / 12 // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
+
+const { replaceRouter } = useRouterJump()
+const { getUserInfo } = userStore()
+const container = ref(null)
 
 const formLabelAlign = reactive({
   name: '',
   password: ''
 })
-const mouse = reactive<Record<MouseType, number>>({
-  elementX: 0,
-  elementY: 0
-})
-const xrPosition = ref({
-  x: 0,
-  y: 0
-})
-const { replaceRouter } = useRouterJump()
-const { getUserInfo } = userStore()
 
 async function submit() {
   const datas = await getUserInfo()
   if (datas) replaceRouter('/')
 }
 
-watch(loading, (val) => {
-  console.log(val)
-})
-watch(
-  [elementX, elementY, isOutside],
-  throttle((val) => {
-    const [elementX, elementY, isOutside] = val
+// 鼠标移动事件处理函数
+const onMouseMove = (event) => {
+  // 获取鼠标相对于容器的位置
+  const newMouseX = event.clientX - container.value.offsetLeft
+  const newMouseY = event.clientY - container.value.offsetTop
 
-    if (!isOutside) {
-      // 当前 -- 上一次
-      let a, b
-      if (mouse.elementX > elementX) {
-        a = 1
-      } else {
-        a = -1
-      }
-      if (mouse.elementY > elementY) {
-        b = 1
-      } else {
-        b = -1
-      }
-      mouse.elementX = elementX
-      mouse.elementY = elementY
-      console.log(a, '423', b)
+  // 计算鼠标移动距离
+  const deltaX = newMouseX - mouseX
+  const deltaY = newMouseY - mouseY
 
-      // console.log(xrPosition.value.x / 10, 'xrPosition.value', xrPosition.value.y / 10)
+  // 更新鼠标位置
+  mouseX = newMouseX
+  mouseY = newMouseY
 
-      // setX({ x: a, y: b })
-    }
-  }, 100)
-)
+  // 当鼠标在容器区域内时，控制模型旋转
+  if (isMouseOver) {
+    targetRotationX += deltaY * 0.01
+    targetRotationY += deltaX * 0.01
 
-const reset = () => {
-  xrPosition.value = {
-    x: 0,
-    y: 0
+    // 限制目标旋转角度在 ±15 度以内
+    targetRotationX = Math.max(Math.min(targetRotationX, maxRotation), -maxRotation)
+    targetRotationY = Math.max(Math.min(targetRotationY, maxRotation), -maxRotation)
+    console.log(targetRotationX, targetRotationY)
   }
-  xueRenReset()
 }
 
-// const init = () => {
-//   // scene
-//   const scene = new THREE.Scene()
-//   //scene添加背景颜色
-//   // scene.background = new THREE.Color(0x000000)
-//   //创建一个物体（形状）
-//   const geometry = new THREE.BoxGeometry(100, 100, 100) //长宽高都是100的立方体
-//   // const geometry = new THREE.SphereGeometry(60,40,40);//半径是60的圆
-//   //widthSegments, heightSegments：水平方向和垂直方向上分段数。widthSegments最小值为3，默认值为8。heightSegments最小值为2，默认值为6。
-//   //创建材质（外观）
-//   const material = new THREE.MeshLambertMaterial({
-//     color: 0x0000ff //设置材质颜色(蓝色)
-//     // color: 0x00ff00,//(绿色)
-//     // transparent: true, //开启透明度
-//     // opacity: 0.5 //设置透明度
-//   })
-//   //创建一个网格模型对象
-//   const mesh = new THREE.Mesh(geometry, material) //网络模型对象Mesh
-//   //把网格模型添加到三维场景
-//   scene.add(mesh) //网络模型添加到场景中
+const logCuBe = () => {
+  console.log(cube.rotation, 'cube.rotation')
+}
 
-//   // 添加多个模型（添加圆形）
-//   // const geometry2 = new THREE.SphereGeometry(60, 40, 40)
-//   // const material2 = new THREE.MeshLambertMaterial({
-//   //   color: 0xffff00
-//   // })
-//   // const mesh2 = new THREE.Mesh(geometry2, material2) //网格模型对象Mesh
-//   // // mesh3.translateX(120); //球体网格模型沿Y轴正方向平移120
-//   // mesh2.position.set(120, 0, 0) //设置mesh3模型对象的xyz坐标为120,0,0
-//   // scene.add(mesh2)
+// 动画循环函数
+const animate = () => {
+  requestAnimationFrame(animate)
+  // // 自动旋转
+  // if (!isMouseOver) {
+  //   targetRotationY += 0.01
+  //   targetRotationY = Math.max(Math.min(targetRotationY, maxRotation), -maxRotation)
+  // }
+  // 平滑过渡旋转角度
+  rotationX += (targetRotationX - rotationX) * 0.05
+  rotationY += (targetRotationY - rotationY) * 0.05
 
-//   //添加光源 //会照亮场景里的全部物体（氛围灯），前提是物体是可以接受灯光的，这种灯是无方向的，即不会有阴影。
-//   const ambient = new THREE.AmbientLight(0xffffff, 0.8)
-//   scene.add(ambient)
+  cube.rotation.x = rotationX
+  cube.rotation.y = rotationY
 
-//   const light = new THREE.PointLight(0xffffff, 1) //点光源，color:灯光颜色，intensity:光照强度
-//   light.position.set(200, 300, 400)
-//   scene.add(light)
+  renderer.render(scene, camera)
+}
 
-//   console.log(model, 'model')
-//   //创建一个透视相机，窗口宽度，窗口高度
-//   const width = model.value.offsetWidth,
-//     height = model.value.offsetHeight
-//   const camera = new THREE.PerspectiveCamera(45, width / height, 1, 1000)
-//   //设置相机位置
-//   camera.position.set(300, 300, 300)
-//   //设置相机方向
-//   camera.lookAt(0, 0, 0)
+// 鼠标进入容器区域事件处理函数
+const onMouseEnter = () => {
+  isMouseOver = true
+}
+// 鼠标离开容器区域事件处理函数
+const onMouseLeave = () => {
+  isMouseOver = false
+  targetRotationX = rotationX // 恢复鼠标进入前的旋转状态
+  targetRotationY = rotationY
+}
 
-//   //创建辅助坐标轴
-//   const axesHelper = new THREE.AxesHelper(200) //参数200标示坐标系大小，可以根据场景大小去设置
-//   scene.add(axesHelper)
+onMounted(() => {
+  // 在组件挂载时创建场景
+  scene = new THREE.Scene()
 
-//   //创建一个WebGL渲染器
-//   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-//   renderer.setClearAlpha(0)
-//   renderer.setSize(width, height) //设置渲染区尺寸
-//   renderer.render(scene, camera) //执行渲染操作、指定场景、相机作为参数
+  // 创建渲染器
+  renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+  renderer.setSize(400, 300)
+  container.value.appendChild(renderer.domElement)
 
-//   const controls = new OrbitControls(camera, renderer.domElement) //创建控件对象
-//   controls.addEventListener('change', () => {
-//     renderer.render(scene, camera) //监听鼠标，键盘事件
-//   })
-//   model.value.appendChild(renderer.domElement)
-// }
+  // 创建相机
+  camera = new THREE.PerspectiveCamera(20, window.innerWidth / window.innerHeight, 0.1, 1000)
+  camera.position.z = 5
 
-// onMounted(() => {
-//   init()
-// })
+  // 创建几何体
+  const geometry = new THREE.BoxGeometry(1.5, 1, 1.5)
+  const material = new THREE.MeshBasicMaterial({
+    color: 0xffff00,
+    fog: true,
+    wireframe: true,
+    wireframeLinewidth: 70
+  })
+  cube = new THREE.Mesh(geometry, material)
+
+  const control = new OrbitControls(camera, renderer.domElement) // 轨道控制器 保持模型为中心
+  control.target = new THREE.Vector3(0, 0, 0)
+  control.enableRotate = false //禁止旋转
+  control.enablePan = false //禁止平移
+  control.enableZoom = false //禁止缩放
+  control.update()
+
+  // 创建坐标系
+  const axesHelper = new THREE.AxesHelper(1000)
+  // 将坐标系添加到场景中
+  false && scene.add(axesHelper)
+  // 将几何体添加到场景中
+  scene.add(cube)
+
+  // 监听鼠标移动事件
+  container.value.addEventListener('mousemove', onMouseMove)
+
+  // 渲染场景
+  animate()
+})
+
+onUnmounted(() => {
+  // 在组件卸载时清理事件监听器
+  container.value.removeEventListener('mousemove', onMouseMove)
+})
 </script>
 <template>
   <div class="login-box">
     <div class="flex-1 relative">
       <div
         ref="container"
-        class="mx-auto my-0 w-400px h-300px cursor-pointer"
-        @mouseenter="stopAnimation"
-        @mouseleave="reset"
+        class="mx-auto my-0 w-400px h-300px cursor-pointer border-1"
+        @mouseenter="onMouseEnter"
+        @mouseleave="onMouseLeave"
       ></div>
     </div>
     <div class="rightLogin flex-1">
@@ -167,7 +164,7 @@ const reset = () => {
           </el-form-item>
           <el-form-item>
             <el-Button plain @click="submit">登录</el-Button>
-            <!-- <el-button plain @click="xueRenReset">复位</el-button> -->
+            <el-Button plain @click="logCuBe">打印</el-Button>
           </el-form-item>
         </el-form>
       </div>

@@ -44,6 +44,7 @@ class ThreeBase {
     renderer.shadowMap.enabled = true
     renderer.setSize(element.offsetWidth, element.offsetHeight)
     renderer.localClippingEnabled = true
+    renderer.shadowMap.enabled = true
     element.appendChild(renderer.domElement)
     return renderer
   }

@@ -17,6 +17,11 @@ export function useModel() {
   const group = new THREE.Group() // 创建组
   const modelLow = shallowRef<THREE.Object3D>()
 
+  const isOne = ref(true)
+  const mouseInfo = ref<any>()
+  const cube = shallowRef<THREE.Mesh>()
+  const cloneCuBe = shallowRef<any>()
+
   const {
     geometry,
     container,
@@ -39,7 +44,7 @@ export function useModel() {
       [100, 100, -100]
     ]
     forEach(LIGHT_LIST, ([x, y, z]) => {
-      const directionalLight = new THREE.DirectionalLight(0xffffff, 3)
+      const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
       directionalLight.position.set(x, y, z)
       scene.value?.add(directionalLight)
     })
@@ -53,7 +58,7 @@ export function useModel() {
     // object.rotation.y = 0.5
     object.scale.set(...MODEL_SCALES)
     object.position.set(0, 0, 0)
-    loadAnimate(object, animations, animations[0]?.name)
+    // loadAnimate(object, animations, animations[0]?.name)
 
     object.name = 'lowpoly'
     modelLow.value = object
@@ -110,9 +115,20 @@ export function useModel() {
     //     }
     //   })
     // })
-    nextTick(() => {
-      xueRenAnimation()
+    // nextTick(() => {
+    //   xueRenAnimation()
+    // })
+    // cube.value?.rotation.set(0, 0, 0)
+    const { x, y, z } = cloneCuBe.value
+    animation({
+      from: cube.value?.rotation,
+      to: { x, y, z },
+      duration: 100,
+      onUpdate: (position: any) => {
+        cube.value?.rotation.set(position.x, position.y, position.z)
+      }
     })
+    isOne.value = true
   }
 
   const onStop = () => {
@@ -123,30 +139,58 @@ export function useModel() {
   const stopAnimation = (e: Event) => {
     tween.value?.stop()
   }
-
+  // 限制最大值最小值
+  const clamp = (value, min, max) => {
+    return Math.min(Math.max(value, min), max)
+  }
   const setX = (position) => {
-    const { x, y } = position
+    if (isOne.value) {
+      // 第一次进入记录位置信息
+      mouseInfo.value = position
+      isOne.value = false
+      return
+    }
 
-    modelLow.value.children[0].rotation.x =
-      x > 0
-        ? (modelLow.value.children[0].rotation.x += 0.03)
-        : (modelLow.value.children[0].rotation.x -= 0.03)
-    modelLow.value.children[0].rotation.y =
-      y > 0
-        ? (modelLow.value.children[0].rotation.y += 0.03)
-        : (modelLow.value.children[0].rotation.y -= 0.03)
-    control.value?.update()
+    console.log(position, 'position')
+    cube.value.rotation.x += clamp(position.x, -0.003, 0.003)
+    cube.value.rotation.y += clamp(position.y, -0.003, 0.003)
+    // const posX =
+    //   position.x > mouseInfo.value.x
+    //     ? cube.value?.rotation.x + 0.002
+    //     : cube.value?.rotation.x - 0.002
+    // const posY =
+    //   position.y > mouseInfo.value.y
+    //     ? cube.value?.rotation.y + 0.003
+    //     : cube.value?.rotation.y - 0.003
+    // console.log(posX, posY)
 
-    console.log(((control.value.getAzimuthalAngle() * 180) / Math.PI).toFixed(2), '水平')
-    console.log(((control.value.getPolarAngle() * 180) / Math.PI).toFixed(2), '垂直')
+    // const isX = posX > 0 ? posX > 0.2 : posX * -1 > 0.2
+    // const isY = posY > 0 ? posY > 0.3 : posY * -1 > 0.3
+    // mouseInfo.value = position
+    // // console.log(isX, '位置信息', posX, posY)
+    // if (!isX) {
+    //   cube.value.rotation.x = posX
+    // }
+    // if (!isY) {
+    //   cube.value.rotation.y = posY
+    // }
   }
 
   // 加载几何体
   const loadGeometry = async () => {
-    const material = new THREE.MeshBasicMaterial({ color: 0xffff00 })
+    const material = new THREE.MeshBasicMaterial({
+      color: 0xffff00,
+      fog: true,
+      wireframe: true,
+      wireframeLinewidth: 70
+    })
     const mesh = new THREE.Mesh(geometry.value, material)
     mesh.scale.set(1, 1, 1)
-    mesh.position.set(120, 0, 0)
+    mesh.position.set(0, 50, 0)
+    mesh.rotation.set(0, 20, 0)
+    mesh.castShadow = true // 对象是否渲染到阴影贴图中，默认值为false
+    mesh.receiveShadow = true
+    cube.value = mesh
     group.add(mesh)
   }
 
@@ -157,19 +201,25 @@ export function useModel() {
     group.add(axesHelper)
   }
 
+  const logweizhi = () => {
+    console.log(camera.value, '摄像机位置', cube.value)
+    // control.value?.update()
+  }
+
   onMounted(async () => {
     loading.value = true
+    camera.value?.position.set(0, 50, 486) // 摄像机初始位置
     scene.value?.add(group) // 场景中加载组
-    camera.value?.position.set(0, 50, 400) // 摄像机初始位置
     control.value?.target.set(0, 65, 0)
     control.value?.update()
     loadLights() // 加载平行光
-    // setCoordinate() // 坐标系
-    await loadModels([loadModelXueRen()])
+    setCoordinate() // 坐标系
+    await loadModels([loadGeometry()])
     loading.value = false
     render() // 渲染
     console.log(camera.value, 'camera.value', control.value)
-    xueRenAnimation() // 雪人动画开启
+    cloneCuBe.value = cube.value.rotation.clone()
+    // xueRenAnimation() // 雪人动画开启
 
     control.value.enableRotate = false //禁止旋转
     control.value.enablePan = false //禁止平移
@@ -188,6 +238,7 @@ export function useModel() {
     group,
     stopAnimation,
     xueRenReset,
-    setX
+    setX,
+    logweizhi
   }
 }
