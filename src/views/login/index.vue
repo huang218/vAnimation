@@ -13,7 +13,7 @@ let targetRotationX = 0 // 目标旋转角度 X 轴
 let targetRotationY = 0 // 目标旋转角度 Y 轴
 let mouseX = 0 // 鼠标相对于容器的 X 坐标
 let mouseY = 0 // 鼠标相对于容器的 Y 坐标
-const maxRotation = Math.PI / 12 // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
+const maxRotation = Math.PI / 20 // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
 
 const { replaceRouter } = useRouterJump()
 const { getUserInfo } = userStore()
@@ -35,16 +35,17 @@ const onMouseMove = (event) => {
   const newMouseX = event.clientX - container.value.offsetLeft
   const newMouseY = event.clientY - container.value.offsetTop
 
-  // 计算鼠标移动距离
+  // 计算鼠标移动距离 当前这步 - 上一步
   const deltaX = newMouseX - mouseX
   const deltaY = newMouseY - mouseY
 
-  // 更新鼠标位置
+  // 更新上一步鼠标位置
   mouseX = newMouseX
   mouseY = newMouseY
 
   // 当鼠标在容器区域内时，控制模型旋转
   if (isMouseOver) {
+    // 计算x轴和y轴偏移的角度
     targetRotationX += deltaY * 0.01
     targetRotationY += deltaX * 0.01
 
@@ -62,10 +63,11 @@ const logCuBe = () => {
 // 动画循环函数
 const animate = () => {
   requestAnimationFrame(animate)
-  // 平滑过渡旋转角度
+  // 平滑过渡旋转角度  旋转角度 - 上一步的角度 = 需要转动的角度 * 0.05(加过渡)
   rotationX += (targetRotationX - rotationX) * 0.05
   rotationY += (targetRotationY - rotationY) * 0.05
 
+  // 赋值给几何体
   cube.rotation.x = rotationX
   cube.rotation.y = rotationY
 
