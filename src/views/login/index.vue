@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 import { userStore } from '@/stores'
 import { useRouterJump } from '@/hooks/useRouterJump'
 import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { maxRotation } from '@/utils'
 
 let scene, renderer, camera, cube
 let isMouseOver = false // 鼠标是否在容器区域内
@@ -13,7 +14,9 @@ let targetRotationX = 0 // 目标旋转角度 X 轴
 let targetRotationY = 0 // 目标旋转角度 Y 轴
 let mouseX = 0 // 鼠标相对于容器的 X 坐标
 let mouseY = 0 // 鼠标相对于容器的 Y 坐标
-const maxRotation = Math.PI / 20 // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
+// Math.PI = 360 / ? = result*2
+const maxRotations = maxRotation(12) // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
+const rate = 0.01 // 旋转频率
 
 const { replaceRouter } = useRouterJump()
 const { getUserInfo } = userStore()
@@ -29,6 +32,16 @@ async function submit() {
   if (datas) replaceRouter('/')
 }
 
+/**
+ * 限制value在min ～ max之间
+ * @param value 值
+ * @param min 最小值
+ * @param max 最大值
+ */
+const scopeHandle = (value: number, min: number, max: number) => {
+  return Math.max(Math.min(max, value), min)
+}
+
 // 鼠标移动事件处理函数
 const onMouseMove = (event) => {
   // 获取鼠标相对于容器的位置
@@ -42,32 +55,29 @@ const onMouseMove = (event) => {
   // 更新上一步鼠标位置
   mouseX = newMouseX
   mouseY = newMouseY
+  console.log(deltaX, deltaY, '偏移角度')
 
   // 当鼠标在容器区域内时，控制模型旋转
   if (isMouseOver) {
-    // 计算x轴和y轴偏移的角度
-    targetRotationX += deltaY * 0.01
-    targetRotationY += deltaX * 0.01
+    // 计算x轴和y轴偏移的角度 通常为 +0.01 or -0.01 正值则向右下方向走， 负值向左上
+    targetRotationX += deltaY * rate
+    targetRotationY += deltaX * rate
 
-    // 限制目标旋转角度在 ±15 度以内
-    targetRotationX = Math.max(Math.min(targetRotationX, maxRotation), -maxRotation)
-    targetRotationY = Math.max(Math.min(targetRotationY, maxRotation), -maxRotation)
+    // 处理targetRotation，限制目标旋转角度在 ±15 度以内
+    targetRotationX = scopeHandle(targetRotationX, -maxRotations, maxRotations)
+    targetRotationY = scopeHandle(targetRotationY, -maxRotations, maxRotations)
     console.log(targetRotationX, targetRotationY)
   }
 }
 
-const logCuBe = () => {
-  console.log(container.value.offsetWidth, 'cube.rotation')
-}
-
-// 动画循环函数
+// 动画循环函数-递归
 const animate = () => {
   requestAnimationFrame(animate)
   // 平滑过渡旋转角度  旋转角度 - 上一步的角度 = 需要转动的角度 * 0.05(加过渡)
   rotationX += (targetRotationX - rotationX) * 0.05
   rotationY += (targetRotationY - rotationY) * 0.05
 
-  // 赋值给几何体
+  // 角度值赋值给几何体
   cube.rotation.x = rotationX
   cube.rotation.y = rotationY
 
@@ -81,7 +91,8 @@ const onMouseEnter = () => {
 // 鼠标离开容器区域事件处理函数
 const onMouseLeave = () => {
   isMouseOver = false
-  targetRotationX = rotationX // 恢复鼠标进入前的旋转状态
+  // 恢复鼠标进入前的旋转状态
+  targetRotationX = rotationX
   targetRotationY = rotationY
 }
 
@@ -115,6 +126,7 @@ onMounted(() => {
 
   const control = new OrbitControls(camera, renderer.domElement) // 轨道控制器 保持模型为中心
   control.target = new THREE.Vector3(0, 0, 0)
+
   control.enableRotate = false //禁止旋转
   control.enablePan = false //禁止平移
   control.enableZoom = false //禁止缩放
@@ -166,7 +178,6 @@ onUnmounted(() => {
           </el-form-item>
           <el-form-item>
             <el-Button plain @click="submit">登录</el-Button>
-            <el-Button plain @click="logCuBe">打印</el-Button>
           </el-form-item>
         </el-form>
       </div>

@@ -90,6 +90,7 @@ export const utilCommon = (
 export const throttle = (cb: (...args: any[]) => void, wait: number = 300) => {
   return utilCommon(cb, wait, { leading: true })
 }
+
 /**
  * @name 防抖
  * @param {Function} cb
@@ -97,4 +98,23 @@ export const throttle = (cb: (...args: any[]) => void, wait: number = 300) => {
  */
 export const debounce = (cb: (...args: any[]) => void, wait: number = 300) => {
   return utilCommon(cb, wait)
+}
+
+/**
+ * 限制value在min ～ max之间
+ * @param value 值
+ * @param min 最小值
+ * @param max 最大值
+ */
+export const scopeHandle = (value: number, min: number, max: number) => {
+  return Math.max(Math.min(max, value), min)
+}
+
+/**
+ * 根据Math.PI-求最大旋转角度 - three.js
+ * @param angle 限制角度
+ * @package 例如：maxRotation(15): 计算15度最大值最小值，为 -Math.PI/12 ~ +Math.PI/12
+ */
+export const maxRotation = (angle: number) => {
+  return Math.PI / (360 / (angle * 2))
 }
