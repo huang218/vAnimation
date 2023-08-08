@@ -22,20 +22,11 @@ async function submit() {
 }
 </script>
 <template>
-  <div class="login-box">
+  <div class="login-box relative">
     <div class="flex-1 relative">
       <div ref="container" class="model"></div>
     </div>
     <div class="rightLogin flex-1">
-      <div class="poistion">
-        <el-radio-group v-model="curModelIndex">
-          <el-radio-button label="1" />
-          <el-radio-button label="2" />
-          <el-radio-button label="3" />
-          <el-radio-button label="4" />
-          <el-radio-button label="5" />
-        </el-radio-group>
-      </div>
       <div class="box m-auto">
         <!-- <div class="text-center text-20px">Vue</div> -->
         <el-form
@@ -55,6 +46,15 @@ async function submit() {
           </el-form-item>
         </el-form>
       </div>
+    </div>
+    <div class="absolute right-0 top-0">
+      <el-radio-group v-model="curModelIndex">
+        <el-radio-button label="1" />
+        <el-radio-button label="2" />
+        <el-radio-button label="3" />
+        <el-radio-button label="4" />
+        <el-radio-button label="5" />
+      </el-radio-group>
     </div>
   </div>
 </template>
