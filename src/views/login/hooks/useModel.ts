@@ -40,16 +40,16 @@ export function useModel() {
   const isMouseOver = ref(false) // 鼠标是否在容器区域内
   const rotationX = ref(0) // 当前旋转角度 X 轴
   const rotationY = ref(0) // 当前旋转角度 Y 轴
-  // 目标旋转角度
-  const targetRotation = reactive({
-    x: defaultAngleX,
-    y: -maxRotations
-  })
   const mouseX = ref(0) // 鼠标相对于容器的 X 坐标
   const mouseY = ref(0) // 鼠标相对于容器的 Y 坐标
   const group = new THREE.Group() // 创建组
   const modelRef = ref<THREE.Object3D>()
   const tweenAnimation = ref<Tween<Record<string, any>>>()
+  // 目标旋转角度
+  const targetRotation = reactive({
+    x: defaultAngleX,
+    y: -maxRotations
+  })
 
   watch(
     () => curModelIndex.value,

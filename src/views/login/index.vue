@@ -46,20 +46,24 @@ async function submit() {
   }
 }
 
-// onMounted(() => {
-//   setInterval(() => {
-//     if (curModelIndex.value >= 5) {
-//       curModelIndex.value = 1
-//       return
-//     }
-//     curModelIndex.value++
-//   }, 30 * 1000)
-// })
+onMounted(() => {
+  false &&
+    setInterval(() => {
+      if (curModelIndex.value >= 5) {
+        curModelIndex.value = 1
+        return
+      }
+      curModelIndex.value++
+    }, 30 * 1000)
+})
 </script>
 <template>
   <div class="login-box relative">
     <div class="h-full flex-1">
-      <div class="w-full h-full flex items-center" :style="{ opacity: opacity.val }">
+      <div
+        class="w-full h-full flex items-center"
+        :style="{ opacity: opacity.val, background: 'transparent' }"
+      >
         <div ref="container" class="model"></div>
       </div>
     </div>
@@ -113,6 +117,7 @@ async function submit() {
     // background-size: cover;
     // background-repeat: no-repeat;
     filter: saturate(3);
+    background: transparent;
     @apply mx-auto my-0 w-460px h-392px cursor-pointer;
   }
   .box {

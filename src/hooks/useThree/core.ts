@@ -32,6 +32,7 @@ class ThreeBase {
     CSSRenderer.setSize(element.offsetWidth, element.offsetHeight)
     CSSRenderer.domElement.style.position = 'absolute'
     CSSRenderer.domElement.style.top = '0px'
+    CSSRenderer.domElement.style.background = 'transparent'
     element.appendChild(CSSRenderer.domElement)
     return CSSRenderer
   }
