@@ -9,14 +9,14 @@ import { useLoading } from '@/hooks/useLoadings'
 import ThreeBase from './core'
 
 function useThree() {
-  const container = ref<HTMLElement>()
+  const container = ref<HTMLElement>() // 放置节点
   const { loading, openLoading, closeLoading } = useLoading(true, 500)
-  const scene = shallowRef<THREE.Scene>()
-  const camera = shallowRef<THREE.Camera>()
-  const renderer = shallowRef<THREE.WebGLRenderer>()
+  const scene = shallowRef<THREE.Scene>() // 场景
+  const camera = shallowRef<THREE.Camera>() // 摄像机
+  const renderer = shallowRef<THREE.WebGLRenderer>() // 渲染器
   const CSSRenderer = shallowRef<CSS2DRenderer>()
-  const control = shallowRef<OrbitControls>()
-  const geometry = shallowRef<THREE.BoxGeometry>()
+  const control = shallowRef<OrbitControls>() // 轨道控制器
+  const geometry = shallowRef<THREE.BoxGeometry>() // 几何体
 
   const mixers: any = []
   const clock = new THREE.Clock()
@@ -47,6 +47,7 @@ function useThree() {
     renderMixins.forEach((mixin) => isFunction(mixin) && mixin())
     CSSRenderer.value!.render(scene.value!, camera.value!)
     TWEEN.update()
+
     requestAnimationFrame(() => render())
   }
 
@@ -80,7 +81,6 @@ function useThree() {
     return undefined
   }
   return {
-    geometry,
     container,
     loading,
     scene,

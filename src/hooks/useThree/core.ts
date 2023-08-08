@@ -39,9 +39,7 @@ class ThreeBase {
   // 渲染器
   static initRenderer(element: HTMLElement) {
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
-    // renderer.setClearColor('#000')
     renderer.outputEncoding = THREE.sRGBEncoding
-    renderer.shadowMap.enabled = true
     renderer.setSize(element.offsetWidth, element.offsetHeight)
     renderer.localClippingEnabled = true
     renderer.shadowMap.enabled = true

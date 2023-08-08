@@ -30,6 +30,7 @@ export default defineConfig({
   ],
   server: {
     port: 8800,
+    host: '0.0.0.0',
     hmr: {
       overlay: false
     }

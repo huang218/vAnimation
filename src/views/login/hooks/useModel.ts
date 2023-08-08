@@ -1,39 +1,70 @@
 import * as THREE from 'three'
+import type { Tween } from '@tweenjs/tween.js'
 import useThree from '@/hooks/useThree/index'
-import { onMounted, nextTick, ref, shallowRef } from 'vue'
+import { onMounted, ref, onUnmounted, reactive, watch, nextTick } from 'vue'
 import { forEach, size } from 'lodash'
 import { v4 as uuid } from 'uuid'
-import { animation } from '@/utils'
+import { animation, maxRotation, scopeHandle } from '@/utils'
 
-const MODEL_SCALES = <const>[1 * 100, 1 * 100, 1 * 100]
+const TENCENT_MODEL_SCALES = <const>[1 * 4, 1 * 4, 1 * 4]
+const TEST_MODEL_SCALES = <const>[1 * 40, 1 * 40, 1 * 40]
 const MODEL_URL = <const>{
-  LOWPOLY: `${import.meta.env.VITE_API_DOMAIN}/models/lowpoly.glb`
+  MODEL1: `${import.meta.env.VITE_API_DOMAIN}/models/box1.glb`,
+  MODEL2: `${import.meta.env.VITE_API_DOMAIN}/models/box2.glb`,
+  MODEL3: `${import.meta.env.VITE_API_DOMAIN}/models/box3.glb`,
+  MODEL4: `${import.meta.env.VITE_API_DOMAIN}/models/box4.glb`,
+  MODEL5: `${import.meta.env.VITE_API_DOMAIN}/models/box5.glb`
 }
 
 export function useModel() {
-  const loading = ref(false)
-  const tween = ref<any>() // 雪人模型动画对象
-  const tweenPosition = ref<any>()
-  const group = new THREE.Group() // 创建组
-  const modelLow = shallowRef<THREE.Object3D>()
-
-  const isOne = ref(true)
-  const mouseInfo = ref<any>()
-  const cube = shallowRef<THREE.Mesh>()
-  const cloneCuBe = shallowRef<any>()
-
   const {
-    geometry,
     container,
     scene,
     camera,
     control,
     renderMixins,
+    loading,
     loadGLTF,
     loadModels,
+    render,
     loadAnimate,
-    render
+    renderer
   } = useThree()
+
+  const curModelIndex = ref(3)
+  const iSwitchModel = ref(false)
+  const rate = 0.01 // 旋转频率
+  // 360 / ? = result*2
+  const maxRotations = maxRotation(15) // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
+  const defaultAngleX = maxRotation(0) // 初始化x轴旋转角度
+  const isMouseOver = ref(false) // 鼠标是否在容器区域内
+  const rotationX = ref(0) // 当前旋转角度 X 轴
+  const rotationY = ref(0) // 当前旋转角度 Y 轴
+  // 目标旋转角度
+  const targetRotation = reactive({
+    x: defaultAngleX,
+    y: -maxRotations
+  })
+  const mouseX = ref(0) // 鼠标相对于容器的 X 坐标
+  const mouseY = ref(0) // 鼠标相对于容器的 Y 坐标
+  const group = new THREE.Group() // 创建组
+  const modelRef = ref<THREE.Object3D>()
+  const tweenAnimation = ref<Tween<Record<string, any>>>()
+
+  watch(
+    () => curModelIndex.value,
+    async (val) => {
+      console.log('变化', val)
+      iSwitchModel.value = true
+      closeEvent()
+      delModel()
+      await nextTick()
+      loadModel()
+      iSwitchModel.value = false
+      openEvent()
+      console.log('Scene', scene)
+    }
+  )
 
   // 加载灯光-平行光
   const loadLights = () => {
@@ -46,152 +77,85 @@ export function useModel() {
     forEach(LIGHT_LIST, ([x, y, z]) => {
       const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
       directionalLight.position.set(x, y, z)
+      // group.add(directionalLight)
       scene.value?.add(directionalLight)
     })
+    // // 添加环境光
+    // const ambientLight = new THREE.AmbientLight(0xffffff, 1)
+    // scene.value?.add(ambientLight)
+    const light = new THREE.AmbientLightProbe() // 柔和的白光
+    scene.value?.add(light)
   }
 
-  // 加载雪人模型
-  const loadModelXueRen = async () => {
-    const { scene: object, animations } = await loadGLTF(MODEL_URL.LOWPOLY)
-    console.log(object, 'object')
-    // mesh.position.set(120, 0, 0)
-    // object.rotation.y = 0.5
-    object.scale.set(...MODEL_SCALES)
+  // 加载模型
+  const loadModel = async () => {
+    const { scene: object, animations } = await loadGLTF(MODEL_URL[`MODEL${curModelIndex.value}`])
     object.position.set(0, 0, 0)
-    // loadAnimate(object, animations, animations[0]?.name)
-
-    object.name = 'lowpoly'
-    modelLow.value = object
-    group.add(object)
-  }
-
-  // 雪人动画
-  const xueRenAnimation = async () => {
-    modelLow.value?.children.forEach((child: THREE.Object3D) => {
-      console.log(child, '模型')
-      tween.value = animation({
-        from: child.rotation,
-        to: { y: 1 },
-        duration: 6 * 1000,
-        onUpdate: (position: any) => {
-          child.rotation.y = position.y
-        },
-        onComplete: () => {
-          tween.value = null
-          xueRenAnimation2()
-        },
-        onStop
+    object.rotation.set(0, 0, 0)
+    object.scale.set(...TENCENT_MODEL_SCALES)
+    if (animations.length) {
+      forEach(animations, (child) => {
+        loadAnimate(object, animations, child?.name)
       })
-    })
+    }
+    object.name = 'model4'
+    // const newModel = await modelMaterial(object)
+    modelRef.value = object
+    scene.value?.add(object)
   }
 
-  // 雪人回来动画
-  const xueRenAnimation2 = async () => {
-    modelLow.value?.children.forEach((child: THREE.Object3D) => {
-      tween.value = animation({
-        from: child.rotation,
-        to: { y: 0 },
-        duration: 6 * 1000,
-        onUpdate: (position: any) => {
-          child.rotation.y = position.y
-        },
-        onComplete: () => {
-          tween.value = null
-          xueRenAnimation()
-        },
-        onStop
-      })
+  // 删除模型
+  const delModel = async () => {
+    modelRef.value?.traverse(function (child) {
+      scene.value?.remove(child)
+      // child.visible = false // 隐藏模型
     })
-  }
-  // 重置雪人旋转角度
-  const xueRenReset = () => {
-    // modelLow.value?.children.forEach((child: THREE.Object3D) => {
-    //   animation({
-    //     from: child.rotation,
-    //     to: { x: 0, y: 0, z: 0 },
-    //     duration: 300,
-    //     onUpdate: (position: any) => {
-    //       child.rotation.set(position.x, position.y, position.z)
-    //     }
-    //   })
-    // })
-    // nextTick(() => {
-    //   xueRenAnimation()
-    // })
-    // cube.value?.rotation.set(0, 0, 0)
-    const { x, y, z } = cloneCuBe.value
-    animation({
-      from: cube.value?.rotation,
-      to: { x, y, z },
-      duration: 100,
-      onUpdate: (position: any) => {
-        cube.value?.rotation.set(position.x, position.y, position.z)
+    modelRef.value = null
+    scene.value?.traverse(function (child) {
+      if (child instanceof THREE.Group) {
+        // 释放网格的资源
+        scene.value?.remove(child)
       }
     })
-    isOne.value = true
   }
 
-  const onStop = () => {
-    console.log(camera.value.position, '暂停记录位置')
-    tweenPosition.value = camera.value.position
-  }
+  const modelMaterial = async (model: THREE.Object3D) => {
+    // 加载纹理图像
+    const textureLoader = new THREE.TextureLoader()
+    const texture = textureLoader.load(`src/assets/image/blue.png`)
+    console.log('texture', texture)
 
-  const stopAnimation = (e: Event) => {
-    tween.value?.stop()
-  }
-  // 限制最大值最小值
-  const clamp = (value, min, max) => {
-    return Math.min(Math.max(value, min), max)
-  }
-  const setX = (position) => {
-    if (isOne.value) {
-      // 第一次进入记录位置信息
-      mouseInfo.value = position
-      isOne.value = false
-      return
-    }
+    // 设置纹理的重复次数
+    texture.repeat.set(2, 2)
 
-    console.log(position, 'position')
-    cube.value.rotation.x += clamp(position.x, -0.003, 0.003)
-    cube.value.rotation.y += clamp(position.y, -0.003, 0.003)
-    // const posX =
-    //   position.x > mouseInfo.value.x
-    //     ? cube.value?.rotation.x + 0.002
-    //     : cube.value?.rotation.x - 0.002
-    // const posY =
-    //   position.y > mouseInfo.value.y
-    //     ? cube.value?.rotation.y + 0.003
-    //     : cube.value?.rotation.y - 0.003
-    // console.log(posX, posY)
-
-    // const isX = posX > 0 ? posX > 0.2 : posX * -1 > 0.2
-    // const isY = posY > 0 ? posY > 0.3 : posY * -1 > 0.3
-    // mouseInfo.value = position
-    // // console.log(isX, '位置信息', posX, posY)
-    // if (!isX) {
-    //   cube.value.rotation.x = posX
-    // }
-    // if (!isY) {
-    //   cube.value.rotation.y = posY
-    // }
-  }
-
-  // 加载几何体
-  const loadGeometry = async () => {
-    const material = new THREE.MeshBasicMaterial({
-      color: 0xffff00,
-      fog: true,
-      wireframe: true,
-      wireframeLinewidth: 70
+    // 设置纹理的包裹模式为平铺
+    texture.wrapS = THREE.RepeatWrapping
+    texture.wrapT = THREE.RepeatWrapping
+    // 应用纹理贴图
+    model?.traverse(function (child) {
+      if (child instanceof THREE.Mesh) {
+        console.log(child, ' child')
+        const material = new THREE.MeshPhongMaterial({ map: texture, color: 0xb39836 })
+        child.material = material
+      }
     })
-    const mesh = new THREE.Mesh(geometry.value, material)
-    mesh.scale.set(1, 1, 1)
-    mesh.position.set(0, 50, 0)
-    mesh.rotation.set(0, 20, 0)
-    mesh.castShadow = true // 对象是否渲染到阴影贴图中，默认值为false
-    mesh.receiveShadow = true
-    cube.value = mesh
-    group.add(mesh)
+    return model
+  }
+
+  // 模型动画
+  const modelAnimation = async () => {
+    tweenAnimation.value = animation({
+      from: targetRotation,
+      to: { y: maxRotations },
+      duration: 6 * 1000,
+      onUpdate: (position: any) => {
+        targetRotation.y = position.y
+      },
+      onComplete: () => {
+        tweenAnimation.value = null
+      }
+    })
+    tweenAnimation.value.yoyo(true).repeat(Infinity)
   }
 
   // 创建辅助坐标轴
@@ -201,44 +165,109 @@ export function useModel() {
     group.add(axesHelper)
   }
 
-  const logweizhi = () => {
-    console.log(camera.value, '摄像机位置', cube.value)
-    // control.value?.update()
+  // 混入render
+  const mixinRender = () => {
+    if (iSwitchModel.value) return
+    // 平滑过渡旋转角度  旋转角度 - 上一步的角度 = 需要转动的角度 * 0.05(加过渡)
+    rotationX.value += (targetRotation.x - rotationX.value) * 0.05
+    rotationY.value += (targetRotation.y - rotationY.value) * 0.05
+
+    if (modelRef.value) {
+      // 角度值赋值给组
+      modelRef.value.rotation.x = rotationX.value
+      modelRef.value.rotation.y = rotationY.value
+    }
+  }
+
+  // 鼠标移动事件处理函数
+  const onMouseMove = (event) => {
+    // 获取鼠标相对于容器的位置
+    const newMouseX = event.clientX - container.value.offsetLeft
+    const newMouseY = event.clientY - container.value.offsetTop
+
+    // 计算鼠标移动距离 当前这步 - 上一步
+    const deltaX = newMouseX - mouseX.value
+    const deltaY = newMouseY - mouseY.value
+
+    // 更新上一步鼠标位置
+    mouseX.value = newMouseX
+    mouseY.value = newMouseY
+
+    // 当鼠标在容器区域内时，控制模型旋转
+    if (isMouseOver.value) {
+      // 计算x轴和y轴偏移的角度 通常为 +0.01 or -0.01 正值则向右下方向走， 负值向左上
+      targetRotation.x += deltaY * rate
+      targetRotation.y += deltaX * rate
+      // console.log(targetRotationX, targetRotationY, '偏移角度', maxRotations)
+
+      // 处理targetRotation，限制目标旋转角度在 ±15 度以内
+      targetRotation.x = scopeHandle(targetRotation.x, -maxRotations, maxRotations)
+      targetRotation.y = scopeHandle(targetRotation.y, -maxRotations, maxRotations)
+    }
+  }
+
+  // 鼠标进入容器区域事件处理函数
+  const onMouseEnter = () => {
+    isMouseOver.value = true
+    tweenAnimation.value.stop()
+  }
+
+  // 鼠标离开容器区域事件处理函数
+  const onMouseLeave = () => {
+    isMouseOver.value = false
+    tweenAnimation.value.start()
+    // 恢复模型位置
+    targetRotation.x = defaultAngleX
+    targetRotation.y = -maxRotations
+  }
+  // 监听鼠标移动事件
+  const openEvent = () => {
+    container.value?.addEventListener('mousemove', onMouseMove)
+    container.value?.addEventListener('mouseenter', onMouseEnter)
+    container.value?.addEventListener('mouseleave', onMouseLeave)
+  }
+
+  // 关闭鼠标移动事件
+  const closeEvent = () => {
+    container.value?.removeEventListener('mousemove', onMouseMove)
+    container.value?.removeEventListener('mouseenter', onMouseEnter)
+    container.value?.removeEventListener('mouseleave', onMouseLeave)
   }
 
   onMounted(async () => {
-    loading.value = true
-    camera.value?.position.set(0, 50, 486) // 摄像机初始位置
+    camera.value?.position.set(0, 0, 486) // 摄像机初始位置
     scene.value?.add(group) // 场景中加载组
-    control.value?.target.set(0, 65, 0)
+    control.value?.target.set(0, 0, 0)
     control.value?.update()
+    // renderer.value?.setClearColor('#ffffff', 0)
+    // renderer.value.shadowMap.enabled = true // 启动阴影
+    // renderer.value.shadowMap.type = THREE.PCFSoftShadowMap
+    renderMixins.set('render', mixinRender)
+    false && setCoordinate() // 坐标系
     loadLights() // 加载平行光
-    setCoordinate() // 坐标系
-    await loadModels([loadGeometry()])
-    loading.value = false
+    await loadModels([loadModel()]) // 加载模型
     render() // 渲染
-    console.log(camera.value, 'camera.value', control.value)
-    cloneCuBe.value = cube.value.rotation.clone()
-    // xueRenAnimation() // 雪人动画开启
+
+    modelAnimation() // 模型旋转动画
+
+    console.log('scene', scene)
 
     control.value.enableRotate = false //禁止旋转
     control.value.enablePan = false //禁止平移
     control.value.enableZoom = false //禁止缩放
-    // 上下旋转范围
-    // control.value.minPolarAngle = 0
-    // control.value.maxPolarAngle = Math.PI
-    // 左右旋转范围
-    // control.value.minAzimuthAngle = -Math.PI * (15 / 180)
-    // control.value.maxAzimuthAngle = Math.PI * (15 / 180)
+    openEvent()
+    console.warn('加载完成')
   })
-
+  onUnmounted(() => {
+    closeEvent()
+    console.warn('关闭')
+  })
   return {
     container,
+    curModelIndex,
     loading,
     group,
-    stopAnimation,
-    xueRenReset,
-    setX,
-    logweizhi
+    delModel,
+    closeEvent
   }
 }
