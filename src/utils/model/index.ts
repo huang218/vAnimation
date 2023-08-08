@@ -26,7 +26,8 @@ export const animation = (props: {
     from,
     to,
     duration,
-    easing = TWEEN.Easing.Linear.None,
+    // easing = TWEEN.Easing.Linear.None,
+    easing = TWEEN.Easing.Quadratic.In,
     onUpdate,
     onComplete,
     onStop

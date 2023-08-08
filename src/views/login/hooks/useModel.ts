@@ -2,8 +2,7 @@ import * as THREE from 'three'
 import type { Tween } from '@tweenjs/tween.js'
 import useThree from '@/hooks/useThree/index'
 import { onMounted, ref, onUnmounted, reactive, watch, nextTick } from 'vue'
-import { forEach, size } from 'lodash'
-import { v4 as uuid } from 'uuid'
+import { forEach } from 'lodash'
 import { animation, maxRotation, scopeHandle } from '@/utils'
 
 const TENCENT_MODEL_SCALES = <const>[1 * 4, 1 * 4, 1 * 4]
@@ -28,11 +27,12 @@ export function useModel() {
     loadModels,
     render,
     loadAnimate,
+    openLoading,
+    closeLoading,
     renderer
   } = useThree()
 
-  const curModelIndex = ref(3)
-  const iSwitchModel = ref(false)
+  const curModelIndex = ref(1)
   const rate = 0.01 // 旋转频率
   // 360 / ? = result*2
   const maxRotations = maxRotation(15) // 最大旋转角度限制 Math.PI表示π 分成12份，每份就是360 / 12 = 30度，最大旋转角度15度
@@ -53,16 +53,14 @@ export function useModel() {
 
   watch(
     () => curModelIndex.value,
-    async (val) => {
-      console.log('变化', val)
-      iSwitchModel.value = true
+    async () => {
+      openLoading()
       closeEvent()
       delModel()
       await nextTick()
       loadModel()
-      iSwitchModel.value = false
+      closeLoading()
       openEvent()
-      console.log('Scene', scene)
     }
   )
 
@@ -77,12 +75,8 @@ export function useModel() {
     forEach(LIGHT_LIST, ([x, y, z]) => {
       const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
       directionalLight.position.set(x, y, z)
-      // group.add(directionalLight)
       scene.value?.add(directionalLight)
     })
-    // // 添加环境光
-    // const ambientLight = new THREE.AmbientLight(0xffffff, 1)
-    // scene.value?.add(ambientLight)
     const light = new THREE.AmbientLightProbe() // 柔和的白光
     scene.value?.add(light)
   }
@@ -98,7 +92,8 @@ export function useModel() {
         loadAnimate(object, animations, child?.name)
       })
     }
-    object.name = 'model4'
+    console.log(object, 'model')
+    object.name = 'Tencent'
     // const newModel = await modelMaterial(object)
     modelRef.value = object
     scene.value?.add(object)
@@ -119,28 +114,27 @@ export function useModel() {
     })
   }
 
-  const modelMaterial = async (model: THREE.Object3D) => {
-    // 加载纹理图像
-    const textureLoader = new THREE.TextureLoader()
-    const texture = textureLoader.load(`src/assets/image/blue.png`)
-    console.log('texture', texture)
+  // const modelMaterial = async (model: THREE.Object3D) => {
+  //   // 加载纹理图像
+  //   const textureLoader = new THREE.TextureLoader()
+  //   const texture = textureLoader.load(`src/assets/image/blue.png`)
 
-    // 设置纹理的重复次数
-    texture.repeat.set(2, 2)
+  //   // 设置纹理的重复次数
+  //   texture.repeat.set(2, 2)
 
-    // 设置纹理的包裹模式为平铺
-    texture.wrapS = THREE.RepeatWrapping
-    texture.wrapT = THREE.RepeatWrapping
-    // 应用纹理贴图
-    model?.traverse(function (child) {
-      if (child instanceof THREE.Mesh) {
-        console.log(child, ' child')
-        const material = new THREE.MeshPhongMaterial({ map: texture, color: 0xb39836 })
-        child.material = material
-      }
-    })
-    return model
-  }
+  //   // 设置纹理的包裹模式为平铺
+  //   texture.wrapS = THREE.RepeatWrapping
+  //   texture.wrapT = THREE.RepeatWrapping
+  //   // 应用纹理贴图
+  //   model?.traverse(function (child) {
+  //     if (child instanceof THREE.Mesh) {
+  //       console.log(child, ' child')
+  //       const material = new THREE.MeshPhongMaterial({ map: texture, color: 0xb39836 })
+  //       child.material = material
+  //     }
+  //   })
+  //   return model
+  // }
 
   // 模型动画
   const modelAnimation = async () => {
@@ -161,13 +155,12 @@ export function useModel() {
   // 创建辅助坐标轴
   const setCoordinate = () => {
     //参数200标示坐标系大小，可以根据场景大小去设置
-    const axesHelper = new THREE.AxesHelper(1000)
+    const axesHelper = new THREE.AxesHelper(200)
     group.add(axesHelper)
   }
 
   // 混入render
   const mixinRender = () => {
-    if (iSwitchModel.value) return
     // 平滑过渡旋转角度  旋转角度 - 上一步的角度 = 需要转动的角度 * 0.05(加过渡)
     rotationX.value += (targetRotation.x - rotationX.value) * 0.05
     rotationY.value += (targetRotation.y - rotationY.value) * 0.05
@@ -239,24 +232,23 @@ export function useModel() {
     scene.value?.add(group) // 场景中加载组
     control.value?.target.set(0, 0, 0)
     control.value?.update()
-    // renderer.value?.setClearColor('#ffffff', 0)
-    // renderer.value.shadowMap.enabled = true // 启动阴影
-    // renderer.value.shadowMap.type = THREE.PCFSoftShadowMap
+
     renderMixins.set('render', mixinRender)
     false && setCoordinate() // 坐标系
     loadLights() // 加载平行光
     await loadModels([loadModel()]) // 加载模型
     render() // 渲染
-
     modelAnimation() // 模型旋转动画
-
-    console.log('scene', scene)
 
     control.value.enableRotate = false //禁止旋转
     control.value.enablePan = false //禁止平移
     control.value.enableZoom = false //禁止缩放
     openEvent()
     console.warn('加载完成')
+
+    // renderer.value?.setClearColor('#ffffff', 0)
+    // renderer.value.shadowMap.enabled = true // 启动阴影
+    // renderer.value.shadowMap.type = THREE.PCFSoftShadowMap
   })
   onUnmounted(() => {
     closeEvent()

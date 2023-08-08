@@ -1,18 +1,43 @@
 <script setup lang="ts">
+import { onMounted, reactive, watch } from 'vue'
 import { userStore } from '@/stores'
 import { useRouterJump } from '@/hooks/useRouterJump'
 import { useModel } from './hooks/useModel'
-import { reactive } from 'vue'
+import { animation } from '@/utils'
 
-const { container, curModelIndex } = useModel()
+const { container, curModelIndex, loading } = useModel()
 const { replaceRouter } = useRouterJump()
 const { getUserInfo } = userStore()
-// const container = ref(null)
 
+const opacity = reactive<Record<'val', number>>({
+  val: 0
+})
 const formLabelAlign = reactive({
   name: '',
   password: ''
 })
+
+watch(
+  () => loading.value,
+  (val) => {
+    // to -> 0 : 隐藏
+    // to -> 1 : 显示
+    if (!val) return
+    opacity.val = 0
+    animation({
+      from: opacity,
+      to: { val: 1 },
+      duration: 0.8 * 1000,
+      onUpdate: (obj: any) => {
+        opacity.val = obj.val
+      },
+      onComplete: () => {}
+    })
+  },
+  {
+    immediate: true
+  }
+)
 
 async function submit() {
   const datas = await getUserInfo()
@@ -20,15 +45,26 @@ async function submit() {
     replaceRouter('/')
   }
 }
+
+// onMounted(() => {
+//   setInterval(() => {
+//     if (curModelIndex.value >= 5) {
+//       curModelIndex.value = 1
+//       return
+//     }
+//     curModelIndex.value++
+//   }, 30 * 1000)
+// })
 </script>
 <template>
   <div class="login-box relative">
-    <div class="flex-1 relative">
-      <div ref="container" class="model"></div>
+    <div class="h-full flex-1">
+      <div class="w-full h-full flex items-center" :style="{ opacity: opacity.val }">
+        <div ref="container" class="model"></div>
+      </div>
     </div>
-    <div class="rightLogin flex-1">
+    <div class="rightLogin h-full flex flex-1 items-center">
       <div class="box m-auto">
-        <!-- <div class="text-center text-20px">Vue</div> -->
         <el-form
           label-position="top"
           label-width="100px"
@@ -47,7 +83,7 @@ async function submit() {
         </el-form>
       </div>
     </div>
-    <div class="absolute right-0 top-0">
+    <div class="absolute left-0 bottom-0">
       <el-radio-group v-model="curModelIndex">
         <el-radio-button label="1" />
         <el-radio-button label="2" />
@@ -66,10 +102,12 @@ async function submit() {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-image: url(@/assets/image/login.jpg);
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: cover;
+  /* 从左到右的水平渐变 */
+  background: linear-gradient(to right, #e5f8ff, #3131ff);
+  // background-image: url(@/assets/image/login.jpg);
+  // background-repeat: no-repeat;
+  // background-position: center;
+  // background-size: cover;
   .model {
     // background-image: url('@/assets/image/model-bg5.jpg');
     // background-size: cover;
@@ -84,10 +122,14 @@ async function submit() {
     margin: 0 auto;
     border-radius: 20px;
     background-color: var(--el-bg-color);
-    opacity: 0.8;
+    opacity: 1;
+    box-shadow: 10px 10px 20px rgb(0 0 0 / 59%);
     :deep(.el-button) {
       width: 100%;
     }
+  }
+  .rightLogin {
+    // background-color: #0035ff73;
   }
 }
 </style>

@@ -95,7 +95,9 @@ function useThree() {
     render,
     loadGLTF,
     loadAnimate,
-    loadModels
+    loadModels,
+    openLoading,
+    closeLoading
   }
 }
 
