@@ -57,12 +57,12 @@ export const utilCommon = (
   let timer: any = null
   let leading: boolean = false
   let maxWait: number = 0
-  let trailing: boolean = false
+  // let trailing: boolean = false
 
   if (options) {
     leading = !!options.leading
     maxWait = Math.max(+options.maxWait || 0, wait)
-    trailing = 'trailing' in options ? !!options.trailing : trailing
+    // trailing = 'trailing' in options ? !!options.trailing : trailing
   }
 
   return (...args: any[]) => {
@@ -76,7 +76,7 @@ export const utilCommon = (
       }
     }
     timer = window.setTimeout(() => {
-      cb(...args)
+      cb.apply(this, args)
       timer = null
     }, wait)
   }

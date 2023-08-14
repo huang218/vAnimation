@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import { nextTick, onMounted, ref } from 'vue'
 import configGlobal from '@/global.vue'
-import { WebLogger } from '@/utils' // 封装console
+import { WebLogger, debounce } from '@/utils' // 封装console
 
 enum as {
   ONE,
@@ -62,6 +62,10 @@ const init = () => {
 const pushData = () => {
   num.value++
 }
+
+const clicks = debounce((...r) => {
+  console.log(111, r)
+}, 1000)
 onMounted(() => {
   console.log(configGlobal.WS_URL)
 })
@@ -103,6 +107,7 @@ onMounted(() => {
       以三维场景为依托、生产数据为核心、生产业务为纽带，为工厂打造数字孪生空间，赋能企业安全生产、高效管理和智慧运营，为企业降本、创收，推动工厂、车间、产能的数字化转型。
     </div>
   </div>
+  <div class="h-380px w-400px bg-light-200" @mousemove="clicks"></div>
 </template>
 
 <style lang="less" scoped>
