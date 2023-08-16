@@ -83,7 +83,12 @@ const menuFun = (type: Symbol) => {
       console.log('default')
       break
   }
-  if (isPushRoute && !unref(cachedViews).includes(oldRoute[0]) && (type !== CloseAll || Reload)) {
+  if (
+    isPushRoute &&
+    !unref(cachedViews).includes(oldRoute[0]) &&
+    type !== CloseAll &&
+    type !== Reload
+  ) {
     tagStore.addCurrentView(currentRouteInfo.value.path)
   }
 }
