@@ -158,3 +158,19 @@ type FunctionKeysTest = FunctionKeys<{
   fn: () => any
   callback: (...args: any[]) => void
 }>
+
+interface User {
+  name: string
+  age: number
+  occupation: string
+}
+
+interface Admin {
+  name: string
+  age: number
+  role: string
+}
+
+interface PowerUser extends Omit<User & Admin, 'type'> {
+  type: 'poweruser'
+}
