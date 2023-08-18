@@ -25,7 +25,7 @@ export const tagViewStore = defineStore('tagViewStore', {
   state: createTagView,
   actions: {
     addVisitedViews(route: Menu) {
-      if (this.visitedViews.find((item) => item.name === route.name)) return
+      if (this.visitedViews.find((item: Menu) => item.name === route.name)) return
       this.visitedViews.push(route)
     },
     addCachedViews(route: Menu) {
@@ -37,14 +37,14 @@ export const tagViewStore = defineStore('tagViewStore', {
       }
     },
     removeVisitedViews(route: Menu) {
-      this.visitedViews = this.visitedViews.filter((v) => v.name !== route.name)
+      this.visitedViews = this.visitedViews.filter((v: Menu) => v.name !== route.name)
     },
     removeCachedViews(name: Menu['name']) {
-      this.cachedViews = this.cachedViews.filter((v) => v !== name)
+      this.cachedViews = this.cachedViews.filter((v: Menu['name']) => v !== name)
     },
     deleteTagView(route: Menu) {
       const curIndex = this.visitedViews
-        .map((r) => {
+        .map((r: Menu) => {
           return r.path
         })
         .indexOf(route.path)
@@ -67,42 +67,42 @@ export const tagViewStore = defineStore('tagViewStore', {
     },
     // 关闭左边tag
     async closeLeftTagView(rot: Menu) {
-      const findIndex = this.visitedViews.findIndex((item) => item.name === rot.name)
-      this.visitedViews = this.visitedViews.filter((item, index) => {
+      const findIndex = this.visitedViews.findIndex((item: Menu) => item.name === rot.name)
+      this.visitedViews = this.visitedViews.filter((item: Menu, index: number) => {
         if (item.meta.isAffix) return item
         if (index >= findIndex) {
           return item
         }
       })
-      this.cachedViews = this.visitedViews.map((item) => item.name) // 重置cachedViews数据
+      this.cachedViews = this.visitedViews.map((item: Menu) => item.name) // 重置cachedViews数据
 
       // if()
     },
     // 关闭右边tag
     closeRightTagView(rot: Menu) {
-      const findIndex = this.visitedViews.findIndex((item) => item.name === rot.name)
-      this.visitedViews = this.visitedViews.filter((item, index) => {
+      const findIndex = this.visitedViews.findIndex((item: Menu) => item.name === rot.name)
+      this.visitedViews = this.visitedViews.filter((item: Menu, index: number) => {
         if (item.meta.isAffix) return item
         if (findIndex >= index) {
           return item
         }
       })
-      this.cachedViews = this.visitedViews.map((item) => item.name)
+      this.cachedViews = this.visitedViews.map((item: Menu) => item.name)
     },
     // 关闭其他
     closeOtherTagView(rot: Menu) {
-      const emitAffixList = this.visitedViews.filter((item) => item.meta.isAffix)
+      const emitAffixList = this.visitedViews.filter((item: Menu) => item.meta.isAffix)
       this.visitedViews = emitAffixList.concat(
-        this.visitedViews.filter((item) => !item.meta.isAffix && item.name === rot.name)
+        this.visitedViews.filter((item: Menu) => !item.meta.isAffix && item.name === rot.name)
       )
       console.log(this.visitedViews)
 
-      this.cachedViews = this.visitedViews.map((item) => item.name)
+      this.cachedViews = this.visitedViews.map((item: Menu) => item.name)
     },
     // 关闭所有
     closeAllTagView() {
-      this.visitedViews = this.visitedViews.filter((item) => item.meta.isAffix)
-      this.cachedViews = this.visitedViews.map((item) => item.name)
+      this.visitedViews = this.visitedViews.filter((item: Menu) => item.meta.isAffix)
+      this.cachedViews = this.visitedViews.map((item: Menu) => item.name)
     }
   }
 })
