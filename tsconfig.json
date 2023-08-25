@@ -2,6 +2,7 @@
   "include": ["src/shims-vue.d.ts", "src/**/*", "src/**/*.vue"],
   "compilerOptions": {
     "baseUrl": "./",
+    "strict": true, // 开启严格模式
     "module": "es2022",
     "moduleResolution": "Node",
     "types": [ "vite/client", "element-plus/global" ],
