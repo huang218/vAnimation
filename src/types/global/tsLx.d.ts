@@ -1,1 +1,0 @@
-import { MyOmit } from '@/types'
