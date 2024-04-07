@@ -1,0 +1,63 @@
+@import './base.css';
+* {
+  padding: 0;
+  margin: 0;
+  text-decoration: none;
+}
+
+#app {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, SimSun,
+    sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -webkit-tap-highlight-color: transparent;
+  background-color: var(--el-bg-color);
+  color: var(--el-text-color-primary);
+  font-size: 16px;
+  overflow: hidden;
+  position: relative;
+  transition: background-color 0.5s !important;
+}
+
+a {
+  position: relative;
+}
+a:after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 1.6px;
+  color: inherit;
+  background-color: var(--text-color);
+  left: 0;
+  bottom: -2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .8s cubic-bezier(.16,1,.3,1);
+  opacity: .7;
+}
+a:hover:after{
+  transform: scaleX(1);
+}
+
+/* @media (hover: hover) {
+  a:hover {
+    background-color: hsla(160, 100%, 37%, 0.2);
+  }
+  a::after {
+    content: '';
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+    transition: width .3s;
+  }
+} */
+
+.transition-bgc {
+  transition: background-color 0.5s !important;
+}
