@@ -8,11 +8,11 @@ import { animation, maxRotation, scopeHandle } from '@/utils'
 const TENCENT_MODEL_SCALES = <const>[1 * 4, 1 * 4, 1 * 4]
 const TEST_MODEL_SCALES = <const>[1 * 40, 1 * 40, 1 * 40]
 const MODEL_URL = <const>{
-  MODEL1: `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_BASE_URL}models/box1.glb`,
-  MODEL2: `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_BASE_URL}models/box2.glb`,
-  MODEL3: `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_BASE_URL}models/box3.glb`,
-  MODEL4: `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_BASE_URL}models/box4.glb`,
-  MODEL5: `${import.meta.env.VITE_API_DOMAIN}${import.meta.env.VITE_BASE_URL}models/box5.glb`
+  MODEL1: `${import.meta.env.VITE_API_DOMAIN}/models/box1.glb`,
+  MODEL2: `${import.meta.env.VITE_API_DOMAIN}/models/box2.glb`,
+  MODEL3: `${import.meta.env.VITE_API_DOMAIN}/models/box3.glb`,
+  MODEL4: `${import.meta.env.VITE_API_DOMAIN}/models/box4.glb`,
+  MODEL5: `${import.meta.env.VITE_API_DOMAIN}/models/box5.glb`
 }
 
 export function useModel() {
