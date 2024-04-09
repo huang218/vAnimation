@@ -30,10 +30,10 @@ const router = createRouter({
       ]
     },
     {
-      path: '/404',
-      name: 'notFound',
-      component: () => import('@/views/error/404.vue'),
-      meta: { title: '404' }
+      path: '/login',
+      name: '/login',
+      component: Login,
+      meta: { title: '登陆' }
     }
   ]
 })
