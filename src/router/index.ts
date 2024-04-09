@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, isNavigationFailure } from 'vue-router'
+import { createRouter, createWebHashHistory, isNavigationFailure } from 'vue-router'
 import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import { Local } from '@/utils'
@@ -7,7 +7,7 @@ import Login from '../views/login/index.vue'
 import Layout from '@/Layout/layout.vue'
 
 const router = createRouter({
-  history: createWebHistory(),
+  history: createWebHashHistory(),
   routes: [
     {
       path: '/login',

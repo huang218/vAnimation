@@ -8,6 +8,7 @@
     "build:stage": "vite build --mode staging",
     "preview": "vite preview",
     "test:unit": "vitest",
+    "404build": "cp dist/index.html dist/404.html",
     "type-check": "vue-tsc --noEmit -p --composite false",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/"
