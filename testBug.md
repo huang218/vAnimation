@@ -1,4 +1,4 @@
-# 分支主要目的：
+# 分支主要目的：测试bug
   测试退出登陆跳转login页面报错bug
 
   runtime-dom.esm-bundler.js:10 Uncaught (in promise) DOMException: Failed to execute 'insertBefore' on 'Node': The node before which the new node is to be inserted is not a child of this node.
