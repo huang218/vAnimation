@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted, toRaw, reactive } from 'vue'
+// import { ElMessage } from 'element-plus'
 import { weatherType } from '@/types'
 import { settingsStore } from '@/stores'
 import { commonServer } from '@/apis'
@@ -62,6 +63,11 @@ const getWeather = async () => {
     }
     setTimeout(() => {
       weathLoading.value = false
+      // ElMessage.success({
+      //   showClose: true,
+      //   message: '查询成功！',
+      //   type: 'success'
+      // })
     }, 500)
   } catch (error) {
     console.error(error)

@@ -8,3 +8,4 @@ declare module '*.vue' {
 declare module '*.scss' {}
 declare module '*.d.ts' {}
 declare module 'qs'
+declare module '@types/three'

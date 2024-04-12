@@ -34,7 +34,7 @@ const curRoute = computed(() => {
             :size="32"
             src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png"
           />
-          <span class="text-large font-600 mr-3"> 详情 </span>
+          <span class="text-large font-600 mr-3"> 详情2 </span>
           <span class="text-sm mr-2" style="color: var(--el-text-color-regular)">
             View Detail
           </span>

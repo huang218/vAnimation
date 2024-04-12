@@ -17,7 +17,7 @@ const { visitedViews, currentView, cachedViews } = storeToRefs(tagStore)
 const { pushRouter } = useRouterJump()
 const reload = inject<Function>('reload')
 const menuIsShow = ref<boolean>(false)
-const menuWidth = ref<number>(100)
+const menuWidth = ref<number>(90)
 const currentRouteInfo = ref<Partial<Menu>>({})
 const clientXY = ref<Record<Client, number>>({
   clientX: 0,
@@ -40,7 +40,7 @@ const positionInfo = computed(() => {
 const tagClick = (route: Menu) => {
   tagStore.addCurrentView(route.path)
 }
-const rightclick = async (route, index, event) => {
+const rightclick = async (route: Menu, index: number, event: any) => {
   let { clientX, clientY } = event
   const { innerWidth } = window
   if (innerWidth < clientX + menuWidth.value) {
@@ -83,7 +83,12 @@ const menuFun = (type: Symbol) => {
       console.log('default')
       break
   }
-  if (isPushRoute && !unref(cachedViews).includes(oldRoute[0]) && (type !== CloseAll || Reload)) {
+  if (
+    isPushRoute &&
+    !unref(cachedViews).includes(oldRoute[0]) &&
+    type !== CloseAll &&
+    type !== Reload
+  ) {
     tagStore.addCurrentView(currentRouteInfo.value.path)
   }
 }
@@ -111,7 +116,7 @@ onMounted(() => {
           </el-icon>
         </li>
       </TransitionGroup>
-      <Teleport to="#app">
+      <Teleport to="body">
         <ul v-show="menuIsShow" class="rightMenu" :style="positionInfo">
           <li
             v-show="currentView === currentRouteInfo.path"
@@ -205,9 +210,9 @@ onMounted(() => {
 </style>
 <style lang="less">
 .rightMenu {
-  @apply absolute top-0 left-0 z-999 text-14px h-auto py-4px rounded-4px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
+  @apply absolute top-0 left-0 z-999 text-12px h-auto p-4px rounded-6px overflow-hidden bg-light-50 shadow-md  dark: shadow-gray-800 dark: bg-dark-600;
   li {
-    @apply h-25px text-center leading-25px cursor-pointer;
+    @apply h-25px text-center rounded-4px leading-25px cursor-pointer dark: text-light-500;
     &:hover {
       @apply bg-light-800 dark: bg-dark-50;
     }

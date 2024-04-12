@@ -3,7 +3,7 @@ import { reactive, ref, watch } from 'vue'
 import { useSessionStorage } from '@vueuse/core'
 import { useLoading } from '@/hooks/useLoading'
 import { throttle, debounce } from '@/utils'
-import { MyReadonly, MyRecord, AssignPartial } from '@/types'
+import { MyReadonly, MyRecord, AssignPartial, MyPartialOption, FunctionKeys } from '@/types'
 
 const sess = useSessionStorage('session', { age: 18 })
 const initSess = () => {
@@ -22,6 +22,16 @@ interface type2 {
   ages: number
   home?: string
 }
+type type343 = {
+  name: string
+  age: undefined
+  home: null
+  fn: () => any
+  callback: (...args: any[]) => void
+}
+type riQi728 = MyPartialOption<type2, 'ages' | 'hjh' | 'home'>
+const test728 = ref<riQi728>({})
+const FunctionKeysTest = ref<FunctionKeys<type343>>('age')
 type obj1 = Record<number, { name?: string }>
 type user = Partial<user1> // user1中属性变为可选
 type user2 = Required<user1> // 将user1可选属性变为必填
