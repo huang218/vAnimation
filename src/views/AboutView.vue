@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
-import { GetUserInfoA } from '@/types/global'
 
 // 定义组件类型的联合类型
 type CompType = keyof CompPropsMap;
@@ -58,7 +57,7 @@ interface User {
 const currentRoute = useRoute()
 
 onMounted(() => {
-  console.log(currentRoute, 'onMounted')
+  console.log(currentRoute, 'onMounted2')
 
 })
 </script>
