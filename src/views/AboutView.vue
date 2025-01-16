@@ -1,11 +1,65 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import { useRoute } from 'vue-router'
+import { GetUserInfoA } from '@/types/global'
+
+// 定义组件类型的联合类型
+type CompType = keyof CompPropsMap;
+
+interface ComProps<T extends CompType> {
+  type?: T;
+  required?: boolean;
+  placeholder?: string;
+}
+
+type CompPropsMap = {
+  Input: InputProps;
+  Select: SelectProps;
+};
+
+interface InputProps extends ComProps<'Input'> {
+  defaultValue?: string | number;
+}
+
+interface SelectProps extends ComProps<'Select'> {
+  defaultValue?: string[] | number[];
+  options: Array<{ label: string, value: string | number }>
+}
+
+type Params = {
+  [key in CompType]: {
+    type: key;
+    props: CompPropsMap[key];
+  }
+}[CompType]
+
+// 示例对象
+const param: Params[] = [
+  {
+    type: 'Input',
+    props: {
+      defaultValue: ''
+    }
+  },
+]
+
+const Func = (arr: Params[]) => {}
+
+Func([
+  { type: 'Input', props: {defaultValue: '' }}
+])
+
+interface User {
+  name?: string;
+  age?: number;
+}
+
 
 const currentRoute = useRoute()
 
 onMounted(() => {
   console.log(currentRoute, 'onMounted')
+
 })
 </script>
 <template>
