@@ -115,3 +115,11 @@ export let car: Car
 
 // animal = car // success
 // car = animal // 错误， animal缺少break属性
+
+interface User {
+  name?: string;
+  age?: number;
+}
+
+export declare function GetUserInfoA (value: number): User | undefined;
+export declare function GetUserInfoA (value: string, count: number): User[];

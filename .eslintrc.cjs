@@ -30,7 +30,8 @@ module.exports = {
       {
         singleQuote: true,
         semi: false, // eslint 分号
-        printWidth: 100
+        printWidth: 100,
+        endOfLine: 'auto'
       }
     ],
     'import/no-extraneous-dependencies': 'off',
