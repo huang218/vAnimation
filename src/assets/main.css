@@ -23,6 +23,10 @@
   transition: background-color 0.5s !important;
 }
 
+.el-card, .el-button, .el-input, .el-select, .el-dropdown {
+  transition: all 0.5s !important;
+}
+
 a {
   position: relative;
 }

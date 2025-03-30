@@ -22,15 +22,15 @@ const logOut = () => {
   dialogVisible.value = false
   userStores.logOut()
 }
-const switchClick = async (newVal: boolean) => {
+const switchClick = (newVal: boolean) => {
   switchType.value = newVal
   setTimeout(() => {
     toggleDark(!newVal)
-  }, 200)
+  }, 50)
 }
 const initSitch = (): void => {
   const darkType = Local.getNoJson('vueuse-color-scheme')
-  switchType.value = darkType === ('light' || 'dark')
+  switchType.value = darkType === 'light'
 }
 const change = (type: boolean) => {
   console.log(type, '按钮状态')
