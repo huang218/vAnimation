@@ -80,12 +80,12 @@ const init = () => {
 }
 
 onMounted(() => {
-  // 初始化位置和大小
+  // 初始化位置和大小111
   mousePosition.value = { x: x.value, y: y.value }
   targetPosition.value = { x: x.value, y: y.value }
   size.value = 36
   targetSize.value = 36
-
+  console.log('123')
   // 启动动画循环
   animationFrameId = requestAnimationFrame(updatePosition)
 })
