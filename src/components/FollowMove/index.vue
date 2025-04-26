@@ -80,7 +80,7 @@ const init = () => {
 }
 
 onMounted(() => {
-  // 初始化位置和大小111
+  // 初始化位置和大小111222
   mousePosition.value = { x: x.value, y: y.value }
   targetPosition.value = { x: x.value, y: y.value }
   size.value = 36
